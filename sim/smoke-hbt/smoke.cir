@@ -1,0 +1,21 @@
+* sg13g2-mixer smoke bench: one npn13G2, DC operating point + short transient.
+* SIMULATED, hbt_typ, 27 C, 1.80 V supply. Toolchain check only: no figure from
+* this bench is a spec-row result and nothing is written as evidence.
+* hbt_typ at 27 C and 1.80 V is inside the HBT model card's validity window
+* (card: Vce 0.4-2.0 V measured, Vce,max 1.6 V rated; the DC point has Vce about 1.2 V).
+.lib '@PDK_MODELS@/cornerHBT.lib' hbt_typ
+.temp 27
+Vcc vcc 0 1.8
+Rc vcc c 1k
+Vb b 0 dc 0.85 sin(0.85 5m 1meg)
+Xq c b 0 0 npn13G2 Nx=1
+.control
+set noaskquit
+op
+print v(c) v(b) i(Vcc)
+tran 10n 5u
+meas tran vcmin min v(c) from=1u to=5u
+meas tran vcmax max v(c) from=1u to=5u
+quit
+.endc
+.end
