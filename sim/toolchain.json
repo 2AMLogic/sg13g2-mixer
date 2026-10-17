@@ -1,0 +1,14 @@
+{
+  "_comment": "Simulator and interpreter pins. tools/verify_pdk.py reports (does not silently accept) an ngspice major other than the one pinned here.",
+  "ngspice": {
+    "major": 46,
+    "version": "46",
+    "source_url": "https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/old-releases/46/ngspice-46.tar.gz",
+    "source_sha256": "a0d1699af1940b06649276dcd6ff5a566c8c0cad01b2f7b5e99dedbb4d64c19b",
+    "sha256_checked": "2026-10-17, tarball downloaded and hashed independently; equals the sg13g2-sat-rx pin"
+  },
+  "python": {
+    "min_version": "3.10",
+    "note": "tools/verify_pdk.py uses the standard library only."
+  }
+}
