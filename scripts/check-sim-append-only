@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# Enforce the append-only rule for committed evidence records (sim/*/records/).
+# Fails if HEAD modifies, deletes, renames away from, or changes the type of
+# any path under sim/*/records/ that exists at the merge base with BASE. Pure
+# additions pass (a correction is a new record). Renames are diffed with
+# --no-renames, so the old path reports as D. No override exists.
+# Bash + git only, read-only.
+#
+# Usage: check-sim-append-only --base REF [--root DIR]
+# Exit: 0 clean, 1 violation(s), 2 usage or git error (unknown base ref, no
+#       merge base from a shallow clone, not a git repo): fails closed.
+set -u
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+BASE=""
+usage() { echo "usage: $0 --base REF [--root DIR]" >&2; exit 2; }
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --base) [ $# -ge 2 ] || usage; BASE="$2"; shift 2 ;;
+    --root) [ $# -ge 2 ] || usage; ROOT="$2"; shift 2 ;;
+    *) usage ;;
+  esac
+done
+[ -n "$BASE" ] || usage
+err() { echo "check-sim-append-only: error: $*" >&2; exit 2; }
+
+cd "$ROOT" 2>/dev/null || err "cannot cd to root '$ROOT'"
+git rev-parse --git-dir >/dev/null 2>&1 || err "'$ROOT' is not a git repository"
+git rev-parse --verify --quiet "HEAD^{commit}" >/dev/null || err "HEAD does not resolve to a commit"
+git rev-parse --verify --quiet "$BASE^{commit}" >/dev/null \
+  || err "base ref '$BASE' does not resolve to a commit (fetch it with full history)"
+MB="$(git merge-base "$BASE" HEAD 2>/dev/null)" \
+  || err "no merge base between '$BASE' and HEAD (shallow clone? use fetch-depth: 0)"
+
+OUT="$(mktemp)" || err "mktemp failed"
+trap 'rm -f "$OUT"' EXIT
+git diff -z --name-status --no-renames --diff-filter=MDT "$MB" HEAD -- \
+  ':(glob)sim/*/records/**' > "$OUT" || err "git diff failed"
+
+n=0
+while IFS= read -r -d '' status && IFS= read -r -d '' path; do
+  [ $n -eq 0 ] && echo "sim/ append-only rule violated (vs merge base ${MB:0:12} of $BASE):"
+  printf '  %s\t%s\n' "$status" "$path"
+  n=$((n+1))
+done < "$OUT"
+if [ $n -gt 0 ]; then
+  echo "$n committed record path(s) modified/deleted/renamed. Records under"
+  echo "sim/*/records/ are never edited or deleted; a correction is a new record."
+  exit 1
+fi
+echo "OK: no committed sim/ record modified, deleted or renamed (vs $BASE)."

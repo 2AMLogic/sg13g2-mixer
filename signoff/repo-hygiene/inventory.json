@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 10,
+  "description": "Repo hygiene: README, LICENSE and the CI workflow, backed by the headless checks CI runs. Presence and exit status only; item 10 stays unmet until the spec table is ratified (issue #2).",
+  "hygiene": ["README.md", "LICENSE", ".github/workflows/ci.yml"],
+  "checks": [
+    {"name": "gate-self-test", "argv": ["scripts/test-checks.sh"]},
+    {"name": "python", "argv": ["scripts/check-python.sh"]},
+    {"name": "tb-json", "argv": ["python3", "-I", "scripts/check-tb-json.py"]},
+    {"name": "reuse-lock", "argv": ["scripts/check-reuse-lock.sh"]}
+  ]
+}

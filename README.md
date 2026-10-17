@@ -49,7 +49,7 @@ much the deliverable as the circuit.
   band; its bench methodology is prior art to read, and any shared,
   band-independent bench mechanics have one master.
 
-## Target specification (DRAFT — engineering to ratify, see issue #1)
+## Target specification (DRAFT — engineering to ratify, see issue #2)
 
 All rows are *targets*, not results.
 
@@ -83,7 +83,28 @@ spec/          ratified spec + decision records
 design/        schematics / netlists (xschem)
 sim/           testbenches + PVT corner results (ngspice)
 layout/        GDS + DRC/LVS reports (klayout-tools driven)
+scripts/       CI check scripts (also run locally via package.json) + negative-control fixtures
+signoff/       block manifest and T1 attestation inventories/envelopes
 measurements/  silicon characterization (empty until tape-out)
+```
+
+## Reproducing results
+
+No bench has landed yet, so there are no simulated results to reproduce. Each
+bench's cold-start command will be linked here as it lands (the harness and
+bench documentation are tracked in issue #3; until it merges, see
+[`sim/README.md`](sim/README.md)).
+
+The repo-hygiene and evidence-format checks need no PDK or simulator and
+reproduce today. They are the same commands CI runs
+([`.github/workflows/ci.yml`](.github/workflows/ci.yml)):
+
+```bash
+npm run check:ci                      # every check below, via scripts/check-all.sh
+BASE=origin/main npm run check:ci     # also the append-only gate against a base ref
+scripts/test-checks.sh                # negative and positive controls for each gate
+klt signoff --attest 10 --inventory signoff/repo-hygiene/inventory.json \
+  --check signoff/repo-hygiene/envelope.json
 ```
 
 ## License
