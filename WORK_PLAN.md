@@ -7,7 +7,6 @@ Generated from GitHub label state by the Guide triage role. Everything between t
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
 
-- **#7**: docs(spec): propose target spec, cascade arithmetic and ratification record
 - **#8**: ci: add headless check workflow and item-10 attestation
 
 ## Very Important
@@ -45,7 +44,6 @@ _None._
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-- **#7**: docs(spec): propose target spec, cascade arithmetic and ratification record
 - **#8**: ci: add headless check workflow and item-10 attestation
 
 ## Proposed
@@ -67,13 +65,13 @@ _None._
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 2 |
+| Operator merge-risk holds | 1 |
 | Very important | 0 |
 | Important | 0 |
 | Ready (`loom:issue`) | 0 |
 | In Progress (`loom:building`) | 2 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 2 |
+| Approved PRs awaiting merge | 1 |
 | Curated | 2 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 0 |
