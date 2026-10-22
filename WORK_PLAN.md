@@ -7,7 +7,7 @@ Generated from GitHub label state by the Guide triage role. Everything between t
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
 
-- **#8**: ci: add headless check workflow and item-10 attestation
+_None._
 
 ## Very Important
 
@@ -32,7 +32,6 @@ _None._
 Issues currently being built (`loom:building`).
 
 - **#2**: Draft and ratify the target spec
-- **#4**: Repo hygiene and CI (T1 item 10): add a CI workflow and reproduction steps
 
 ## PRs Awaiting Review
 
@@ -44,14 +43,13 @@ _None._
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-- **#8**: ci: add headless check workflow and item-10 attestation
+_None._
 
 ## Proposed
 
 Issues carrying `loom:curated`.
 
 - **#2**: Draft and ratify the target spec *(curated)*
-- **#4**: Repo hygiene and CI (T1 item 10): add a CI workflow and reproduction steps *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -65,14 +63,14 @@ _None._
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 1 |
+| Operator merge-risk holds | 0 |
 | Very important | 0 |
 | Important | 0 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 2 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 1 |
-| Curated | 2 |
+| Approved PRs awaiting merge | 0 |
+| Curated | 1 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
