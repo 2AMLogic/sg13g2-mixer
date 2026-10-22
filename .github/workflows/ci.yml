@@ -1,0 +1,68 @@
+name: ci
+
+# T1 item 10 CI: keeps the harness and evidence formats valid. Every job is
+# headless and needs neither a PDK nor a simulator. A job with nothing to check
+# yet passes trivially but still exists, so the first bench or record is
+# checked the day it lands. Each job is a thin call to a script under scripts/
+# that package.json also runs (scripts/check-all.sh), so local and CI agree.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Byte-compile Python and run unit tests
+        run: scripts/check-python.sh
+
+  tb-json:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate every sim/*/testbench/tb.json
+        run: python3 -I scripts/check-tb-json.py
+
+  reuse-lock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate reuse.lock.json
+        run: scripts/check-reuse-lock.sh
+
+  # Gate self-test: a check that cannot fail is indistinguishable from no check.
+  gate-self-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Negative and positive controls for every gate
+        run: scripts/test-checks.sh
+
+  # Pull requests only: a push to main has no base to diff against, and the PR
+  # that introduced a change was already checked.
+  records-append-only:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Committed records are never edited, deleted or renamed
+        run: scripts/check-sim-append-only --base "origin/${{ github.base_ref }}"
+
+  signoff-item10:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      # --attest is newer than the newest release wheel (0.7.0), so klt is
+      # pinned to the commit that provides it; move to a release pin once one
+      # includes `klt signoff --attest`.
+      - name: Item 10 envelope still reproduces (no drift)
+        run: uvx --from "git+https://github.com/2AMLogic/klayout-tools@dce956c3c39995643ff2a5c31b53c474b3c2aada" klt signoff --attest 10 --inventory signoff/repo-hygiene/inventory.json --check signoff/repo-hygiene/envelope.json
