@@ -1,8 +1,11 @@
 # 0001 — Target specification ratification
 
-- **Status**: PROPOSED. Becomes ratified when the operator approves the pull
-  request that carries it (the path `sg13g2-lna` used). Until then no row of
-  [`../target-spec.md`](../target-spec.md) is ratified.
+- **Status**: PROPOSED, **not ratified**. Revised 2026-10-25 under the
+  operator's requirements-review ruling of 2026-10-19. Approving the PR that
+  carries this record is not ratification. Ratification needs an independent
+  review of the requirements trace, then a later explicit operator
+  ratification. Until then no row of [`../target-spec.md`](../target-spec.md)
+  is ratified.
 - **Issue**: [#2](https://github.com/2AMLogic/sg13g2-mixer/issues/2)
 - **Date drafted**: 2026-10-17
 
@@ -29,7 +32,9 @@ target table a copy of its rows.
 
 ## What is ratified, row by row
 
-- **Unchanged from the former README draft** (ratified unchanged by approval):
+- **Unchanged from the former README draft** (carried unchanged, **proposed
+  assumptions with no receiver-requirement derivation**; nothing is ratified
+  by this record):
   RF band, RF input impedance, CG, SSB NF, IIP3, LO-to-RF isolation,
   supply/power, signoff — all three columns. No value was relaxed.
 - **Interface rows** (R1 band, the supply in R13): copied from `sg13g2-lna`;
@@ -41,6 +46,27 @@ target table a copy of its rows.
   R14 area (provisional). Rationale: each is the minimum a bench needs in order
   to state its conditions; none has measured support yet, and R4 and R14 are
   explicitly placeholders.
+
+## Revision under the operator ruling (2026-10-19)
+
+- Added the spec's *Requirements trace*: approved requirements are only the
+  upstream INTERFACE rows; every other row is a proposed assumption, with its
+  support and missing budgets (M1–M6) named. R4 and R14 stay placeholders; R9's
+  IF load has no agreed downstream allocation; B-NF is unproven.
+- Alternatives and intended-use framing are recorded, undecided. Standards
+  receiver clauses (Bluetooth RF PHY, IEEE 802.15.4 2450 MHz PHY) are named as
+  primary sources to read; their figures were **not** retrieved and none is
+  quoted.
+- Added a finite validation plan (V0–V6) with executor prerequisites,
+  known-answer checks, cost or named unknowns, and stop conditions. **No
+  simulation is authorized.**
+- Pinned LNA interface and cascade assumptions reviewed: bounds used as values,
+  pin has not been compared with LNA `main`, LNA IIP3 still unratified.
+- Preserved: single-low-IF target scope, upstream LNA/LO ownership,
+  append-only `sim/` evidence. No numeric limit changed, no `consumes` edge,
+  no design, simulation, spending, merge or closure.
+- The earlier Judge approval covered documents and arithmetic only. The
+  operator keeps final ratification of PR #7; issue #2 stays open.
 
 ## Open questions — resolution or deferral
 
@@ -67,6 +93,9 @@ target table a copy of its rows.
 - **D4 — Shared bench code with `sg13g2-sat-rx`.**
 - **D5 — Zero-IF I/Q.** Stays a stretch (R9); not allowed to drive the core
   architecture before the single-IF target closes.
+- **D7 — Receive-chain requirements (M1–M5).** Target use, sensitivity/blocker
+  profile, IF filtering/ADC allocation and LO capability. Owner: operator
+  statement, then an independent reviewer. Blocks derivation of R4–R12.
 - **D6 — Image rejection.** The cascade NF has two readings (spec table)
   depending on whether the image is rejected. This is a system question, not
   fixed here.
@@ -84,7 +113,7 @@ target table a copy of its rows.
 ## Consequences
 
 - #3 pins the PDK and builds the models the spec's corner box refers to.
-- Later issues verify against R1–R15 and the protocol; none may relax a
-  ratified row to pass. A change to a ratified row is a new numbered record.
+- Once rows are ratified, later issues verify against R1–R15 and the protocol;
+  none may relax a ratified row to pass. A change to a ratified row is a new numbered record.
 - The README target table is a copy of the spec's rows R1–R15 at Fallback /
   Target / Stretch.

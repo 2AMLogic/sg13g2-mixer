@@ -1,17 +1,21 @@
 # Target specification
 
-**Status: PROPOSED — ratified by the operator's approval of the PR that
-carries it** (issue [#2](https://github.com/2AMLogic/sg13g2-mixer/issues/2);
-decision record
-[0001](decision-records/0001-target-spec-ratification.md)). This is the same
-ratification-via-PR path `sg13g2-lna` used. No row below is ratified until
-that approval lands; an agent does not mark a row ratified, and no value was
-relaxed to make a result pass. Every row that carries a number from the former
-README draft carries it unchanged.
+**Status: PROPOSED — NOT RATIFIED. Revised under the operator's
+requirements-review ruling of 2026-10-19 (PR #7, issue
+[#2](https://github.com/2AMLogic/sg13g2-mixer/issues/2); decision record
+[0001](decision-records/0001-target-spec-ratification.md)).** Approving the PR
+that carries this document is *not* ratification and does not approve any
+numeric row. Ratification needs (1) an independent review of the requirements
+trace and rows below, then (2) a later, explicit operator ratification. An
+agent does not mark a row ratified. No value was relaxed to make a result
+pass, and no value was changed by this revision: every row that carries a
+number from the former README draft carries it unchanged, now labelled as an
+*unsupported proposed assumption* where nothing below derives it.
 
 Row status vocabulary:
 
-- **PROPOSED** — becomes binding when this PR is approved.
+- **PROPOSED** — a proposed assumption. Not binding, not approved; see
+  §Requirements trace for what, if anything, supports it.
 - **DERIVED** — computed from other rows by the arithmetic shown; changes only
   when its inputs change.
 - **INTERFACE** — copied from `sg13g2-lna` at the pinned commit (below); owned
@@ -147,12 +151,123 @@ the PDK (per `sg13g2-lna`), so passive-inductor-dependent topologies cannot be
 simulated with PDK models; layout/parasitic extraction, pads/package, and
 self-heating beyond the VBIC thermal network at ambient.
 
-## Ratified-target table
+## Requirements trace (proposed assumptions vs. approved requirements)
+
+**Approved requirements are only the INTERFACE rows** (band, 50 Ω ports,
+supply, LNA gain/NF/S22 as bounds), owned and ratified in `sg13g2-lna` at the
+pinned commit. Everything else is a proposed assumption of this block. No
+system-level receive requirement (target standard, sensitivity, blocker
+profile, channel bandwidth, ADC/IF-filter allocation) exists in this
+repository, so **no numeric mixer row below is derived from a receiver
+requirement**. The table says what supports each row and what is missing.
+
+| Rows | Class | Support today | Missing to support it |
+|---|---|---|---|
+| R1, R13 supply | INTERFACE (approved upstream) | LNA ratified rows at the pin | nothing here; re-pin only by decision record |
+| R2 | Proposed, interface-driven | LNA S22 row is a 50 Ω reference; mixer must be matched to it | LNA committed design does not meet its S22 (tracked in `sg13g2-lna`); a real LNA-output impedance to match to |
+| R5, R6, R7, R10, R13 power, R15 | Proposed assumption, **from the former README draft, no derivation** | cascade arithmetic shows their *consequence* (NF 2.1–3.8 dB cascade, IIP3 −20…−10 dBm at LNA input), not their origin | a receive-chain budget: sensitivity, SNR_min, channel BW, blocker/IM level |
+| R3, R4 | Proposed assumption, R4 explicit **placeholder** | R3 is a bench convenience (0 dBm, low-side); R4 has none | LO source capability (owner: whatever supplies the LO) and a reciprocal-mixing budget from the blocker profile |
+| R8 | Proposed, **derived** from R7 by a rule of thumb | P1dB ≈ IIP3 − 9.6 dB (third-order-dominated) | only as sound as R7 |
+| R9 | Proposed; load **has no agreed downstream allocation** | f_IF is a bench-coherent bin, not a system choice; 1 kΩ ∥ 2 pF is a placeholder | the following filter/ADC driver input impedance, IF channel BW, and the f_IF its image-rejection/filtering plan wants |
+| R11, R12 | Proposed assumption | none beyond bench convenience | IF filtering plan and LO/RF leakage tolerance at the ADC |
+| R14 | Placeholder, **no evidence** | none | schematic and floorplan |
+
+### Intended-use and market framing (assumed, to be confirmed)
+
+The LNA's band is the 2.4 GHz ISM band, so plausible downstream targets are
+narrowband 2.4 GHz links (Bluetooth LE / BR, IEEE 802.15.4, proprietary ISM)
+with channel bandwidths of roughly 1–2 MHz and IF in the low-MHz class.
+**This repository has not adopted any of them.** The standards' receiver
+clauses (Bluetooth Core Specification RF PHY / test specifications; IEEE
+802.15.4 clause on the 2450 MHz PHY receiver sensitivity and interference
+rejection) are the primary sources to read for sensitivity, blocking and
+intermodulation levels. A web search during this revision did not retrieve
+those clauses' numbers, so **no standard's figure is quoted here**; copying
+numbers from memory or from vendor datasheets would be exactly the
+unsupported assumption this section exists to avoid. Intended-use and market
+inputs (who the receiver serves, cost/power class) are likewise open and
+need an operator or product statement.
+
+What the arithmetic allows today (no new numbers, only structure):
+sensitivity = −174 dBm/Hz + 10·log10(B) + NF_system + SNR_min, so each dB of
+cascade NF is a dB of sensitivity, and the mixer's share is
+(F_mix − 1)/G1 plus the IF-stage term (F_IF − 1)/(G1·G_mix), which the
+cascade table omits. At the fallback CG of 5 dB that IF-stage term is not
+negligible and needs an IF-stage noise allocation (missing budget M3 below).
+
+### Alternatives considered, not decided
+
+| Question | Alternatives | State |
+|---|---|---|
+| Topology | double-balanced Gilbert cell (README choice); passive-style switching quad; single-balanced | Choice is the README's; no trade study exists. Not a spec row. |
+| IF | single low IF (target, per project rule); zero-IF I/Q (stretch) | Zero-IF may relax the image problem (cascade NF 5.1 vs 2.75 dB depends on it) but stays a stretch until single-IF closes |
+| Image handling | RF image filter; LNA-side filtering; I/Q image rejection | System question (D6), unresolved; sets whether R6 is read as 2.75 dB or 5.14 dB cascade |
+| RF input | active single-to-differential; ideal balun at bench; on-chip balun | R2 as proposed; inductor availability is D3 |
+| NF target | 12 dB (README) vs a budget-derived value | Cannot be derived until a budget exists |
+| LO level | 0 dBm (proposed) vs lower | Trades LO-buffer power (R13) against CG/NF; unexplored |
+
+### Missing budgets (named unknowns)
+
+- **M1** receive-chain sensitivity/SNR/channel-BW budget → R5, R6.
+- **M2** blocker and intermodulation profile → R7, R8, R4.
+- **M3** IF-stage noise and gain allocation and the IF load (R9).
+- **M4** LO source capability and phase noise (R3, R4).
+- **M5** image-rejection plan (D6).
+- **M6** LNA-side: committed S22 and unratified IIP3 (upstream).
+
+### Review of the pinned LNA interface and cascade assumptions
+
+- The cascade uses the LNA's ratified *bounds* (G ≥ 15 dB, NF ≤ 1.5 dB) as
+  if they were values. A higher real LNA gain lowers the mixer's NF weight
+  but raises its IIP3 burden (G1/IIP3_mix term); a lower one does the
+  opposite. The cascade is therefore a bound in one direction for noise and
+  the other for linearity. Treat it as a sensitivity illustration, not a
+  budget.
+- The pin is `5532789…` read 2026-10-17; `main` has moved. Whether the newer
+  LNA changes any interface row has **not** been checked in this revision and
+  needs a deliberate re-pin decision.
+- LNA IIP3 (0 dBm) is unratified; the cascade IIP3 stays provisional.
+
+### Measurement-feasibility review
+
+- Transient FFT conversion gain, IIP3 and P1dB at N = 2^19 points are routine
+  in structure; their risk is runtime, not method.
+- **B-NF is unproven.** ngspice transient noise (`trnoise`) sources are
+  white/1/f voltage or current sources injected per instance; whether
+  per-device shot noise at a time-varying bias can be represented, and
+  whether Welch averaging reaches 0.3 dB 1-σ in affordable runtime, is
+  unknown. Rough scale: ≥ 256 independent averages at the 6.55 µs window
+  is ≥ 1.7 ms of simulated time at 12.5 ps ≈ 1.3·10^8 steps per corner cell
+  — a named unknown in cost, probably hours per cell.
+- Model validity: switching-quad HBTs leave the card's `vbe`/`vce` window
+  transiently; the spec's reporting rule stands.
+
+## Validation plan (finite; nothing here is authorized to run)
+
+**No simulation is authorized by this PR or this revision.** The plan below
+is what an executor would need, in order, with stop conditions. Costs are
+estimates or named unknowns; none was measured.
+
+| Step | Content | Executor prerequisites | Cost / runtime | Stop condition |
+|---|---|---|---|---|
+| V0 | Read primary-source receiver clauses; operator/product statement of target use; draft M1–M5 | operator input | human time; unknown | If no target use is named, rows R5–R12 stay assumptions |
+| V1 | Independent review of the requirements trace and rows | a reviewer who did not write them | one review pass | Reviewer rejects the trace: revise before any bench |
+| V2 | PDK pin and ngspice/OSDI build (#3) | #3 closed | per #3 | Not reproducible: stop |
+| V3 | Known-answer benches 1, 2, 5 (CG, 2/π, window) on behavioural elements | V2; no HBT models | one corner each; expected seconds–minutes (unmeasured) | Any check misses its tolerance after step-size halving: fix the bench, do not proceed |
+| V4 | Known-answer 3 (noise, 3.01 dB) and 4 (IIP3 polynomial) | V3 | **unknown**: trnoise averaging cost | If ngspice cannot reproduce 3.01 dB SSB / 0 dB DSB within statistical error: record the shortfall in a decision record, stop B-NF, do not substitute another quantity |
+| V5 | First design cell, typ corner only, B-CG | V3 passed; a schematic | one cell, bounded by 2^19 steps; unmeasured | > a stated wall-clock cap (set by the executor before launch) with no convergence: stop and report |
+| V6 | Full PVT box (3×3×3 plus LO sweep), batch fleet per host rules | V5 and V4 if NF is in scope | box cells × V5 cost: **unknown until V5 measured** | Cost estimate from V5 exceeds a budget the operator states: stop for a decision |
+
+Grid runs go to the batch fleet through `klt sim` requests, never
+hand-launched loops. Results are append-only under `sim/`, labelled simulated
+with corner and testbench.
+
+## Proposed-target table
 
 Columns: **Fallback / Target / Stretch** are the three levels of the
 maturity ladder. "Binding conditions" are the conditions every figure must
 state. "Bench" names the planned testbench (protocols in the next section).
-Row ids are stable (`R1`…); the README table is derived from this one.
+Row ids are stable (`R1`…); the README table is derived from this one. Nothing in this table is ratified; "Status" says what kind of proposal each row is.
 
 | ID | Parameter | Fallback | Target | Stretch | Binding conditions | Bench | Status |
 |---|---|---|---|---|---|---|---|

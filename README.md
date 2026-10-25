@@ -8,8 +8,8 @@ designed by AI agents driving
 [klayout-tools](https://github.com/2AMLogic/klayout-tools) and the
 open-source xschem + ngspice flow.
 
-**Status: specification phase.** The target spec is proposed and awaits
-operator approval; nothing is designed yet.
+**Status: specification phase.** The target spec is proposed, under
+requirements review; no numeric row is ratified and nothing is designed yet.
 
 **Built agent-native.** Every specification, decision record, testbench, and
 line of documentation here is produced by AI agents working from a ratified
@@ -50,12 +50,13 @@ much the deliverable as the circuit.
   band; its bench methodology is prior art to read, and any shared,
   band-independent bench mechanics have one master.
 
-## Target specification (PROPOSED — ratified on operator approval of the PR for issue #2)
+## Target specification (PROPOSED — not ratified; under requirements review, issue #2)
 
 Source of truth: [`spec/target-spec.md`](spec/target-spec.md) (rows R1–R15,
 corner box, measurement protocol) and
 [decision record 0001](spec/decision-records/0001-target-spec-ratification.md).
-All rows are *targets*, not results. Band, supply and the 50 Ω convention are
+All rows are *targets*, not results, and all but the upstream interface rows
+are unsupported proposed assumptions (see the spec's Requirements trace). Band, supply and the 50 Ω convention are
 copied from `sg13g2-lna` at
 `5532789887c6c10abbaba541fb9294ce72b8cf5e`; the LNA's IIP3 target is not
 ratified there, so the cascade IIP3 is provisional.
@@ -84,7 +85,7 @@ settling time, SSB/DSB, port impedances, PVT box) are in the spec, not here.
 Maturity ladder: spec ratified → bench methodology validated on a known
 reference → schematic simulated across PVT → layout DRC/LVS-clean →
 post-layout re-verification → shuttle seat → measured silicon.
-**Current position: spec proposed, awaiting ratification.**
+**Current position: spec proposed, under requirements review; not ratified.**
 
 ## Tool flow
 
