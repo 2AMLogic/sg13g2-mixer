@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 10,
+  "summary": "T1 item 10 (Repo hygiene): 7/7 attestation checks passed (klt signoff --attest)",
+  "source": "signoff/repo-hygiene/inventory.json",
+  "attestation": {
+    "producer": "klt signoff --attest",
+    "inventory_schema_version": 1,
+    "hash_algorithm": "sha256-raw-bytes",
+    "check_count": 7,
+    "passed_count": 7,
+    "checks": [
+      {
+        "check": "present",
+        "role": "hygiene",
+        "path": ".github/workflows/ci.yml",
+        "passed": true,
+        "content_hash": "sha256:a33400d824e297d6b9f95ad9610e98e1c2843099bc20d72f2d265fc2c1c9862f"
+      },
+      {
+        "check": "present",
+        "role": "hygiene",
+        "path": "LICENSE",
+        "passed": true,
+        "content_hash": "sha256:cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      },
+      {
+        "check": "present",
+        "role": "hygiene",
+        "path": "README.md",
+        "passed": true,
+        "content_hash": "sha256:16d1e8d2bfc734b6d01b64644c1e327997789e0036f737fba550634986ff6d9d"
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "gate-self-test",
+        "argv": [
+          "scripts/test-checks.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "python",
+        "argv": [
+          "scripts/check-python.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "tb-json",
+        "argv": [
+          "python3",
+          "-I",
+          "scripts/check-tb-json.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "reuse-lock",
+        "argv": [
+          "scripts/check-reuse-lock.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.7.1.dev1755+gdce956c3c399",
+    "klayout_version": null,
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "path": {
+        "path": "signoff/repo-hygiene/inventory.json",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:0daa698b1f3c42935c539be6e1a319391d29e4454c8fd2e2ff42cf2000579ab2"
+    }
+  }
+}

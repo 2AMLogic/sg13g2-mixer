@@ -1,0 +1,10 @@
+{
+  "block": "sg13g2-mixer",
+  "kind": "analog",
+  "evidence": {
+    "10": {
+      "file": "signoff/repo-hygiene/envelope.json",
+      "content_hash": "sha256:0daa698b1f3c42935c539be6e1a319391d29e4454c8fd2e2ff42cf2000579ab2"
+    }
+  }
+}

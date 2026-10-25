@@ -1,0 +1,22 @@
+{
+  "_comment": "Immutable pin of the IHP model files the benches load. Verified by sim/tools/verify_pdk.py BEFORE any simulator runs. Only the file hashes establish a match; install_marker is provenance.",
+  "upstream": {
+    "repo": "https://github.com/IHP-GmbH/IHP-Open-PDK",
+    "tag": "v0.3.0",
+    "commit": "5cccb161f7492697cfa52eb14dc03beb00bdca9e"
+  },
+  "install_subtree": "ihp-sg13g2",
+  "install_marker": {
+    "file": ".fetched-version",
+    "value": "0.3.0",
+    "note": "Provenance only: a marker never establishes a match, and a missing marker is reported as unknown (hashes decide)."
+  },
+  "model_lib": "libs.tech/ngspice/models/cornerHBT.lib",
+  "closure_note": "Dependency closure of cornerHBT.lib (.include/.lib file targets, followed transitively). HBT-only: sim/smoke-hbt/ instantiates npn13G2 (native VBIC, no OSDI). The MOS/PSP OSDI closure (cornerMOSlv.lib / cornerMOShv.lib, PSP OSDI files) is deliberately NOT listed: it is only needed if the LO buffer/bias uses MOS devices, which is undecided. Extend this list when a MOS bench lands. Hashes re-derived 2026-10-17 from the local v0.3.0 install; they equal the sibling pins in sg13g2-sat-rx sim/pdk-artifact.json.",
+  "files": {
+    "libs.tech/ngspice/models/cornerHBT.lib": "bae3d705445de8d6b8de4aa798a0e3e5e7cab617d6495d9c56473bc5377de462",
+    "libs.tech/ngspice/models/sg13g2_hbt_mod.lib": "ae9288f885dd30fab24b07ed1e7e02e69eac9154022a0a6da576985183b0bd79",
+    "libs.tech/ngspice/models/sg13g2_hbt_mod_mismatch.lib": "1e493f25150b25b64985acd3f1e7ed2eb2e6ca4b712adf45b2de2ce2ba1a0eb2",
+    "libs.tech/ngspice/models/sg13g2_hbt_stat.lib": "80d1893eb06a3417d05400335d8e58c8309b9c80061ca96ceff8f8fd68c9a7db"
+  }
+}
