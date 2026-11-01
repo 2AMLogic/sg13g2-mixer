@@ -2,6 +2,10 @@
 
 Chronological record of merged PRs and closed issues. Maintained by the Guide triage role.
 
+### 2026-11-01
+
+- **PR #16**: Bump Repo Skills 0.24.7 -> 0.25.1
+
 ### 2026-10-22
 
 - **PR #8**: ci: add headless check workflow and item-10 attestation
