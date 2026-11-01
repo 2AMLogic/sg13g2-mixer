@@ -109,3 +109,6 @@ results.xml
 
 # worktree-local tool builds (sim/smoke-hbt/README.md cold start)
 .tools/
+
+# Repo Skills Codex-side machine-local install metadata (never committed)
+.agents/skills/repo/.install-local.json
