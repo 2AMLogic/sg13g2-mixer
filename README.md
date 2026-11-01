@@ -65,19 +65,21 @@ ratified there, so the cascade IIP3 is provisional.
 |---|---|---|---|---|
 | R1 | RF band | 2400–2483.5 MHz | 2400–2483.5 MHz | — |
 | R2 | RF input | 50 Ω single-ended; ideal balun at the bench boundary | 50 Ω, S11 < −10 dB across band; active single-to-differential stage, no inductors | on-chip balun included |
-| R3 | LO input | 0 dBm from 50 Ω, sine, differential, low-side | same | same, LO buffer included in power |
+| R3 | LO input | 0 dBm available (power), differential 2 × 50 Ω (100 Ω diff), sine, low-side | same | same, LO buffer included in power |
 | R4 | LO phase noise (requirement on the LO source, provisional) | ≤ −100 dBc/Hz @ 1 MHz | ≤ −110 dBc/Hz @ 1 MHz | ≤ −120 dBc/Hz @ 1 MHz |
-| R5 | Conversion gain | > 5 dB | > 10 dB | > 15 dB |
+| R5 | Conversion gain (power gain) | > 5 dB | > 10 dB | > 15 dB |
 | R6 | SSB noise figure | < 15 dB | < 12 dB | < 9 dB |
 | R7 | IIP3 | > −5 dBm | > 0 dBm | > +5 dBm |
 | R8 | Input P1dB | > −15 dBm | > −10 dBm | > −5 dBm |
 | R9 | IF | single low IF, 9.765625 MHz, 1 kΩ ∥ 2 pF differential load, ≥ 10 MHz bandwidth | same | zero-IF quadrature (I/Q) pair |
-| R10 | LO-to-RF isolation | > 30 dB | > 40 dB | > 50 dB |
-| R11 | LO-to-IF isolation | > 20 dB | > 30 dB | > 40 dB |
+| R10 | LO-to-RF isolation (mismatch-free; statistical row deferred) | > 30 dB | > 40 dB | > 50 dB |
+| R11 | LO-to-IF isolation (mismatch-free; statistical row deferred) | > 20 dB | > 30 dB | > 40 dB |
 | R12 | RF-to-IF isolation | > 20 dB | > 30 dB | > 40 dB |
 | R13 | Supply / power | 1.8 V ±10%, < 20 mW | 1.8 V ±10%, < 10 mW | < 5 mW |
 | R14 | Area (provisional) | < 0.10 mm² | < 0.05 mm² | < 0.03 mm² |
 | R15 | Signoff | DRC + LVS clean | DRC + LVS clean, post-layout re-verified | — |
+
+No row has simulation evidence yet; approving the spec PR binds targets only (spec §Evidence status).
 
 Conditions that bind each row (LO drive, FFT length and window, discarded
 settling time, SSB/DSB, port impedances, PVT box) are in the spec, not here.

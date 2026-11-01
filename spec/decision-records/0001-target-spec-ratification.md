@@ -68,6 +68,23 @@ target table a copy of its rows.
 - The earlier Judge approval covered documents and arithmetic only. The
   operator keeps final ratification of PR #7; issue #2 stays open.
 
+## Revision under the operator send-back (2026-11-01)
+
+Operator send-back after the EE key review (PR #7, round r5-q35). Changes, none
+altering a numeric limit:
+
+- **R5** is now defined as *power* gain (IF power in the R9 load over RF
+  available power), matching what B-CG reads; voltage ratios are diagnostics.
+- **R3** is stated as 0 dBm *available power*, differential, from 2 × 50 Ω
+  (100 Ω differential): 447 mV peak differential into a matched load. This
+  fixes the reference the earlier wording left open; the single-ended 50 Ω
+  reading (316 mV peak) is explicitly not the intended drive. **Operator to
+  confirm** this reading of "0 dBm from 50 Ω, differential".
+- **R10/R11** are labelled mismatch-free only and not gradable as pass/fail
+  until a statistical row exists (new D8).
+- Added an evidence-status table (no row has evidence; `design/` is empty) and
+  the statement that approving the PR binds **targets only**.
+
 ## Open questions — resolution or deferral
 
 | Question (from the issue) | Resolution |
@@ -93,6 +110,9 @@ target table a copy of its rows.
 - **D4 — Shared bench code with `sg13g2-sat-rx`.**
 - **D5 — Zero-IF I/Q.** Stays a stretch (R9); not allowed to drive the core
   architecture before the single-IF target closes.
+- **D8 — Mismatch statistics for isolation rows.** Monte Carlo (`*_stat`)
+  scope, sample count, percentile and confidence for R10/R11 (and R12). Owner:
+  a later decision record before any isolation figure is graded.
 - **D7 — Receive-chain requirements (M1–M5).** Target use, sensitivity/blocker
   profile, IF filtering/ADC allocation and LO capability. Owner: operator
   statement, then an independent reviewer. Blocks derivation of R4–R12.
