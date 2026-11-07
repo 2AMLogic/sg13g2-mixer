@@ -2,6 +2,10 @@
 
 Chronological record of merged PRs and closed issues. Maintained by the Guide triage role.
 
+### 2026-11-07
+
+- **PR #21**: Bump Repo Skills 0.25.1 -> 0.25.10
+
 ### 2026-11-04
 
 - **PR #7**: docs(spec): propose target spec, cascade arithmetic and ratification record
