@@ -151,7 +151,7 @@ Stated so the difference is auditable, not to re-litigate curation:
 
 ## Decision
 
-**Three mechanics arrive as stamped copies; four are written here; the
+**Four mechanics arrive as stamped copies; three are written here; the
 harness layer is out of the shared set.** Per item:
 
 ### M1 — coherent single-bin DFT: **write it here**
@@ -193,7 +193,8 @@ the more general: it takes a plain `{name: f_hz}` dict plus `window_s`,
 only one that checks **the settling discard lands on a sample** (which this
 repo's protocol needs: "discard ≥ 2 µs before the window"); and it bounds
 sample density at ≥ 8 samples per period rather than merely inside
-`(0, Nyquist)`. It has **zero** transitive dependencies beyond `math`. It is
+`(0, Nyquist)`. It has **zero** transitive dependencies — its body uses only
+builtins (`abs`, `round`, `sorted`), not even `math`. It is
 also already the de-facto upstream master: `sim/lna-headroom/headroom.py:139`
 calls it through `L.placement_coherence`, so two upstream studies share it.
 Its `tol = 1e-9` default and the 8-samples-per-period bound are policy this
@@ -201,10 +202,16 @@ repo sets at the call site, not inside the copy.
 
 ### M3 — window / PSD normalisation and cross-check: **take a stamped copy**
 
-Master: `…@6e5ebaf:sim/mixer-nf-method/nfmethod.py`, symbols `MethodError`,
-`NormalizationError`, `window`, `enbw_bins`, `one_sided_psd`,
-`check_parseval`, `band_power` (`:81-186`).
+Master: `…@6e5ebaf:sim/mixer-nf-method/nfmethod.py`, symbols `window`
+(`:97`), `enbw_bins` (`:106`), `one_sided_psd` (`:111`), `check_parseval`
+(`:143`), `band_power` (`:164-184`).
 Destination: `sim/bench/lib/psd.py`.
+
+The exception these functions raise — `NormalizationError`, a subclass of
+`MethodError` — is deliberately **not** in this list. Both are shared with M6
+and are owned by the **shared-preamble entry** (`sim/bench/lib/nfcommon.py`),
+which `psd.py` imports; see "Closure of a `symbols` list" below for why, and
+for the rule that makes that import legal without patching a stamped copy.
 
 Reason. This is the strongest stamp candidate in the inventory: ~90 lines,
 self-contained, no study coupling, no policy constant, and it implements
@@ -281,11 +288,20 @@ verbatim or not at all; local additions wrap it, they do not patch it.**
 ### M6 — SSB/DSB noise-factor definitions and known answers: **take a stamped copy**
 
 Master: `…@6e5ebaf:sim/mixer-nf-method/nfmethod.py`, symbols `NoiseBudget`
-(`:192`), `_validate_budget` (`:214`), `n_out_at_t0` (`:237`),
-`ssb_noise_factor` (`:246`), `dsb_noise_factor` (`:251`), `db` (`:257`),
-`attenuator_ideal_mixer_f_ssb` (`:261`), `y_factor_f_ssb` (`:274-289`).
+(`:191-211`, including its `@dataclasses.dataclass` decorator line at `:191`),
+`_validate_budget` (`:214`), `n_out_at_t0` (`:237`), `ssb_noise_factor`
+(`:246`), `dsb_noise_factor` (`:251`), `db` (`:257`),
+`attenuator_ideal_mixer_f_ssb` (`:261`), `y_factor_f_ssb` (`:274-287`).
 Destination: `sim/bench/lib/noisefactor.py` (same `src` as M3, a second
 entry — one entry per destination file).
+
+The physical constants and exceptions these symbols reference — `K_B`, `T0_K`,
+`MethodError`, `NormalizationError`, `ImageAccountingError` — are **not** in
+this list either. `T0_K` is a default argument on two `NoiseBudget` fields and
+on five of these functions, so it is evaluated at `def` time: a copy without it
+raises `NameError` at import, not at first call. All five are shared with M3 and
+are owned by the **shared-preamble entry** (`sim/bench/lib/nfcommon.py`), which
+`noisefactor.py` imports — see "Closure of a `symbols` list" below.
 
 Reason. The SSB/DSB distinction is the single most error-prone definition in
 this project's riskiest row, and this code states it structurally rather than
@@ -299,7 +315,8 @@ giving 3.01 dB for a lossless equal-sideband case) that maps directly onto
 multiplier … SSB NF = 3.01 dB … DSB NF = 0 dB"). Taking the reference
 implementation of a known answer is strictly better than re-deriving the
 oracle we intend to be checked by. Physical constants only
-(`K_B = 1.380649e-23`, `T0_K`).
+(`K_B = 1.380649e-23`, `T0_K = 300.15`) — no study policy, no band constant;
+both arrive via `nfcommon.py`, not re-typed here.
 
 ### M7 — statistical interval on a noise figure: **write it here**
 
@@ -406,15 +423,86 @@ the direction that matters: a schema-1 document is a schema-2 document minus
 | `sibling` | yes | Upstream repository, `owner/name`. |
 | `commit` | yes | **Full 40-character** sha the copy was taken at. Not a branch, not a short sha. |
 | `src` | yes | Path of the source file in `sibling` at `commit`. |
-| `symbols` | yes | Ordered list of top-level symbol names extracted from `src`. The whole file is `["*"]`. |
+| `symbols` | yes | Ordered list of top-level **names** extracted from `src` — a `def`, a `class`, or a module-level assignment. The whole file is `["*"]`. The list must be *closed* in the sense defined below. |
 | `dest` | yes | Path in this repo the extract was written to. One entry per `dest`. |
 | `src_sha256` | yes | SHA-256 of the complete `src` file bytes at `commit`. Identifies what was read. |
-| `extract_sha256` | yes | SHA-256 of the extracted text actually copied: the `symbols` in listed order, each from its `def`/`class` line through the last line of its body, joined by one blank line, LF endings, trailing whitespace stripped, final newline. Deterministic from (`commit`, `src`, `symbols`). |
-| `dest_sha256` | yes | SHA-256 of `dest` as committed here, including the attribution header. Differs from `extract_sha256` by the header, which is why both are carried. |
+| `extract_sha256` | yes | SHA-256 of the extracted text actually copied: the `symbols` in listed order, each taken by the extraction rule below, joined by one blank line, LF endings, trailing whitespace stripped, final newline. Deterministic from (`commit`, `src`, `symbols`). |
+| `dest_sha256` | yes | SHA-256 of `dest` as committed here, including the header. Differs from `extract_sha256` by the header — defined below as the attribution block plus the `import` statements the extract references — which is why both are carried. |
 | `license` | yes | Upstream licence identifier (`Apache-2.0` for both repos here). |
 | `local_edits` | yes | `"none"` for a verbatim copy, else one line naming each edit. A stamped copy is taken verbatim; this field exists so that a non-`"none"` value is a visible exception, not a quiet one. |
 | `divergence` | yes | How a mismatch is detected — the procedure below, stated per entry so an entry is self-describing. |
 | `notes` | no | Free text: why this master and not the other, what wraps it locally. |
+
+### Closure of a `symbols` list
+
+A `symbols` list is only useful if the text it names **imports**. Two rules
+make that true, and both were needed: measured against the first draft of this
+record, the `noisefactor.py` entry named eight functions whose bodies and
+default arguments reference five module-level names the list did not carry, so
+the specified extract would have raised `NameError` on `T0_K` at import time —
+an entry whose divergence check could not run while looking like one that
+passed.
+
+**1. The extraction rule, stated completely.** For each name in `symbols`, in
+listed order, take:
+
+- a **`def` or `class`**: from the first line of its decorator block, if it has
+  one, through the last line of its body. (`NoiseBudget` is
+  `@dataclasses.dataclass`-decorated; taking it from the `class` line would copy
+  a plain class and silently change its semantics.)
+- a **module-level assignment** (`NAME = expr`): from the `NAME =` line through
+  the last line of the expression, inline comment included. `K_B` and `T0_K`
+  are of this kind and are not reachable under a `def`/`class`-only rule.
+
+Everything else in `src` — the module docstring, section-divider comments,
+`import` statements, and any name not listed — is **not** part of the extract.
+
+**2. The closure requirement.** Every module-level name that an extracted
+symbol's body, signature, default arguments or decorator references must be
+either (a) in the same entry's `symbols`, or (b) an `import` in the `dest`
+header. There is no third option: an entry that satisfies neither does not
+import, and the bench PR may not repair it by editing the extract (the
+"verbatim or not at all" rule). The header is the attribution block plus those
+imports, nothing else. It must carry `from __future__ import annotations`
+wherever the extract's annotations would otherwise be evaluated too eagerly:
+`noisefactor.py` needs it, because `gain_image: float | None` is a **dataclass
+field** annotation (evaluated at class creation, and `X | Y` is 3.10+). The
+other extracts carry it because upstream does and it costs nothing.
+
+**3. Where a shared preamble goes when two entries share one `src`.** M3 and
+M6 both extract from `nfmethod.py` into different `dest` files, and both need
+the same five names: `K_B` (`:49`), `T0_K` (`:50`), `MethodError` (`:81-82`),
+`NormalizationError` (`:85-86`), `ImageAccountingError` (`:89-90`).
+
+**The decision: a third entry from this `src` owns them.** A `copies` entry
+with the same `sibling`/`commit`/`src` and `dest: sim/bench/lib/nfcommon.py`
+extracts exactly those five names; `psd.py` and `noisefactor.py` each carry
+`from .nfcommon import …` in their header and list neither the constants nor
+the exceptions in their own `symbols`.
+
+Why this and not the alternatives:
+
+- **Not duplication into both files.** Duplicating the exception *classes*
+  creates two distinct types: `psd.py`'s `NormalizationError` and
+  `noisefactor.py`'s would be unrelated classes, so an
+  `except NormalizationError` around a call into one module would not catch the
+  other's — a defect that only appears once both modules are used together,
+  which is precisely how the bench uses them.
+- **Not "let `noisefactor.py` import from `psd.py`".** That makes the noise
+  module depend on the PSD module (and hence on numpy) for two physical
+  constants, and makes `psd.py`'s `symbols` list a mixture of its own mechanic
+  and someone else's preamble. The shared preamble is not part of either
+  mechanic; giving it its own `dest` says so.
+- **The cross-module import is a header line, not a patch.** It lives in the
+  part of `dest` that `dest_sha256` covers and `extract_sha256` does not, so
+  the extracted bodies stay byte-identical to upstream and divergence check 2
+  still works. `local_edits` stays `"none"` for all three entries. Each
+  entry's `notes` names the preamble import it carries, so the coupling is
+  recorded rather than discovered.
+
+Three entries from one `src` is the cost of the preamble being shared upstream
+while the mechanics are split here. It is paid once, in the lock file, where a
+reader can see it.
 
 ### Divergence detection
 
@@ -445,8 +533,8 @@ hard failure — a drifted upstream is news, not a broken build.
       "sibling": "2AMLogic/sg13g2-sat-rx",
       "commit": "6e5ebaf57ee8ec2288f5bd3048fbfee9b7d41947",
       "src": "sim/mixer-nf-method/nfmethod.py",
-      "symbols": ["MethodError", "NormalizationError", "window", "enbw_bins",
-                  "one_sided_psd", "check_parseval", "band_power"],
+      "symbols": ["window", "enbw_bins", "one_sided_psd", "check_parseval",
+                  "band_power"],
       "dest": "sim/bench/lib/psd.py",
       "src_sha256": "b52223ed42a5f1519c6014eafdcf6d16a4e87072a380166eb21ec1b3621a094a",
       "extract_sha256": "<computed by the bench PR>",
@@ -454,7 +542,22 @@ hard failure — a drifted upstream is news, not a broken build.
       "license": "Apache-2.0",
       "local_edits": "none",
       "divergence": "sha256(dest) == dest_sha256; re-extract symbols from src at sibling HEAD and compare extract_sha256",
-      "notes": "M3 of spec/decision-records/0002. numpy>=1.26 required; see that record."
+      "notes": "M3 of spec/decision-records/0002. Header imports numpy, math, typing and `from .nfcommon import NormalizationError`. numpy>=1.26 required; see that record."
+    },
+    {
+      "sibling": "2AMLogic/sg13g2-sat-rx",
+      "commit": "6e5ebaf57ee8ec2288f5bd3048fbfee9b7d41947",
+      "src": "sim/mixer-nf-method/nfmethod.py",
+      "symbols": ["K_B", "T0_K", "MethodError", "NormalizationError",
+                  "ImageAccountingError"],
+      "dest": "sim/bench/lib/nfcommon.py",
+      "src_sha256": "b52223ed42a5f1519c6014eafdcf6d16a4e87072a380166eb21ec1b3621a094a",
+      "extract_sha256": "<computed by the bench PR>",
+      "dest_sha256": "<computed by the bench PR>",
+      "license": "Apache-2.0",
+      "local_edits": "none",
+      "divergence": "sha256(dest) == dest_sha256; re-extract symbols from src at sibling HEAD and compare extract_sha256",
+      "notes": "Shared preamble for M3 and M6 (see 'Closure of a `symbols` list'). Imported by psd.py and noisefactor.py; no numpy."
     }
   ]
 }
@@ -471,14 +574,29 @@ names, so the bench PR can check its pin resolves to what was read here:
 
 ### Entries the bench PR must add
 
-Four, one per destination file — M2, M3, M5, M6:
+Five, one per destination file — M2, M3, M5, M6, plus the shared preamble M3
+and M6 both import. Every list below is closed in the sense of "Closure of a
+`symbols` list": the only names an extract references and does not carry are
+the `import`s named in its header column.
 
-| `src` at `6e5ebaf` | `symbols` | `dest` |
-|---|---|---|
-| `sim/lna-linearity/linearity.py` | `coherence_problems` | `sim/bench/lib/coherence.py` |
-| `sim/mixer-nf-method/nfmethod.py` | `MethodError`, `NormalizationError`, `window`, `enbw_bins`, `one_sided_psd`, `check_parseval`, `band_power` | `sim/bench/lib/psd.py` |
-| `sim/mixer-topology-feasibility/mixfeas.py` | `_finite`, `_linfit`, `fit_iip3` | `sim/bench/lib/iip3.py` |
-| `sim/mixer-nf-method/nfmethod.py` | `NoiseBudget`, `_validate_budget`, `n_out_at_t0`, `ssb_noise_factor`, `dsb_noise_factor`, `db`, `attenuator_ideal_mixer_f_ssb`, `y_factor_f_ssb` | `sim/bench/lib/noisefactor.py` |
+| `src` at `6e5ebaf` | `symbols` | `dest` | header imports beyond attribution |
+|---|---|---|---|
+| `sim/lna-linearity/linearity.py` | `coherence_problems` | `sim/bench/lib/coherence.py` | `from __future__ import annotations` (none other; the body uses only builtins) |
+| `sim/mixer-nf-method/nfmethod.py` | `K_B`, `T0_K`, `MethodError`, `NormalizationError`, `ImageAccountingError` | `sim/bench/lib/nfcommon.py` | none |
+| `sim/mixer-nf-method/nfmethod.py` | `window`, `enbw_bins`, `one_sided_psd`, `check_parseval`, `band_power` | `sim/bench/lib/psd.py` | `from __future__ import annotations`; `math`; `numpy as np`; `Mapping`, `Sequence` from `typing`; `NormalizationError` from `.nfcommon` |
+| `sim/mixer-topology-feasibility/mixfeas.py` | `_finite`, `_linfit`, `fit_iip3` | `sim/bench/lib/iip3.py` | `from __future__ import annotations`; `math` |
+| `sim/mixer-nf-method/nfmethod.py` | `NoiseBudget`, `_validate_budget`, `n_out_at_t0`, `ssb_noise_factor`, `dsb_noise_factor`, `db`, `attenuator_ideal_mixer_f_ssb`, `y_factor_f_ssb` | `sim/bench/lib/noisefactor.py` | `from __future__ import annotations`; `dataclasses`; `math`; `Mapping` from `typing`; `K_B`, `T0_K`, `MethodError`, `NormalizationError`, `ImageAccountingError` from `.nfcommon` |
+
+The header-import column is a **statement of what the extract needs**, not a
+licence to add anything else: an import the extract does not reference does not
+belong in a stamped file. It was measured, not assumed — each list above was
+extracted from `src` at `6e5ebaf` by the rule in "Closure of a `symbols` list"
+and its free module-level names enumerated; for all five entries that set is
+exactly the header column, with one noted asymmetry: `psd.py` references
+`NormalizationError` but never `MethodError` (its base class), so only the
+former is imported. `noisefactor.py` needs no numpy — M3's numpy consequence is
+M3's alone. The bench PR should re-run that check rather than trust this
+paragraph, since it is the check that would have caught the first draft.
 
 `in_tree` is `[]` for this repo: no block-level reuse is claimed, only file
 copies. **AC 4 is not vacuous** — copies are taken, and these are the
@@ -603,11 +721,18 @@ down to the field. D4 is closed as a blocker on that work.
   verified" — strictly better than an unstamped copy, strictly weaker than a
   checked one. Do not describe a stamped copy as verified against upstream
   until that job exists.
-- **Four local files whose master is elsewhere.** A reviewer of
-  `sim/bench/lib/` must know not to refactor `coherence.py`, `psd.py`,
-  `iip3.py` or `noisefactor.py` in place: an improvement belongs upstream, or
-  in a local wrapper. The `local_edits: "none"` field is where that rule is
-  enforced, and it is enforced by convention, not by a check.
+- **Five local files whose master is elsewhere.** A reviewer of
+  `sim/bench/lib/` must know not to refactor `coherence.py`, `nfcommon.py`,
+  `psd.py`, `iip3.py` or `noisefactor.py` in place: an improvement belongs
+  upstream, or in a local wrapper. The `local_edits: "none"` field is where
+  that rule is enforced, and it is enforced by convention, not by a check.
+- **A shared preamble gets its own module, and two stamped files import it.**
+  `nfcommon.py` exists for no reason a reader of the bench would guess: it is
+  there because `nfmethod.py`'s constants and exceptions are shared upstream
+  while the mechanics that use them are split across two destinations here. A
+  future reader may be tempted to inline it into `noisefactor.py`; the entry
+  shape forbids that, because inlining duplicates the exception classes into
+  two distinct types.
 - **Mechanics split across stamped and written halves.** M5's stamped fit is
   wrapped by a locally written cross-check; M1's Python half is the oracle for
   a deck half we also write. Two-part mechanics are harder to reason about
