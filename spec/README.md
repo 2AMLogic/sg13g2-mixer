@@ -6,6 +6,11 @@
   its known-answer validation.
   Status: PROPOSED, not ratified; under requirements review. Approving the PR
   is not ratification.
+- [`lna-interface-recheck.md`](lna-interface-recheck.md) — re-check of the pinned
+  `sg13g2-lna` interface rows against a later LNA `main` commit, with the git
+  object evidence, the "no interface row changed" result, and the answer to
+  deferred item D1 (the LNA IIP3 row is still unratified). A record of a
+  comparison; it makes no re-pin decision.
 - [`decision-records/`](decision-records/) — numbered decision records.
   - [0001 — target spec ratification](decision-records/0001-target-spec-ratification.md)
 
