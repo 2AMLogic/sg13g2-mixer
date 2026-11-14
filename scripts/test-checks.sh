@@ -50,9 +50,23 @@ expect 1 "check-python fails on a syntax error"      -- "$S/check-python.sh" --r
 printf '[1,2]\n' > "$E/reuse.lock.json"
 expect 1 "reuse-lock rejects a non-object"           -- "$S/check-reuse-lock.sh" "$E"
 
-# workflow wiring
-for s in check-python.sh check-tb-json.py check-reuse-lock.sh check-sim-append-only test-checks.sh; do
-  if grep -q "scripts/$s" "$ROOT/.github/workflows/ci.yml"; then echo "ok   ci.yml runs scripts/$s"
-  else echo "FAIL ci.yml does not run scripts/$s"; fail=1; fi
+# workflow wiring: derive the entry-point set from the tracked tree instead of
+# hardcoding names, so a gate added under scripts/ later cannot silently skip
+# this check. Entry points are tracked scripts/ files excluding scripts/fixtures/
+# that are executable.
+mapfile -t entries < <(git -C "$ROOT" ls-files scripts/ | grep -v '^scripts/fixtures/')
+if [ "${#entries[@]}" -eq 0 ]; then
+  echo "FAIL no tracked scripts/ entry points found; wiring assertion would be vacuous"; fail=1
+fi
+for s in "${entries[@]}"; do
+  [ -x "$ROOT/$s" ] || continue
+  if [ "$s" = "scripts/check-all.sh" ]; then
+    # check-all.sh is the local-only convenience wrapper that runs the other
+    # gates (see its header); ci.yml documents it as the local counterpart,
+    # not a CI job. Exempted as a named single case, never a second list.
+    continue
+  fi
+  if grep -qF "$s" "$ROOT/.github/workflows/ci.yml"; then echo "ok   ci.yml runs $s"
+  else echo "FAIL ci.yml does not run $s"; fail=1; fi
 done
 exit $fail
