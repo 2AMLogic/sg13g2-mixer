@@ -53,7 +53,10 @@ The body of #5 predates PRs #6 and #8; this table is the newer reading.
 
 ## Now
 
-These do not depend on #23 and can start today. None has an issue yet.
+These do not depend on #23 and can start today. Each is filed: item 1 is
+[#29](https://github.com/2AMLogic/sg13g2-mixer/issues/29), item 2 is
+[#30](https://github.com/2AMLogic/sg13g2-mixer/issues/30), item 3 is
+[#31](https://github.com/2AMLogic/sg13g2-mixer/issues/31).
 
 1. **Re-check the pinned `sg13g2-lna` interface.** The spec copies the LNA's
    rows at `5532789`, notes that LNA `main` has moved, and says the difference
