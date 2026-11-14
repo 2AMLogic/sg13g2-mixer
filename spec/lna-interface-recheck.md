@@ -1,7 +1,7 @@
 # Re-check of the pinned `sg13g2-lna` interface against current LNA `main`
 
 **This file records a comparison. It makes no re-pin decision and changes no
-row.** `spec/target-spec.md` §"Interface to `sg13g2-lna`" copies the LNA's
+row.** `spec/target-spec.md` (mixer repo) §"Interface to `sg13g2-lna`" copies the LNA's
 rows at a pinned commit and states that whether the newer LNA changes any
 interface row "has **not** been checked in this revision and needs a
 deliberate re-pin decision". This file performs that check and reports the
@@ -15,7 +15,7 @@ measurement. These are specification rows and git object identities.
 
 | | Repository | Commit (full sha) | Commit date (UTC) | Read on |
 |---|---|---|---|---|
-| **The pin** | `2AMLogic/sg13g2-lna` | `5532789887c6c10abbaba541fb9294ce72b8cf5e` | 2026-10-16T20:01:09Z | 2026-10-17 (by `spec/target-spec.md`) |
+| **The pin** | `2AMLogic/sg13g2-lna` | `5532789887c6c10abbaba541fb9294ce72b8cf5e` | 2026-10-16T20:01:09Z | 2026-10-17 (by `spec/target-spec.md`, mixer repo) |
 | **The newer commit** | `2AMLogic/sg13g2-lna` | `979d5cf6d1780dbf80788124c43dd873e7fad4d8` | 2026-11-14T02:42:54Z | **2026-11-14** (this file) |
 
 `979d5cf` was the `main` HEAD of `2AMLogic/sg13g2-lna` when this comparison
@@ -24,17 +24,23 @@ not as "latest": LNA `main` moves, and this file stays true as a record of
 what `979d5cf` contained rather than as a claim about whatever `main` holds
 when you read it. The two commits are **119 commits apart**.
 
-Both source files the interface cites — `spec/target-spec.md` and
-`spec/ratified-rows.json` — are in the **`2AMLogic/sg13g2-lna`** repository.
-Neither exists in `sg13g2-mixer`; in particular there is no
-`spec/ratified-rows.json` in *this* repository. Every path below names the
-repository it belongs to.
+The two LNA files the interface copies from — `spec/target-spec.md` and
+`spec/ratified-rows.json` — are read from the **`2AMLogic/sg13g2-lna`**
+repository. Note that `sg13g2-mixer` has its own, different
+`spec/target-spec.md`: the one that *copies* these rows, and whose
+§"Interface to `sg13g2-lna`" this file re-checks. Same filename, different
+file. There is no `spec/ratified-rows.json` in this repository at all.
+
+Because that one filename denotes two different files, every path below is
+tagged **(LNA repo)** or **(mixer repo)** wherever the repository is not
+already named by the surrounding table column or sentence.
 
 ## Row-by-row comparison
 
-One row per row of `spec/target-spec.md` §"Interface to `sg13g2-lna`" (10
-rows). "Value at the pin" is the value that section copied, re-read from the
-LNA source at the pin rather than from this repository's copy.
+One row per row of `spec/target-spec.md` (mixer repo) §"Interface to
+`sg13g2-lna`" (10 rows). "Value at the pin" is the value that section copied,
+re-read from the LNA source at the pin rather than from this repository's
+copy.
 
 | LNA row | Value at the pin `5532789` | Value at `979d5cf` | Same / difference |
 |---|---|---|---|
@@ -82,7 +88,7 @@ at both commits:
 | `spec/decision-records/` (tree) | `1f3b0871c3578c94f4498cf0578f3fd7252c7c4c` |
 
 **Independent cross-check of the tree-identity argument.** The contents of
-`spec/target-spec.md` were fetched at `979d5cf` and hashed locally with
+`spec/target-spec.md` (LNA repo) were fetched at `979d5cf` and hashed locally with
 `git hash-object`, giving `153f83c0df9614f92e3ff523d6c5b55abe8a1e75` — the
 same blob SHA listed under the pinned `spec/` tree above. The file the newer
 commit serves is byte-identical to the file the pin serves, confirmed without
@@ -93,19 +99,41 @@ read from that fetched copy.
 checked separately: blob `2a6762c0956a2ed3fdb6a66ee3d9c3eccb7cbd67` at both
 `5532789` and `979d5cf`. The PDK pin row's cited source has not moved.
 
-**One line on the trees that did change**, for completeness and deliberately
-not tabulated: the LNA's `design/` and `sim/` trees both advanced between the
-two commits, i.e. the LNA's design and simulation evidence has moved on. That
-is the LNA's own standing against its own rows, which
-`spec/target-spec.md` explicitly declines to restate here, and it is **not**
-an interface-row change.
+**Which LNA top-level trees moved**, from the same two `git/trees` reads
+cited above (short SHAs; the complete set, so that nothing is implied to be
+unchanged by omission):
+
+| Tree (LNA repo) | At `5532789` | At `979d5cf` | |
+|---|---|---|---|
+| `.agents/` | `d6451c87` | `f9ede32d` | changed |
+| `.claude/` | `890b2b37` | `ab203a74` | changed |
+| `.github/` | `1ae6d56c` | `b57b07e6` | changed |
+| `.loom/` | `eac7c52d` | `3309d555` | changed |
+| `design/` | `a514146d` | `42be4d9f` | changed |
+| `layout/` | `f1c90ede` | `a68294f2` | changed |
+| `manifests/` | *(absent)* | `e4cb745e` | added |
+| `measurements/` | `960acdb2` | `960acdb2` | **identical** |
+| `ratification/` | `1258c7ed` | `1258c7ed` | **identical** |
+| `signoff/` | `f86f031b` | `05c6dab8` | changed |
+| `sim/` | `0a43a865` | `caecaa45` | changed |
+| `spec/` | `56bf2b15` | `56bf2b15` | **identical** |
+
+Only `measurements/`, `ratification/` and `spec/` are byte-identical at the
+two commits. In particular `signoff/` and `layout/` **did** move: nothing in
+this record may be read as "the LNA's sign-off envelope is unchanged since
+the pin".
+
+That the LNA's design, layout, simulation and sign-off evidence has moved on
+is the LNA's own standing against its own rows, which `spec/target-spec.md`
+(mixer repo) explicitly declines to restate here, and it is **not** an
+interface-row change.
 
 ## Result
 
 **No interface row changed.**
 
-Every one of the ten rows of `spec/target-spec.md` §"Interface to
-`sg13g2-lna`" holds the same value, with the same ratification status, at
+Every one of the ten rows of `spec/target-spec.md` (mixer repo) §"Interface
+to `sg13g2-lna`" holds the same value, with the same ratification status, at
 `979d5cf6d1780dbf80788124c43dd873e7fad4d8` as at the pinned
 `5532789887c6c10abbaba541fb9294ce72b8cf5e`. No mixer row R1–R15 and no
 cascade value is affected by the LNA's movement between these two commits.
@@ -140,7 +168,8 @@ Every other row in that file (`gain`, `nf`, `s11`, `s22`, `mu`, `negres`,
 `supply`, `power`, `ic1`) is `"ratified"` — `iip3` is the single exception,
 as it was at the pin.
 
-**Deferred item D1 therefore stands.** `spec/target-spec.md` records that the
+**Deferred item D1 therefore stands.** `spec/target-spec.md` (mixer repo)
+records that the
 cascade IIP3 requirement "must be re-derived when the LNA IIP3 is ratified
 (decision record, Deferred D1)"; the LNA IIP3 numeric is still DRAFT, so the
 cascade IIP3 figure in this repository stays provisional and D1 stays open.
