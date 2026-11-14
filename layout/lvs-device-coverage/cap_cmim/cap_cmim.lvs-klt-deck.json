@@ -1,0 +1,2288 @@
+{
+  "schema_version": 3,
+  "engine": "klayout",
+  "layout": {
+    "path": "layout/lvs-device-coverage/cap_cmim/cap_cmim.gds",
+    "scope": "repo"
+  },
+  "reference": {
+    "path": "layout/lvs-device-coverage/cap_cmim/cap_cmim.cdl",
+    "scope": "repo"
+  },
+  "top": "cap_cmim",
+  "reference_top": "CAP_CMIM",
+  "reference_conversion": {
+    "form": "subckt-call",
+    "deck": "sg13g2",
+    "device_map": null
+  },
+  "parameter_tolerance": null,
+  "options": {
+    "combine_devices": false,
+    "combine_devices_per_circuit": null,
+    "combine_devices_max_attempts": 5,
+    "flatten_layout": false,
+    "flatten_reference": false,
+    "netgen_setup": null,
+    "parameter_tolerance": null,
+    "compare_parameters": null,
+    "power_connectivity": null,
+    "anchor_top_level_pins": null,
+    "strict_top_level_pin_count": false,
+    "compare_mos_flavour": false,
+    "ignore_mos_bulk": false,
+    "supply_nets": [
+      "GND",
+      "VCC",
+      "VDD",
+      "VGND",
+      "VPWR",
+      "VSS"
+    ],
+    "finfet_bulk": null
+  },
+  "hints_applied": null,
+  "constant_nets_applied": null,
+  "status": "mismatch",
+  "power_connectivity": {
+    "status": "unchecked",
+    "reason": "reference.form is 'subckt-call', whose reference netlist carries its own power/ground pins and nets -- they take part in the ordinary compare, so this check (which exists to cover the signal-only 'gate-level-verilog' form) does not apply",
+    "power_pins": [],
+    "power_pins_derivation": null,
+    "instance_count": 0,
+    "expected_nets": null,
+    "unchecked_expected_pins": [],
+    "excluded_pins": [],
+    "findings": [],
+    "finding_count": 0
+  },
+  "body_verification": {
+    "status": "verified",
+    "reason": null,
+    "device_classes": [],
+    "device_count": 0,
+    "findings": [],
+    "finding_count": 0
+  },
+  "device_parameter_coverage": [
+    {
+      "class": "$[CAP_CMIM]",
+      "device_kind": "capacitor",
+      "layout_devices": 0,
+      "reference_devices": 1,
+      "compared": [
+        "C"
+      ],
+      "not_compared": [
+        {
+          "parameter": "A",
+          "reason": "secondary"
+        },
+        {
+          "parameter": "P",
+          "reason": "secondary"
+        }
+      ]
+    },
+    {
+      "class": "cap_cmim",
+      "device_kind": "capacitor",
+      "layout_devices": 72,
+      "reference_devices": 71,
+      "compared": [],
+      "not_compared": [
+        {
+          "parameter": "C",
+          "reason": "placeholder_value"
+        },
+        {
+          "parameter": "A",
+          "reason": "secondary"
+        },
+        {
+          "parameter": "P",
+          "reason": "secondary"
+        }
+      ]
+    }
+  ],
+  "mismatch_count": 83,
+  "error_count": 7,
+  "category_counts": {
+    "device.geometry_not_compared": 2,
+    "device.placeholder_value": 1,
+    "device.unmatched": 2,
+    "net.unmatched": 4,
+    "topology": 74
+  },
+  "category_error_counts": {
+    "device.unmatched": 2,
+    "net.unmatched": 4,
+    "topology": 1
+  },
+  "counts": {
+    "nets": {
+      "layout": 138,
+      "reference": 138,
+      "matched": 136
+    },
+    "devices": {
+      "layout": 72,
+      "reference": 72,
+      "matched": 71
+    },
+    "pins": {
+      "layout": 0,
+      "reference": 0,
+      "matched": 0
+    }
+  },
+  "device_classes": [
+    "nfet",
+    "pfet",
+    "cap_cmim",
+    "rfcmim",
+    "cap_cmomi",
+    "cap_cmomf",
+    "resistor",
+    "dantenna",
+    "dpantenna"
+  ],
+  "environment": {
+    "engine": "klayout",
+    "engine_version": "0.30.13",
+    "netgen_binary": null,
+    "layout_sha256": "80cb907a35f1098d59864a1d227045ca020855f42af5f2af3a1ee84385c24749",
+    "reference_sha256": "dfa634616522c278e6a923797a767249ec3304e287f85f8e1878d0d39dbcdeba",
+    "extracted_netlist": null
+  },
+  "provenance": {
+    "klt_version": "0.9.2.dev1022+g2a9c52b27ce7",
+    "klt_git_commit": "2a9c52b27ce7986b4372ae5d73129dac4773e02c",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@2a9c52b27ce7986b4372ae5d73129dac4773e02c",
+    "klayout_version": "0.30.13",
+    "pdk": null,
+    "deck": {
+      "name": "sg13g2",
+      "content_hash": "sha256:cf6dfeadf75bd95bf89beb0a64e06ed43b65f6ff782df10ae200ea200a73d8e9",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:80cb907a35f1098d59864a1d227045ca020855f42af5f2af3a1ee84385c24749",
+      "role": "layout"
+    },
+    "klayout_version_mismatch": true
+  },
+  "mismatches": [
+    {
+      "category": "device.geometry_not_compared",
+      "severity": "warning",
+      "description": "device class '$[CAP_CMIM]' is a capacitor class, whose ['A', 'P'] parameter(s) KLayout declares *secondary*: kdb.NetlistComparer compares primary parameters only, so none of them took part in this compare and each is NOT verified -- this capacitor's geometry could differ between the two sides by any amount and this run would still report 'match'. The compared parameter(s) were ['C']. Name them in options.compare_parameters to compare them (see docs/cli/lvs.md, 'device.geometry_not_compared')",
+      "side": "both",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "$[CAP_CMIM]"
+      },
+      "property": null,
+      "details": {
+        "device_kind": "capacitor",
+        "compared_parameters": [
+          "C"
+        ],
+        "not_compared_parameters": [
+          "A",
+          "P"
+        ],
+        "layout_devices": 0,
+        "reference_devices": 1
+      },
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "device.geometry_not_compared",
+      "severity": "warning",
+      "description": "device class 'cap_cmim' is a capacitor class, whose ['A', 'P'] parameter(s) KLayout declares *secondary*: kdb.NetlistComparer compares primary parameters only, so none of them took part in this compare and each is NOT verified -- this capacitor's geometry could differ between the two sides by any amount and this run would still report 'match'. No parameter of this class was compared at all: the remaining parameter(s) were separately excluded from this run (see the device.placeholder_value/device.parameter_excluded entries), so the two sides were paired on topology alone. Name them in options.compare_parameters to compare them (see docs/cli/lvs.md, 'device.geometry_not_compared')",
+      "side": "both",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "cap_cmim"
+      },
+      "property": null,
+      "details": {
+        "device_kind": "capacitor",
+        "compared_parameters": [],
+        "not_compared_parameters": [
+          "A",
+          "P"
+        ],
+        "layout_devices": 72,
+        "reference_devices": 71
+      },
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "device.placeholder_value",
+      "severity": "warning",
+      "description": "reference device class 'CAP_CMIM' was converted from a subcircuit call (request.reference.form: \"subckt-call\"), so its 'C' value is the literal 0 placeholder on all 71 reference instance(s) -- klt lvs has no PDK sheet-resistance/capacitance-per-area data to compute a real one. 'C' was therefore excluded from this compare on both sides (layout: 72 instance(s), C 7.440854999999999e-14..5.3688815e-13) and the two sides were paired on topology alone -- that dimension of the compare is not independently verified. Supply a reference in the plain-element form carrying real 'C' values to compare it (see docs/cli/lvs.md, 'device.placeholder_value')",
+      "side": "reference",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "CAP_CMIM"
+      },
+      "property": null,
+      "details": {
+        "parameter": "C",
+        "device_kind": "capacitor",
+        "reference_devices": 71,
+        "layout_devices": 72,
+        "layout_values": [
+          7.440854999999999e-14,
+          1.206243e-13,
+          1.360341e-13,
+          1.3645495e-13,
+          1.415376e-13,
+          1.5388705e-13,
+          1.6011279999999999e-13,
+          2.198096e-13,
+          2.240901e-13,
+          2.249462e-13,
+          2.319173e-13,
+          2.327704e-13,
+          2.413515e-13,
+          2.4341349999999997e-13,
+          2.486568e-13,
+          2.505244e-13,
+          2.5185595000000003e-13,
+          2.5349905e-13,
+          2.544675e-13,
+          2.6162065e-13,
+          2.6235345e-13,
+          2.625064e-13,
+          2.6605915e-13,
+          2.721837e-13,
+          2.731264e-13,
+          2.7535835e-13,
+          2.825284e-13,
+          2.831952e-13,
+          2.8403005e-13,
+          2.939584e-13,
+          2.9504215e-13,
+          2.955208e-13,
+          3.0004765e-13,
+          3.0697839999999996e-13,
+          3.1218640000000005e-13,
+          4.2416640000000004e-13,
+          4.324264e-13,
+          4.340784e-13,
+          4.3980320000000003e-13,
+          4.475304e-13,
+          4.4836769999999997e-13,
+          4.5008060000000003e-13,
+          4.565184e-13,
+          4.589448000000001e-13,
+          4.640285e-13,
+          4.654084000000001e-13,
+          4.671864e-13,
+          4.678820500000001e-13,
+          4.696695e-13,
+          4.697143999999999e-13,
+          4.767384e-13,
+          4.816644e-13,
+          4.842244500000001e-13,
+          4.848264e-13,
+          4.860221500000001e-13,
+          4.870303000000001e-13,
+          4.878789e-13,
+          4.9426765e-13,
+          4.961559e-13,
+          5.0299815e-13,
+          5.055403999999999e-13,
+          5.0822735e-13,
+          5.1153165e-13,
+          5.2793165e-13,
+          5.3688815e-13
+        ]
+      },
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "device.unmatched",
+      "severity": "error",
+      "description": "device has no counterpart on the other side",
+      "side": "layout",
+      "net": null,
+      "device": {
+        "layout": "\\$27",
+        "reference": null,
+        "class": "cap_cmim"
+      },
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "device.unmatched",
+      "severity": "error",
+      "description": "device has no counterpart on the other side",
+      "side": "reference",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": "0",
+        "class": "$[CAP_CMIM]"
+      },
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "net.unmatched",
+      "severity": "error",
+      "description": "layout net has no reference counterpart",
+      "side": "layout",
+      "net": {
+        "layout": "\\$43",
+        "reference": null
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "net.unmatched",
+      "severity": "error",
+      "description": "layout net has no reference counterpart",
+      "side": "layout",
+      "net": {
+        "layout": "\\$48",
+        "reference": null
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "net.unmatched",
+      "severity": "error",
+      "description": "reference net has no layout counterpart",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "MINUS1"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "net.unmatched",
+      "severity": "error",
+      "description": "reference net has no layout counterpart",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "PLUS1"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$103",
+        "reference": "MINUS_17"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$104",
+        "reference": "MINUS_18"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$105",
+        "reference": "MINUS_26"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$106",
+        "reference": "MINUS_36"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$107",
+        "reference": "MINUS_37"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$108",
+        "reference": "MINUS_38"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$109",
+        "reference": "MINUS_39"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$11",
+        "reference": "MINUS_57"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$110",
+        "reference": "MINUS_4"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$12",
+        "reference": "MINUS_56"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$122",
+        "reference": "MINUS_33"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$123",
+        "reference": "MINUS_28"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$124",
+        "reference": "MINUS_29"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$125",
+        "reference": "MINUS_3"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$126",
+        "reference": "MINUS_30"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$129",
+        "reference": "MINUS_31"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$13",
+        "reference": "PLUS2"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$130",
+        "reference": "MINUS_32"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$131",
+        "reference": "MINUS_27"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$135",
+        "reference": "MINUS_34"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$137",
+        "reference": "MINUS_35"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$14",
+        "reference": "MINUS_55"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$15",
+        "reference": "MINUS_54"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$16",
+        "reference": "MINUS_53"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$17",
+        "reference": "MINUS_52"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$18",
+        "reference": "MINUS_51"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$19",
+        "reference": "MINUS_5"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$2",
+        "reference": "MINUS2"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$20",
+        "reference": "MINUS_42"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$21",
+        "reference": "PLUS3"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$22",
+        "reference": "MINUS3"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$23",
+        "reference": "MINUS_43"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$24",
+        "reference": "MINUS_44"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$25",
+        "reference": "MINUS_45"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$26",
+        "reference": "MINUS_46"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$27",
+        "reference": "MINUS_47"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$28",
+        "reference": "MINUS_48"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$29",
+        "reference": "MINUS_49"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$30",
+        "reference": "MINUS_41"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$39",
+        "reference": "MINUS_64"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$40",
+        "reference": "PLUS_9"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$49",
+        "reference": "MINUS_9"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$50",
+        "reference": "MINUS_8"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$51",
+        "reference": "MINUS_7"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$52",
+        "reference": "MINUS_66"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$53",
+        "reference": "MINUS_65"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$54",
+        "reference": "MINUS_59"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$55",
+        "reference": "MINUS_6"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$56",
+        "reference": "MINUS_60"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$57",
+        "reference": "MINUS_61"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$60",
+        "reference": "MINUS_62"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$61",
+        "reference": "MINUS_63"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$62",
+        "reference": "MINUS_58"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$69",
+        "reference": "MINUS_50"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$70",
+        "reference": "MINUS_40"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$71",
+        "reference": "MINUS_2"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$72",
+        "reference": "MINUS_20"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$73",
+        "reference": "MINUS_21"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$75",
+        "reference": "MINUS_22"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$76",
+        "reference": "MINUS_23"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$77",
+        "reference": "MINUS_24"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$78",
+        "reference": "MINUS_25"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$79",
+        "reference": "MINUS_19"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$87",
+        "reference": "MINUS_16"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$88",
+        "reference": "MINUS_10"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$90",
+        "reference": "MINUS_11"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$91",
+        "reference": "MINUS_12"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$92",
+        "reference": "MINUS_13"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$93",
+        "reference": "MINUS_14"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$94",
+        "reference": "MINUS_15"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "both sides pair a net that touches exactly one device terminal and carries no declared pin -- there is no DC path through this node on either side, so this is a real connectivity finding (e.g. an undriven MOS gate), not a routine ambiguous-pairing/hints.same_nets nit; see klt extract's single_terminal_nets[] for the layout-side terminal detail",
+      "side": "both",
+      "net": {
+        "layout": "\\$96",
+        "reference": "MINUS_1"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "device class has no counterpart on the other side, but no devices of this class were extracted either -- not a real topology mismatch: 'nfet'",
+      "side": "layout",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "nfet"
+      },
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "device class has no counterpart on the other side, but no devices of this class were extracted either -- not a real topology mismatch: 'pfet'",
+      "side": "layout",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "pfet"
+      },
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "error",
+      "description": "device class could not be mapped to a counterpart: '$[CAP_CMIM]'",
+      "side": "reference",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "$[CAP_CMIM]"
+      },
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    }
+  ],
+  "net_correspondence": [
+    {
+      "layout": "\\$2",
+      "reference": "MINUS2",
+      "pin": false
+    },
+    {
+      "layout": "\\$22",
+      "reference": "MINUS3",
+      "pin": false
+    },
+    {
+      "layout": "\\$96",
+      "reference": "MINUS_1",
+      "pin": false
+    },
+    {
+      "layout": "\\$88",
+      "reference": "MINUS_10",
+      "pin": false
+    },
+    {
+      "layout": "\\$90",
+      "reference": "MINUS_11",
+      "pin": false
+    },
+    {
+      "layout": "\\$91",
+      "reference": "MINUS_12",
+      "pin": false
+    },
+    {
+      "layout": "\\$92",
+      "reference": "MINUS_13",
+      "pin": false
+    },
+    {
+      "layout": "\\$93",
+      "reference": "MINUS_14",
+      "pin": false
+    },
+    {
+      "layout": "\\$94",
+      "reference": "MINUS_15",
+      "pin": false
+    },
+    {
+      "layout": "\\$87",
+      "reference": "MINUS_16",
+      "pin": false
+    },
+    {
+      "layout": "\\$103",
+      "reference": "MINUS_17",
+      "pin": false
+    },
+    {
+      "layout": "\\$104",
+      "reference": "MINUS_18",
+      "pin": false
+    },
+    {
+      "layout": "\\$79",
+      "reference": "MINUS_19",
+      "pin": false
+    },
+    {
+      "layout": "\\$71",
+      "reference": "MINUS_2",
+      "pin": false
+    },
+    {
+      "layout": "\\$72",
+      "reference": "MINUS_20",
+      "pin": false
+    },
+    {
+      "layout": "\\$73",
+      "reference": "MINUS_21",
+      "pin": false
+    },
+    {
+      "layout": "\\$75",
+      "reference": "MINUS_22",
+      "pin": false
+    },
+    {
+      "layout": "\\$76",
+      "reference": "MINUS_23",
+      "pin": false
+    },
+    {
+      "layout": "\\$77",
+      "reference": "MINUS_24",
+      "pin": false
+    },
+    {
+      "layout": "\\$78",
+      "reference": "MINUS_25",
+      "pin": false
+    },
+    {
+      "layout": "\\$105",
+      "reference": "MINUS_26",
+      "pin": false
+    },
+    {
+      "layout": "\\$131",
+      "reference": "MINUS_27",
+      "pin": false
+    },
+    {
+      "layout": "\\$123",
+      "reference": "MINUS_28",
+      "pin": false
+    },
+    {
+      "layout": "\\$124",
+      "reference": "MINUS_29",
+      "pin": false
+    },
+    {
+      "layout": "\\$125",
+      "reference": "MINUS_3",
+      "pin": false
+    },
+    {
+      "layout": "\\$126",
+      "reference": "MINUS_30",
+      "pin": false
+    },
+    {
+      "layout": "\\$129",
+      "reference": "MINUS_31",
+      "pin": false
+    },
+    {
+      "layout": "\\$130",
+      "reference": "MINUS_32",
+      "pin": false
+    },
+    {
+      "layout": "\\$122",
+      "reference": "MINUS_33",
+      "pin": false
+    },
+    {
+      "layout": "\\$135",
+      "reference": "MINUS_34",
+      "pin": false
+    },
+    {
+      "layout": "\\$137",
+      "reference": "MINUS_35",
+      "pin": false
+    },
+    {
+      "layout": "\\$106",
+      "reference": "MINUS_36",
+      "pin": false
+    },
+    {
+      "layout": "\\$107",
+      "reference": "MINUS_37",
+      "pin": false
+    },
+    {
+      "layout": "\\$108",
+      "reference": "MINUS_38",
+      "pin": false
+    },
+    {
+      "layout": "\\$109",
+      "reference": "MINUS_39",
+      "pin": false
+    },
+    {
+      "layout": "\\$110",
+      "reference": "MINUS_4",
+      "pin": false
+    },
+    {
+      "layout": "\\$70",
+      "reference": "MINUS_40",
+      "pin": false
+    },
+    {
+      "layout": "\\$30",
+      "reference": "MINUS_41",
+      "pin": false
+    },
+    {
+      "layout": "\\$20",
+      "reference": "MINUS_42",
+      "pin": false
+    },
+    {
+      "layout": "\\$23",
+      "reference": "MINUS_43",
+      "pin": false
+    },
+    {
+      "layout": "\\$24",
+      "reference": "MINUS_44",
+      "pin": false
+    },
+    {
+      "layout": "\\$25",
+      "reference": "MINUS_45",
+      "pin": false
+    },
+    {
+      "layout": "\\$26",
+      "reference": "MINUS_46",
+      "pin": false
+    },
+    {
+      "layout": "\\$27",
+      "reference": "MINUS_47",
+      "pin": false
+    },
+    {
+      "layout": "\\$28",
+      "reference": "MINUS_48",
+      "pin": false
+    },
+    {
+      "layout": "\\$29",
+      "reference": "MINUS_49",
+      "pin": false
+    },
+    {
+      "layout": "\\$19",
+      "reference": "MINUS_5",
+      "pin": false
+    },
+    {
+      "layout": "\\$69",
+      "reference": "MINUS_50",
+      "pin": false
+    },
+    {
+      "layout": "\\$18",
+      "reference": "MINUS_51",
+      "pin": false
+    },
+    {
+      "layout": "\\$17",
+      "reference": "MINUS_52",
+      "pin": false
+    },
+    {
+      "layout": "\\$16",
+      "reference": "MINUS_53",
+      "pin": false
+    },
+    {
+      "layout": "\\$15",
+      "reference": "MINUS_54",
+      "pin": false
+    },
+    {
+      "layout": "\\$14",
+      "reference": "MINUS_55",
+      "pin": false
+    },
+    {
+      "layout": "\\$12",
+      "reference": "MINUS_56",
+      "pin": false
+    },
+    {
+      "layout": "\\$11",
+      "reference": "MINUS_57",
+      "pin": false
+    },
+    {
+      "layout": "\\$62",
+      "reference": "MINUS_58",
+      "pin": false
+    },
+    {
+      "layout": "\\$54",
+      "reference": "MINUS_59",
+      "pin": false
+    },
+    {
+      "layout": "\\$55",
+      "reference": "MINUS_6",
+      "pin": false
+    },
+    {
+      "layout": "\\$56",
+      "reference": "MINUS_60",
+      "pin": false
+    },
+    {
+      "layout": "\\$57",
+      "reference": "MINUS_61",
+      "pin": false
+    },
+    {
+      "layout": "\\$60",
+      "reference": "MINUS_62",
+      "pin": false
+    },
+    {
+      "layout": "\\$61",
+      "reference": "MINUS_63",
+      "pin": false
+    },
+    {
+      "layout": "\\$39",
+      "reference": "MINUS_64",
+      "pin": false
+    },
+    {
+      "layout": "\\$53",
+      "reference": "MINUS_65",
+      "pin": false
+    },
+    {
+      "layout": "\\$52",
+      "reference": "MINUS_66",
+      "pin": false
+    },
+    {
+      "layout": "\\$51",
+      "reference": "MINUS_7",
+      "pin": false
+    },
+    {
+      "layout": "\\$50",
+      "reference": "MINUS_8",
+      "pin": false
+    },
+    {
+      "layout": "\\$49",
+      "reference": "MINUS_9",
+      "pin": false
+    },
+    {
+      "layout": "\\$13",
+      "reference": "PLUS2",
+      "pin": false
+    },
+    {
+      "layout": "\\$21",
+      "reference": "PLUS3",
+      "pin": false
+    },
+    {
+      "layout": "\\$89",
+      "reference": "PLUS_1",
+      "pin": false
+    },
+    {
+      "layout": "\\$95",
+      "reference": "PLUS_10",
+      "pin": false
+    },
+    {
+      "layout": "\\$97",
+      "reference": "PLUS_11",
+      "pin": false
+    },
+    {
+      "layout": "\\$102",
+      "reference": "PLUS_12",
+      "pin": false
+    },
+    {
+      "layout": "\\$98",
+      "reference": "PLUS_13",
+      "pin": false
+    },
+    {
+      "layout": "\\$99",
+      "reference": "PLUS_14",
+      "pin": false
+    },
+    {
+      "layout": "\\$100",
+      "reference": "PLUS_15",
+      "pin": false
+    },
+    {
+      "layout": "\\$101",
+      "reference": "PLUS_16",
+      "pin": false
+    },
+    {
+      "layout": "\\$113",
+      "reference": "PLUS_17",
+      "pin": false
+    },
+    {
+      "layout": "\\$118",
+      "reference": "PLUS_18",
+      "pin": false
+    },
+    {
+      "layout": "\\$74",
+      "reference": "PLUS_19",
+      "pin": false
+    },
+    {
+      "layout": "\\$80",
+      "reference": "PLUS_2",
+      "pin": false
+    },
+    {
+      "layout": "\\$81",
+      "reference": "PLUS_20",
+      "pin": false
+    },
+    {
+      "layout": "\\$82",
+      "reference": "PLUS_21",
+      "pin": false
+    },
+    {
+      "layout": "\\$83",
+      "reference": "PLUS_22",
+      "pin": false
+    },
+    {
+      "layout": "\\$84",
+      "reference": "PLUS_23",
+      "pin": false
+    },
+    {
+      "layout": "\\$85",
+      "reference": "PLUS_24",
+      "pin": false
+    },
+    {
+      "layout": "\\$86",
+      "reference": "PLUS_25",
+      "pin": false
+    },
+    {
+      "layout": "\\$114",
+      "reference": "PLUS_26",
+      "pin": false
+    },
+    {
+      "layout": "\\$121",
+      "reference": "PLUS_27",
+      "pin": false
+    },
+    {
+      "layout": "\\$133",
+      "reference": "PLUS_28",
+      "pin": false
+    },
+    {
+      "layout": "\\$127",
+      "reference": "PLUS_29",
+      "pin": false
+    },
+    {
+      "layout": "\\$128",
+      "reference": "PLUS_3",
+      "pin": false
+    },
+    {
+      "layout": "\\$134",
+      "reference": "PLUS_30",
+      "pin": false
+    },
+    {
+      "layout": "\\$119",
+      "reference": "PLUS_31",
+      "pin": false
+    },
+    {
+      "layout": "\\$120",
+      "reference": "PLUS_32",
+      "pin": false
+    },
+    {
+      "layout": "\\$132",
+      "reference": "PLUS_33",
+      "pin": false
+    },
+    {
+      "layout": "\\$136",
+      "reference": "PLUS_34",
+      "pin": false
+    },
+    {
+      "layout": "\\$138",
+      "reference": "PLUS_35",
+      "pin": false
+    },
+    {
+      "layout": "\\$115",
+      "reference": "PLUS_36",
+      "pin": false
+    },
+    {
+      "layout": "\\$116",
+      "reference": "PLUS_37",
+      "pin": false
+    },
+    {
+      "layout": "\\$111",
+      "reference": "PLUS_38",
+      "pin": false
+    },
+    {
+      "layout": "\\$117",
+      "reference": "PLUS_39",
+      "pin": false
+    },
+    {
+      "layout": "\\$112",
+      "reference": "PLUS_4",
+      "pin": false
+    },
+    {
+      "layout": "\\$63",
+      "reference": "PLUS_40",
+      "pin": false
+    },
+    {
+      "layout": "\\$38",
+      "reference": "PLUS_41",
+      "pin": false
+    },
+    {
+      "layout": "\\$10",
+      "reference": "PLUS_42",
+      "pin": false
+    },
+    {
+      "layout": "\\$31",
+      "reference": "PLUS_43",
+      "pin": false
+    },
+    {
+      "layout": "\\$33",
+      "reference": "PLUS_44",
+      "pin": false
+    },
+    {
+      "layout": "\\$34",
+      "reference": "PLUS_45",
+      "pin": false
+    },
+    {
+      "layout": "\\$35",
+      "reference": "PLUS_46",
+      "pin": false
+    },
+    {
+      "layout": "\\$36",
+      "reference": "PLUS_47",
+      "pin": false
+    },
+    {
+      "layout": "\\$37",
+      "reference": "PLUS_48",
+      "pin": false
+    },
+    {
+      "layout": "\\$32",
+      "reference": "PLUS_49",
+      "pin": false
+    },
+    {
+      "layout": "\\$7",
+      "reference": "PLUS_5",
+      "pin": false
+    },
+    {
+      "layout": "\\$59",
+      "reference": "PLUS_50",
+      "pin": false
+    },
+    {
+      "layout": "\\$5",
+      "reference": "PLUS_51",
+      "pin": false
+    },
+    {
+      "layout": "\\$4",
+      "reference": "PLUS_52",
+      "pin": false
+    },
+    {
+      "layout": "\\$9",
+      "reference": "PLUS_53",
+      "pin": false
+    },
+    {
+      "layout": "\\$8",
+      "reference": "PLUS_54",
+      "pin": false
+    },
+    {
+      "layout": "\\$6",
+      "reference": "PLUS_55",
+      "pin": false
+    },
+    {
+      "layout": "\\$1",
+      "reference": "PLUS_56",
+      "pin": false
+    },
+    {
+      "layout": "\\$3",
+      "reference": "PLUS_57",
+      "pin": false
+    },
+    {
+      "layout": "\\$66",
+      "reference": "PLUS_58",
+      "pin": false
+    },
+    {
+      "layout": "\\$46",
+      "reference": "PLUS_59",
+      "pin": false
+    },
+    {
+      "layout": "\\$67",
+      "reference": "PLUS_6",
+      "pin": false
+    },
+    {
+      "layout": "\\$68",
+      "reference": "PLUS_60",
+      "pin": false
+    },
+    {
+      "layout": "\\$58",
+      "reference": "PLUS_61",
+      "pin": false
+    },
+    {
+      "layout": "\\$64",
+      "reference": "PLUS_62",
+      "pin": false
+    },
+    {
+      "layout": "\\$65",
+      "reference": "PLUS_63",
+      "pin": false
+    },
+    {
+      "layout": "\\$47",
+      "reference": "PLUS_64",
+      "pin": false
+    },
+    {
+      "layout": "\\$45",
+      "reference": "PLUS_65",
+      "pin": false
+    },
+    {
+      "layout": "\\$44",
+      "reference": "PLUS_66",
+      "pin": false
+    },
+    {
+      "layout": "\\$42",
+      "reference": "PLUS_7",
+      "pin": false
+    },
+    {
+      "layout": "\\$41",
+      "reference": "PLUS_8",
+      "pin": false
+    },
+    {
+      "layout": "\\$40",
+      "reference": "PLUS_9",
+      "pin": false
+    }
+  ]
+}
