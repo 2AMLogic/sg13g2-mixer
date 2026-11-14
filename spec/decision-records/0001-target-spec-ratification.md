@@ -1,11 +1,13 @@
 # 0001 — Target specification ratification
 
-- **Status**: PROPOSED, **not ratified**. Revised 2026-10-25 under the
-  operator's requirements-review ruling of 2026-10-19. Approving the PR that
-  carries this record is not ratification. Ratification needs an independent
-  review of the requirements trace, then a later explicit operator
-  ratification. Until then no row of [`../target-spec.md`](../target-spec.md)
-  is ratified.
+- **Status**: RATIFIED by operator on issue #2 (2026-11-10), ratifying PR #7.
+  Rows R1–R15 of [`../target-spec.md`](../target-spec.md) are ratified **as
+  targets**, except the **provisional** rows listed under "Ratification
+  2026-11-10" below. Ratification is not evidence: no row is marked met.
+  Authority: the operator ruling on issue #2 of 2026-11-10 (attended
+  `/fleet:decide` round 20261110-r12 q36), which follows the 2026-11-04
+  ratification of PR #7 (r5-q73, EE and market keys approving at `b85bdf6`).
+  This recording changed status text and provisional markings only.
 - **Issue**: [#2](https://github.com/2AMLogic/sg13g2-mixer/issues/2)
 - **Date drafted**: 2026-10-17
 
@@ -29,6 +31,29 @@ target table a copy of its rows.
 - Cascade arithmetic: spec §"Cascade arithmetic" (computed in this PR, no
   simulation).
 - No simulation was run for this record.
+
+## Ratification 2026-11-10
+
+The operator ruled (issue #2, 2026-11-10, option 1) that the 2026-11-04
+ratification of PR #7 covers rows **R1–R15 as targets**. R1 and the R13 supply
+stay INTERFACE rows from the pinned `sg13g2-lna`. These stay **provisional**
+and are marked so in the row table:
+
+- **R4** (LO phase noise): placeholder; no reciprocal-mixing budget (D2).
+- **R9 load** (1 kΩ ∥ 2 pF): placeholder with no downstream allocation. The
+  rest of R9 (f_IF, single low IF, bandwidth) is ratified.
+- **R14** (area): placeholder with no evidence basis.
+- **Cascade values that depend on the LNA IIP3**, unratified upstream (D1); they
+  become ratifiable when the LNA row is.
+
+The ruling comment is the authority for this recording; no new keys are needed
+for a diff limited to status text and provisional markings. Each ratified row
+still owes its evidence, and the single-low-IF scope, upstream LNA and LO
+ownership, and the deferrals D1–D8 are unchanged.
+
+The "ratified" and "proposed" wording in the sections below is the historical
+record of the 2026-10 revisions and is superseded, where it differs, by this
+section.
 
 ## What is ratified, row by row
 

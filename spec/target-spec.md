@@ -1,21 +1,26 @@
 # Target specification
 
-**Status: PROPOSED — NOT RATIFIED. Revised under the operator's
-requirements-review ruling of 2026-10-19 (PR #7, issue
-[#2](https://github.com/2AMLogic/sg13g2-mixer/issues/2); decision record
-[0001](decision-records/0001-target-spec-ratification.md)).** Approving the PR
-that carries this document is *not* ratification and does not approve any
-numeric row. Ratification needs (1) an independent review of the requirements
-trace and rows below, then (2) a later, explicit operator ratification. An
-agent does not mark a row ratified. No value was relaxed to make a result
-pass, and no value was changed by this revision: every row that carries a
-number from the former README draft carries it unchanged, now labelled as an
-*unsupported proposed assumption* where nothing below derives it.
+**Status: RATIFIED by operator on issue #2 (2026-11-10), ratifying PR #7**
+([#2 ruling](https://github.com/2AMLogic/sg13g2-mixer/issues/2); decision record
+[0001](decision-records/0001-target-spec-ratification.md)). Rows R1–R15 are
+ratified **as targets** (the target column is the design goal), with these
+rows **PROVISIONAL**, not ratified: **R4** (LO phase noise, placeholder),
+**R9 load** (1 kΩ ∥ 2 pF, placeholder with no downstream allocation; the rest of
+R9, f_IF and the single low IF, is ratified), **R14** (area, placeholder with no
+evidence basis), and the **cascade values that depend on the LNA IIP3**, which
+is unratified upstream (deferred D1) and become ratifiable when the LNA row is.
+R1 and the R13 supply remain INTERFACE rows from the pinned `sg13g2-lna`.
+"Ratified as a target" does not mean met: each row still owes its evidence, and
+no row is marked met. This revision changed status text and provisional
+markings only; no numeric value, fallback/target/stretch cell, bench id or pin
+was changed. An agent does not relax a ratified row to make a result pass.
 
 Row status vocabulary:
 
-- **PROPOSED** — a proposed assumption. Not binding, not approved; see
-  §Requirements trace for what, if anything, supports it.
+- **RATIFIED (target)** — ratified by the operator ruling above as the design
+  goal. Not evidence of anything; the row still owes a measured result.
+- **PROVISIONAL** — a placeholder or dependent value that the ruling named as
+  *not* ratified; see §Requirements trace for what would support it.
 - **DERIVED** — computed from other rows by the arithmetic shown; changes only
   when its inputs change.
 - **INTERFACE** — copied from `sg13g2-lna` at the pinned commit (below); owned
@@ -271,27 +276,27 @@ with corner and testbench.
 Columns: **Fallback / Target / Stretch** are the three levels of the
 maturity ladder. "Binding conditions" are the conditions every figure must
 state. "Bench" names the planned testbench (protocols in the next section).
-Row ids are stable (`R1`…); the README table is derived from this one. Nothing in this table is ratified; "Status" says what kind of proposal each row is.
+Row ids are stable (`R1`…); the README table is derived from this one. "Status" says whether each row is ratified as a target, INTERFACE, or PROVISIONAL (operator ruling, issue #2, 2026-11-10).
 
 | ID | Parameter | Fallback | Target | Stretch | Binding conditions | Bench | Status |
 |---|---|---|---|---|---|---|---|
 | R1 | RF band | 2400–2483.5 MHz | 2400–2483.5 MHz | — | LNA band, copied from the pinned `sg13g2-lna` (INTERFACE). In-band sweep ≥ 11 points across the band, LO retuned per point (fixed IF) | B-CG | INTERFACE |
-| R2 | RF input | 50 Ω single-ended; ideal balun at the bench boundary, its use stated on every figure | 50 Ω single-ended, S11 < −10 dB across band; single-to-differential conversion by an **active** stage, no inductors | on-chip balun included | S11 from the transient bench's small-signal-at-LO-on mapping (B-S11 below), LO at row-R3 level; 50 Ω source | B-S11 | PROPOSED |
-| R3 | LO input | **Power**: 0 dBm *available* (total, differential) from a differential source of 2 × 50 Ω (100 Ω differential, 50 Ω per side), sine, **low-side** LO, f_LO = f_RF − f_IF. Equivalent amplitudes: 447 mV peak differential (223.6 mV peak per side) into a matched 100 Ω differential load; 894 mV peak differential open-circuit (√(8·100 Ω·1 mW)) | same | same, on-chip LO buffer included in power | The level is a power, not an amplitude; the reference is differential 100 Ω, never a single-ended 50 Ω reading of the same dBm (that would be 316 mV peak into 50 Ω, a different drive). Waveform: sinusoid; amplitude swept ±6 dB around nominal (PVT box). Frequency plan: low-side (image at f_LO − f_IF, 2·f_IF below signal). LO source is ideal in every bench; this row is the requirement on whatever supplies it | all | PROPOSED |
-| R4 | LO phase noise (requirement on the LO source) | ≤ −100 dBc/Hz @ 1 MHz | ≤ −110 dBc/Hz @ 1 MHz | ≤ −120 dBc/Hz @ 1 MHz | **Provisional placeholder** pending a system blocker/reciprocal-mixing budget that does not exist yet; not verified in simulation by this block (the bench LO is ideal). Deferred D2 | — | PROPOSED, provisional |
-| R5 | Conversion gain (**power** gain: IF power delivered to the row-R9 load over RF *available* power from the 50 Ω source) | > 5 dB | > 10 dB | > 15 dB | Defined as power gain only, in dB; it is the quantity B-CG reads. Any voltage ratio (V_IF,diff / V_RF,source-open-circuit) is an unratified bench diagnostic and is not graded against this row; the two differ by the source/load impedance ratio (here 50 Ω vs 1 kΩ differential) and by a fixed offset that the bench states when it reports one. SSB signal (image tone absent), f_IF = 9.765625 MHz, RF at −40 dBm available (small-signal regime verified by a 6 dB lower step differing < 0.2 dB), PVT box | B-CG | PROPOSED (README draft values, unchanged) |
-| R6 | SSB noise figure | < 15 dB | < 12 dB | < 9 dB | **SSB**, T0 = 290 K, source 50 Ω at 290 K on the RF port, image-frequency port terminated by the same 50 Ω source at 290 K, noise evaluated at the IF over the B-NF band, LO at row-R3 level, PVT box. Not a DSB number; DSB = SSB − 3 dB is *not* assumed, it is measured | B-NF | PROPOSED (README draft values, unchanged) |
-| R7 | IIP3 (input-referred, available source power) | > −5 dBm | > 0 dBm | > +5 dBm | Two-tone, tones as in B-IP3, standalone mixer; cascade value is derived (above) and is provisional because the LNA IIP3 is unratified | B-IP3 | PROPOSED (README draft values, unchanged); cascade view DERIVED/provisional |
-| R8 | Input P1dB (available source power) | > −15 dBm | > −10 dBm | > −5 dBm | Single-tone compression at f_IF, 1 dB below the small-signal conversion gain, PVT box. Consistency: P1dB ≈ IIP3 − 9.6 dB for a third-order-dominated stage (−14.6 / −9.6 / −4.6 dBm, rounded down) — the measured values need not satisfy it | B-P1 | PROPOSED |
-| R9 | IF | f_IF = 9.765625 MHz (64 bins of the B-CG window), single low IF; load: differential 1 kΩ ∥ 2 pF (the stated load); IF −1 dB bandwidth ≥ 10 MHz centred on f_IF | same; IF output differential, source impedance reported | zero-IF quadrature (I/Q) pair | f_IF is a bench-coherent value inside the 1–50 MHz class; the load is a placeholder for a following filter/ADC driver and is part of the figure, changing it re-states every R5–R8 figure. Zero-IF I/Q does not drive the core architecture until the single-IF target closes | B-CG | PROPOSED |
-| R10 | LO-to-RF isolation | > 30 dB | > 40 dB | > 50 dB | Power at the LO fundamental measured at the RF port into 50 Ω, referred to the LO available power, with the RF port terminated in 50 Ω, PVT box. **Mismatch-free (systematic) figure only**: the PVT box excludes the `*_stat` mismatch sections, so this evaluates the nominal-symmetry feed-through. LO leakage in a balanced mixer is dominated by device and layout mismatch, so this row is **not gradable as a pass/fail row until a statistical (Monte Carlo mismatch) row exists** (deferred D8) | B-ISO | PROPOSED (README draft values, unchanged); mismatch coverage DEFERRED (D8) |
-| R11 | LO-to-IF isolation | > 20 dB | > 30 dB | > 40 dB | LO-fundamental power at the IF port into the R9 load, referred to the LO available power; measured on the same FFT as B-ISO. **Mismatch-free (systematic) figure only**, same limitation and same deferral (D8) as R10: not gradable as pass/fail until a mismatch-statistical row exists | B-ISO | PROPOSED; mismatch coverage DEFERRED (D8) |
-| R12 | RF-to-IF isolation | > 20 dB | > 30 dB | > 40 dB | RF-fundamental power at the IF port with LO at row-R3 level, referred to the RF available power | B-ISO | PROPOSED |
-| R13 | Supply / DC power | 1.80 V ± 10 %, < 20 mW | 1.80 V ± 10 %, < 10 mW | < 5 mW | Supply is the LNA's (INTERFACE); power is whole block including LO buffer and bias, excluding the LO source, DC from the transient average over the analysis window, PVT box | B-CG (DC) | Supply INTERFACE; power PROPOSED (README draft values, unchanged) |
-| R14 | Area | < 0.10 mm² | < 0.05 mm² | < 0.03 mm² | Placeholder with no evidence basis; core only, pads and fill excluded, measured from the layout bounding box. To be re-baselined when a schematic exists, through a decision record | layout | PROPOSED, provisional |
-| R15 | Signoff | DRC + LVS clean | DRC + LVS clean, post-layout re-verified | — | `klt` DRC and LVS reports, same corner box re-run on the extracted netlist | layout | PROPOSED (README draft values, unchanged) |
+| R2 | RF input | 50 Ω single-ended; ideal balun at the bench boundary, its use stated on every figure | 50 Ω single-ended, S11 < −10 dB across band; single-to-differential conversion by an **active** stage, no inductors | on-chip balun included | S11 from the transient bench's small-signal-at-LO-on mapping (B-S11 below), LO at row-R3 level; 50 Ω source | B-S11 | RATIFIED (target) |
+| R3 | LO input | **Power**: 0 dBm *available* (total, differential) from a differential source of 2 × 50 Ω (100 Ω differential, 50 Ω per side), sine, **low-side** LO, f_LO = f_RF − f_IF. Equivalent amplitudes: 447 mV peak differential (223.6 mV peak per side) into a matched 100 Ω differential load; 894 mV peak differential open-circuit (√(8·100 Ω·1 mW)) | same | same, on-chip LO buffer included in power | The level is a power, not an amplitude; the reference is differential 100 Ω, never a single-ended 50 Ω reading of the same dBm (that would be 316 mV peak into 50 Ω, a different drive). Waveform: sinusoid; amplitude swept ±6 dB around nominal (PVT box). Frequency plan: low-side (image at f_LO − f_IF, 2·f_IF below signal). LO source is ideal in every bench; this row is the requirement on whatever supplies it | all | RATIFIED (target) |
+| R4 | LO phase noise (requirement on the LO source) | ≤ −100 dBc/Hz @ 1 MHz | ≤ −110 dBc/Hz @ 1 MHz | ≤ −120 dBc/Hz @ 1 MHz | **Provisional placeholder** pending a system blocker/reciprocal-mixing budget that does not exist yet; not verified in simulation by this block (the bench LO is ideal). Deferred D2 | — | PROVISIONAL (placeholder; ruling 2026-11-10) |
+| R5 | Conversion gain (**power** gain: IF power delivered to the row-R9 load over RF *available* power from the 50 Ω source) | > 5 dB | > 10 dB | > 15 dB | Defined as power gain only, in dB; it is the quantity B-CG reads. Any voltage ratio (V_IF,diff / V_RF,source-open-circuit) is an unratified bench diagnostic and is not graded against this row; the two differ by the source/load impedance ratio (here 50 Ω vs 1 kΩ differential) and by a fixed offset that the bench states when it reports one. SSB signal (image tone absent), f_IF = 9.765625 MHz, RF at −40 dBm available (small-signal regime verified by a 6 dB lower step differing < 0.2 dB), PVT box | B-CG | RATIFIED (target) (README draft values, unchanged) |
+| R6 | SSB noise figure | < 15 dB | < 12 dB | < 9 dB | **SSB**, T0 = 290 K, source 50 Ω at 290 K on the RF port, image-frequency port terminated by the same 50 Ω source at 290 K, noise evaluated at the IF over the B-NF band, LO at row-R3 level, PVT box. Not a DSB number; DSB = SSB − 3 dB is *not* assumed, it is measured | B-NF | RATIFIED (target) (README draft values, unchanged) |
+| R7 | IIP3 (input-referred, available source power) | > −5 dBm | > 0 dBm | > +5 dBm | Two-tone, tones as in B-IP3, standalone mixer; cascade value is derived (above) and is provisional because the LNA IIP3 is unratified | B-IP3 | RATIFIED (target; README draft values, unchanged); cascade view DERIVED, **PROVISIONAL** (LNA IIP3 unratified, D1) |
+| R8 | Input P1dB (available source power) | > −15 dBm | > −10 dBm | > −5 dBm | Single-tone compression at f_IF, 1 dB below the small-signal conversion gain, PVT box. Consistency: P1dB ≈ IIP3 − 9.6 dB for a third-order-dominated stage (−14.6 / −9.6 / −4.6 dBm, rounded down) — the measured values need not satisfy it | B-P1 | RATIFIED (target) |
+| R9 | IF | f_IF = 9.765625 MHz (64 bins of the B-CG window), single low IF; load: differential 1 kΩ ∥ 2 pF (the stated load); IF −1 dB bandwidth ≥ 10 MHz centred on f_IF | same; IF output differential, source impedance reported | zero-IF quadrature (I/Q) pair | f_IF is a bench-coherent value inside the 1–50 MHz class; the load is a placeholder for a following filter/ADC driver and is part of the figure, changing it re-states every R5–R8 figure. Zero-IF I/Q does not drive the core architecture until the single-IF target closes | B-CG | f_IF, single low IF, bandwidth: RATIFIED (target); **load PROVISIONAL** (placeholder, no downstream allocation) |
+| R10 | LO-to-RF isolation | > 30 dB | > 40 dB | > 50 dB | Power at the LO fundamental measured at the RF port into 50 Ω, referred to the LO available power, with the RF port terminated in 50 Ω, PVT box. **Mismatch-free (systematic) figure only**: the PVT box excludes the `*_stat` mismatch sections, so this evaluates the nominal-symmetry feed-through. LO leakage in a balanced mixer is dominated by device and layout mismatch, so this row is **not gradable as a pass/fail row until a statistical (Monte Carlo mismatch) row exists** (deferred D8) | B-ISO | RATIFIED (target) (README draft values, unchanged); mismatch coverage DEFERRED (D8) |
+| R11 | LO-to-IF isolation | > 20 dB | > 30 dB | > 40 dB | LO-fundamental power at the IF port into the R9 load, referred to the LO available power; measured on the same FFT as B-ISO. **Mismatch-free (systematic) figure only**, same limitation and same deferral (D8) as R10: not gradable as pass/fail until a mismatch-statistical row exists | B-ISO | RATIFIED (target); mismatch coverage DEFERRED (D8) |
+| R12 | RF-to-IF isolation | > 20 dB | > 30 dB | > 40 dB | RF-fundamental power at the IF port with LO at row-R3 level, referred to the RF available power | B-ISO | RATIFIED (target) |
+| R13 | Supply / DC power | 1.80 V ± 10 %, < 20 mW | 1.80 V ± 10 %, < 10 mW | < 5 mW | Supply is the LNA's (INTERFACE); power is whole block including LO buffer and bias, excluding the LO source, DC from the transient average over the analysis window, PVT box | B-CG (DC) | Supply INTERFACE; power RATIFIED (target) (README draft values, unchanged) |
+| R14 | Area | < 0.10 mm² | < 0.05 mm² | < 0.03 mm² | Placeholder with no evidence basis; core only, pads and fill excluded, measured from the layout bounding box. To be re-baselined when a schematic exists, through a decision record | layout | PROVISIONAL (placeholder; ruling 2026-11-10) |
+| R15 | Signoff | DRC + LVS clean | DRC + LVS clean, post-layout re-verified | — | `klt` DRC and LVS reports, same corner box re-run on the extracted netlist | layout | RATIFIED (target) (README draft values, unchanged) |
 
-### Evidence status and what approving this PR binds
+### Evidence status and what the ratification binds
 
 Evidence status per row, as of this revision: `sim/` holds no committed result
 and `design/` holds only its README, so **no row has simulation evidence**.
@@ -299,15 +304,16 @@ and `design/` holds only its README, so **no row has simulation evidence**.
 | Rows | Evidence status |
 |---|---|
 | R1; R13 supply | INTERFACE: copied from `sg13g2-lna` at the pinned commit; no evidence needed here |
-| R2–R12, R13 power, R14, R15 | **TARGET, no evidence** (no schematic, no simulation, no layout). Each is a proposed assumption; none is measured |
-| R4, R14 | TARGET, provisional placeholder (see Requirements trace) |
+| R2–R12, R13 power, R14, R15 | **TARGET, no evidence** (no schematic, no simulation, no layout). Each is ratified as a target (R4, R9 load and R14 provisional, below); none is measured |
+| R4, R9 load, R14 | TARGET, **PROVISIONAL** placeholder (see Requirements trace) |
+| Cascade values depending on the LNA IIP3 (R7 cascade view) | DERIVED, **PROVISIONAL** until `sg13g2-lna` ratifies IIP3 (D1) |
 | R10, R11 (and R12 where mismatch-limited) | TARGET, no evidence, **and** mismatch coverage missing (D8) |
 
-**What approval of this PR binds: targets only.** Merging PR #7 records the
-proposed target rows, their binding conditions and the measurement protocol as
-the working document for #3 onward. It does not ratify any row (ratification is
-the operator's separate, explicit act), does not assert that any row has been
-met or measured, and binds no design to a value. A row becomes a *measured row*
+**What the ratification binds: targets only.** The operator ruling on issue #2
+(2026-11-10), ratifying PR #7, makes the target column of R1–R15 the design goal
+for #3 onward, except the PROVISIONAL rows named in the status header. It does
+not assert that any row has been met or measured, and binds no design to a value.
+A row becomes a *measured row*
 only by a committed, labelled `sim/` result against its bench, which is a later
 issue.
 
