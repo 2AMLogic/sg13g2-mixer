@@ -1,0 +1,2517 @@
+{
+  "schema_version": 3,
+  "engine": "klayout-runset",
+  "layout": "sg13_lv_nmos/sg13_lv_nmos.gds",
+  "reference": "sg13_lv_nmos/sg13_lv_nmos.cdl",
+  "top": "sg13_lv_nmos",
+  "reference_top": "SG13_LV_NMOS",
+  "deck_file": "/home/ubuntu/share/pdk/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+  "deck_vars": {
+    "ignore_top_ports_mismatch": "true"
+  },
+  "options": {},
+  "hints_applied": null,
+  "status": "mismatch",
+  "power_connectivity": {
+    "status": "unchecked",
+    "reason": "no subcircuit instance in the runset's extracted netlist declares a power/ground-named pin -- the extraction carries no instance-level power connectivity to check",
+    "power_pins": [],
+    "power_pins_derivation": null,
+    "instance_count": 0,
+    "expected_nets": null,
+    "unchecked_expected_pins": [],
+    "excluded_pins": [],
+    "findings": [],
+    "finding_count": 0
+  },
+  "body_verification": null,
+  "device_parameter_coverage": null,
+  "coverage": {
+    "schema_version": 1,
+    "known": true,
+    "checked": [
+      "sg13_lv_nmos"
+    ],
+    "skipped": [
+      {
+        "id": "cap_cmim",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "dantenna",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "diodevdd_2kv",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "diodevdd_4kv",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "diodevss_2kv",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "diodevss_4kv",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "dpantenna",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "idiodevdd_2kv",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "idiodevdd_4kv",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "idiodevss_2kv",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "idiodevss_4kv",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "inductor",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "inductor3",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "isolbox",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "nmoscl_2",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "nmoscl_4",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "npn13G2",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "npn13G2l",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "npn13G2v",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "ntap1",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "pnpMPA",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "ptap1",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "res_metal1",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "res_metal2",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "res_metal3",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "res_metal4",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "res_metal5",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "res_topmetal1",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "res_topmetal2",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "rfcmim",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "rfnmos",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "rfnmoshv",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "rfpmos",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "rfpmoshv",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "rhigh",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "rppd",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "rsil",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "schottky_nbl1",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "sg13_hv_nmos",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "sg13_hv_pmos",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "sg13_hv_svaricap",
+        "reason": "declared_not_recognized"
+      },
+      {
+        "id": "sg13_lv_pmos",
+        "reason": "declared_not_recognized"
+      }
+    ],
+    "inapplicable": [],
+    "unknown": [],
+    "nothing_checked": false,
+    "nothing_checked_reasons": [],
+    "declared_device_classes": {
+      "layout": [
+        "cap_cmim",
+        "dantenna",
+        "diodevdd_2kv",
+        "diodevdd_4kv",
+        "diodevss_2kv",
+        "diodevss_4kv",
+        "dpantenna",
+        "idiodevdd_2kv",
+        "idiodevdd_4kv",
+        "idiodevss_2kv",
+        "idiodevss_4kv",
+        "inductor",
+        "inductor3",
+        "isolbox",
+        "nmoscl_2",
+        "nmoscl_4",
+        "npn13G2",
+        "npn13G2l",
+        "npn13G2v",
+        "ntap1",
+        "pnpMPA",
+        "ptap1",
+        "res_metal1",
+        "res_metal2",
+        "res_metal3",
+        "res_metal4",
+        "res_metal5",
+        "res_topmetal1",
+        "res_topmetal2",
+        "rfcmim",
+        "rfnmos",
+        "rfnmoshv",
+        "rfpmos",
+        "rfpmoshv",
+        "rhigh",
+        "rppd",
+        "rsil",
+        "schottky_nbl1",
+        "sg13_hv_nmos",
+        "sg13_hv_pmos",
+        "sg13_hv_svaricap",
+        "sg13_lv_nmos",
+        "sg13_lv_pmos"
+      ],
+      "reference": [
+        "sg13_lv_nmos"
+      ]
+    },
+    "recognized_device_classes": {
+      "layout": [
+        "sg13_lv_nmos"
+      ],
+      "reference": [
+        "sg13_lv_nmos"
+      ]
+    },
+    "declared_not_recognized": [
+      "cap_cmim",
+      "dantenna",
+      "diodevdd_2kv",
+      "diodevdd_4kv",
+      "diodevss_2kv",
+      "diodevss_4kv",
+      "dpantenna",
+      "idiodevdd_2kv",
+      "idiodevdd_4kv",
+      "idiodevss_2kv",
+      "idiodevss_4kv",
+      "inductor",
+      "inductor3",
+      "isolbox",
+      "nmoscl_2",
+      "nmoscl_4",
+      "npn13G2",
+      "npn13G2l",
+      "npn13G2v",
+      "ntap1",
+      "pnpMPA",
+      "ptap1",
+      "res_metal1",
+      "res_metal2",
+      "res_metal3",
+      "res_metal4",
+      "res_metal5",
+      "res_topmetal1",
+      "res_topmetal2",
+      "rfcmim",
+      "rfnmos",
+      "rfnmoshv",
+      "rfpmos",
+      "rfpmoshv",
+      "rhigh",
+      "rppd",
+      "rsil",
+      "schottky_nbl1",
+      "sg13_hv_nmos",
+      "sg13_hv_pmos",
+      "sg13_hv_svaricap",
+      "sg13_lv_pmos"
+    ]
+  },
+  "device_census": {
+    "layout": {
+      "sg13_lv_nmos": 28
+    },
+    "reference": {
+      "sg13_lv_nmos": 28
+    }
+  },
+  "mismatch_count": 87,
+  "error_count": 87,
+  "category_counts": {
+    "pin.unmatched": 87
+  },
+  "category_error_counts": {
+    "pin.unmatched": 87
+  },
+  "counts": {
+    "nets": {
+      "layout": 87,
+      "reference": 87,
+      "matched": 87
+    },
+    "devices": {
+      "layout": 28,
+      "reference": 28,
+      "matched": 28
+    },
+    "pins": {
+      "layout": 0,
+      "reference": 87,
+      "matched": 0
+    }
+  },
+  "device_classes": [
+    "cap_cmim",
+    "dantenna",
+    "diodevdd_2kv",
+    "diodevdd_4kv",
+    "diodevss_2kv",
+    "diodevss_4kv",
+    "dpantenna",
+    "idiodevdd_2kv",
+    "idiodevdd_4kv",
+    "idiodevss_2kv",
+    "idiodevss_4kv",
+    "inductor",
+    "inductor3",
+    "isolbox",
+    "nmoscl_2",
+    "nmoscl_4",
+    "npn13G2",
+    "npn13G2l",
+    "npn13G2v",
+    "ntap1",
+    "pnpMPA",
+    "ptap1",
+    "res_metal1",
+    "res_metal2",
+    "res_metal3",
+    "res_metal4",
+    "res_metal5",
+    "res_topmetal1",
+    "res_topmetal2",
+    "rfcmim",
+    "rfnmos",
+    "rfnmoshv",
+    "rfpmos",
+    "rfpmoshv",
+    "rhigh",
+    "rppd",
+    "rsil",
+    "schottky_nbl1",
+    "sg13_hv_nmos",
+    "sg13_hv_pmos",
+    "sg13_hv_svaricap",
+    "sg13_lv_nmos",
+    "sg13_lv_pmos"
+  ],
+  "environment": {
+    "engine": "klayout-runset",
+    "engine_version": "0.30.12",
+    "klayout_binary": "/usr/bin/klayout",
+    "netgen_binary": null,
+    "layout_sha256": "62d62589d80d3c2f1fa9fdf16ffd99be514643cb2c068d968b0f6962a22a8d58",
+    "reference_sha256": "424afa2af78e4fe2f20ac6877c36928dc8506ad3a70f907ba2681048e83776be",
+    "extracted_netlist": null
+  },
+  "provenance": {
+    "klt_version": "0.9.2.dev1022+g2a9c52b27ce7",
+    "klt_git_commit": "2a9c52b27ce7986b4372ae5d73129dac4773e02c",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@2a9c52b27ce7986b4372ae5d73129dac4773e02c",
+    "klayout_version": "0.30.13",
+    "pdk": null,
+    "deck": {
+      "name": "sg13g2.lvs",
+      "content_hash": "sha256:e01bcb1ec5858e8069bade8f7fd7ec28c1026fc2fd0590e8f611d3398a5bbbd7",
+      "released": null
+    },
+    "input": {
+      "content_hash": "sha256:62d62589d80d3c2f1fa9fdf16ffd99be514643cb2c068d968b0f6962a22a8d58",
+      "role": "layout"
+    },
+    "runset": {
+      "deck_file": "/home/ubuntu/share/pdk/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+      "deck_vars": {
+        "ignore_top_ports_mismatch": "true"
+      },
+      "content_hash": "sha256:e01bcb1ec5858e8069bade8f7fd7ec28c1026fc2fd0590e8f611d3398a5bbbd7",
+      "klayout_application_version": "0.30.12",
+      "exit_status": 0,
+      "engine_error_lines": []
+    }
+  },
+  "mismatches": [
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D1' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D1"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D2' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D2"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D3' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D3"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D4' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D4"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D5' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D5"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D6' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D6"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D7' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D7"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'DIGISUB' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "DIGISUB"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_37' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_37"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_40' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_40"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_42' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_42"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_45' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_45"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_47' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_47"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_48' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_48"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_50' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_50"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_51' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_51"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_54' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_54"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_55' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_55"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_56' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_56"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_57' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_57"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_60' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_60"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_62' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_62"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_65' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_65"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_67' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_67"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_68' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_68"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_69' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_69"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_70' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_70"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_72' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_72"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'D_74' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "D_74"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G1' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G1"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G2' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G2"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G3' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G3"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G4' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G4"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G5' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G5"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G6' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G6"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G7' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G7"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_37' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_37"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_40' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_40"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_42' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_42"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_45' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_45"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_47' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_47"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_48' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_48"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_50' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_50"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_51' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_51"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_54' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_54"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_55' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_55"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_56' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_56"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_57' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_57"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_60' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_60"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_62' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_62"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_65' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_65"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_67' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_67"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_68' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_68"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_69' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_69"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_70' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_70"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_72' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_72"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'G_74' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "G_74"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'ISOSUB' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "ISOSUB"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S1' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S1"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S2' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S2"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S3' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S3"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S4' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S4"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S5' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S5"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S6' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S6"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S7' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S7"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'SUB' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "SUB"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_37' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_37"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_40' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_40"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_42' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_42"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_45' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_45"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_47' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_47"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_48' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_48"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_50' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_50"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_51' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_51"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_54' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_54"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_55' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_55"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_56' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_56"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_57' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_57"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_60' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_60"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_62' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_62"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_65' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_65"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_67' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_67"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_68' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_68"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_69' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_69"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_70' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_70"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_72' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_72"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "pin.unmatched",
+      "severity": "error",
+      "description": "pin 'S_74' of circuit 'sg13_lv_nmos' is not matched",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "S_74"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": {
+        "layout": "sg13_lv_nmos",
+        "reference": "SG13_LV_NMOS"
+      },
+      "instance": null,
+      "subcircuit": null
+    }
+  ],
+  "net_correspondence": [
+    {
+      "layout": "\\$24",
+      "reference": "D1",
+      "pin": false
+    },
+    {
+      "layout": "\\$26",
+      "reference": "D2",
+      "pin": false
+    },
+    {
+      "layout": "\\$28",
+      "reference": "D3",
+      "pin": false
+    },
+    {
+      "layout": "\\$19",
+      "reference": "D4",
+      "pin": false
+    },
+    {
+      "layout": "\\$15",
+      "reference": "D5",
+      "pin": false
+    },
+    {
+      "layout": "\\$37",
+      "reference": "D6",
+      "pin": false
+    },
+    {
+      "layout": "\\$40",
+      "reference": "D7",
+      "pin": false
+    },
+    {
+      "layout": "\\$32",
+      "reference": "DIGISUB",
+      "pin": false
+    },
+    {
+      "layout": "\\$8",
+      "reference": "D_37",
+      "pin": false
+    },
+    {
+      "layout": "\\$10",
+      "reference": "D_40",
+      "pin": false
+    },
+    {
+      "layout": "\\$43",
+      "reference": "D_42",
+      "pin": false
+    },
+    {
+      "layout": "\\$45",
+      "reference": "D_45",
+      "pin": false
+    },
+    {
+      "layout": "\\$47",
+      "reference": "D_47",
+      "pin": false
+    },
+    {
+      "layout": "\\$49",
+      "reference": "D_48",
+      "pin": false
+    },
+    {
+      "layout": "\\$2",
+      "reference": "D_50",
+      "pin": false
+    },
+    {
+      "layout": "\\$53",
+      "reference": "D_51",
+      "pin": false
+    },
+    {
+      "layout": "\\$4",
+      "reference": "D_54",
+      "pin": false
+    },
+    {
+      "layout": "\\$6",
+      "reference": "D_55",
+      "pin": false
+    },
+    {
+      "layout": "\\$64",
+      "reference": "D_56",
+      "pin": false
+    },
+    {
+      "layout": "\\$51",
+      "reference": "D_57",
+      "pin": false
+    },
+    {
+      "layout": "\\$55",
+      "reference": "D_60",
+      "pin": false
+    },
+    {
+      "layout": "\\$57",
+      "reference": "D_62",
+      "pin": false
+    },
+    {
+      "layout": "\\$69",
+      "reference": "D_65",
+      "pin": false
+    },
+    {
+      "layout": "\\$71",
+      "reference": "D_67",
+      "pin": false
+    },
+    {
+      "layout": "\\$73",
+      "reference": "D_68",
+      "pin": false
+    },
+    {
+      "layout": "\\$75",
+      "reference": "D_69",
+      "pin": false
+    },
+    {
+      "layout": "\\$77",
+      "reference": "D_70",
+      "pin": false
+    },
+    {
+      "layout": "\\$81",
+      "reference": "D_72",
+      "pin": false
+    },
+    {
+      "layout": "\\$79",
+      "reference": "D_74",
+      "pin": false
+    },
+    {
+      "layout": "\\$30",
+      "reference": "G1",
+      "pin": false
+    },
+    {
+      "layout": "\\$31",
+      "reference": "G2",
+      "pin": false
+    },
+    {
+      "layout": "\\$33",
+      "reference": "G3",
+      "pin": false
+    },
+    {
+      "layout": "\\$20",
+      "reference": "G4",
+      "pin": false
+    },
+    {
+      "layout": "\\$22",
+      "reference": "G5",
+      "pin": false
+    },
+    {
+      "layout": "\\$38",
+      "reference": "G6",
+      "pin": false
+    },
+    {
+      "layout": "\\$42",
+      "reference": "G7",
+      "pin": false
+    },
+    {
+      "layout": "\\$13",
+      "reference": "G_37",
+      "pin": false
+    },
+    {
+      "layout": "\\$14",
+      "reference": "G_40",
+      "pin": false
+    },
+    {
+      "layout": "\\$67",
+      "reference": "G_42",
+      "pin": false
+    },
+    {
+      "layout": "\\$60",
+      "reference": "G_45",
+      "pin": false
+    },
+    {
+      "layout": "\\$68",
+      "reference": "G_47",
+      "pin": false
+    },
+    {
+      "layout": "\\$62",
+      "reference": "G_48",
+      "pin": false
+    },
+    {
+      "layout": "\\$17",
+      "reference": "G_50",
+      "pin": false
+    },
+    {
+      "layout": "\\$63",
+      "reference": "G_51",
+      "pin": false
+    },
+    {
+      "layout": "\\$12",
+      "reference": "G_54",
+      "pin": false
+    },
+    {
+      "layout": "\\$16",
+      "reference": "G_55",
+      "pin": false
+    },
+    {
+      "layout": "\\$90",
+      "reference": "G_56",
+      "pin": false
+    },
+    {
+      "layout": "\\$66",
+      "reference": "G_57",
+      "pin": false
+    },
+    {
+      "layout": "\\$61",
+      "reference": "G_60",
+      "pin": false
+    },
+    {
+      "layout": "\\$59",
+      "reference": "G_62",
+      "pin": false
+    },
+    {
+      "layout": "\\$85",
+      "reference": "G_65",
+      "pin": false
+    },
+    {
+      "layout": "\\$87",
+      "reference": "G_67",
+      "pin": false
+    },
+    {
+      "layout": "\\$88",
+      "reference": "G_68",
+      "pin": false
+    },
+    {
+      "layout": "\\$84",
+      "reference": "G_69",
+      "pin": false
+    },
+    {
+      "layout": "\\$83",
+      "reference": "G_70",
+      "pin": false
+    },
+    {
+      "layout": "\\$89",
+      "reference": "G_72",
+      "pin": false
+    },
+    {
+      "layout": "\\$86",
+      "reference": "G_74",
+      "pin": false
+    },
+    {
+      "layout": "\\$36",
+      "reference": "ISOSUB",
+      "pin": false
+    },
+    {
+      "layout": "\\$25",
+      "reference": "S1",
+      "pin": false
+    },
+    {
+      "layout": "\\$27",
+      "reference": "S2",
+      "pin": false
+    },
+    {
+      "layout": "\\$29",
+      "reference": "S3",
+      "pin": false
+    },
+    {
+      "layout": "\\$21",
+      "reference": "S4",
+      "pin": false
+    },
+    {
+      "layout": "\\$18",
+      "reference": "S5",
+      "pin": false
+    },
+    {
+      "layout": "\\$39",
+      "reference": "S6",
+      "pin": false
+    },
+    {
+      "layout": "\\$41",
+      "reference": "S7",
+      "pin": false
+    },
+    {
+      "layout": "\\$1",
+      "reference": "SUB",
+      "pin": false
+    },
+    {
+      "layout": "\\$9",
+      "reference": "S_37",
+      "pin": false
+    },
+    {
+      "layout": "\\$11",
+      "reference": "S_40",
+      "pin": false
+    },
+    {
+      "layout": "\\$44",
+      "reference": "S_42",
+      "pin": false
+    },
+    {
+      "layout": "\\$46",
+      "reference": "S_45",
+      "pin": false
+    },
+    {
+      "layout": "\\$48",
+      "reference": "S_47",
+      "pin": false
+    },
+    {
+      "layout": "\\$50",
+      "reference": "S_48",
+      "pin": false
+    },
+    {
+      "layout": "\\$3",
+      "reference": "S_50",
+      "pin": false
+    },
+    {
+      "layout": "\\$54",
+      "reference": "S_51",
+      "pin": false
+    },
+    {
+      "layout": "\\$5",
+      "reference": "S_54",
+      "pin": false
+    },
+    {
+      "layout": "\\$7",
+      "reference": "S_55",
+      "pin": false
+    },
+    {
+      "layout": "\\$65",
+      "reference": "S_56",
+      "pin": false
+    },
+    {
+      "layout": "\\$52",
+      "reference": "S_57",
+      "pin": false
+    },
+    {
+      "layout": "\\$56",
+      "reference": "S_60",
+      "pin": false
+    },
+    {
+      "layout": "\\$58",
+      "reference": "S_62",
+      "pin": false
+    },
+    {
+      "layout": "\\$70",
+      "reference": "S_65",
+      "pin": false
+    },
+    {
+      "layout": "\\$72",
+      "reference": "S_67",
+      "pin": false
+    },
+    {
+      "layout": "\\$74",
+      "reference": "S_68",
+      "pin": false
+    },
+    {
+      "layout": "\\$76",
+      "reference": "S_69",
+      "pin": false
+    },
+    {
+      "layout": "\\$78",
+      "reference": "S_70",
+      "pin": false
+    },
+    {
+      "layout": "\\$82",
+      "reference": "S_72",
+      "pin": false
+    },
+    {
+      "layout": "\\$80",
+      "reference": "S_74",
+      "pin": false
+    }
+  ]
+}

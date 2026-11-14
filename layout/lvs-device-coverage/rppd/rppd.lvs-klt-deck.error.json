@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "error": {
+    "command": "lvs",
+    "message": "reference netlist has no top circuit"
+  }
+}

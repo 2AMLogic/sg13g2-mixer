@@ -1,0 +1,3046 @@
+{
+  "schema_version": 4,
+  "file": {
+    "path": "layout/lvs-device-coverage/cap_cmim/cap_cmim.gds",
+    "scope": "repo"
+  },
+  "deck": "sg13g2",
+  "top": "cap_cmim",
+  "dbu_um": 0.001,
+  "netlist_path": "/home/ubuntu/GitHub/sg13g2-mixer/.loom/worktrees/issue-31/layout/lvs-device-coverage/cap_cmim/cap_cmim.extracted.spice",
+  "netlist_sha256": "5166d8e2fed02934967ee945782741c88f39e743d28be1f00f321dc05b9b81d4",
+  "netlist_normalized_sha256": "d7c0a1b6517d26068c3477973512bf23685e92b68f10adf28daef4edfd933f97",
+  "status": "extracted",
+  "device_count": 72,
+  "net_count": 138,
+  "pin_count": 0,
+  "device_counts": {
+    "cap_cmim": 72
+  },
+  "dummy_devices_dropped": 0,
+  "ignored_layers": [
+    {
+      "layer": 63,
+      "datatype": 0,
+      "shapes": 144
+    },
+    {
+      "layer": 126,
+      "datatype": 2,
+      "shapes": 72
+    }
+  ],
+  "device_recognition_only_layers": [
+    {
+      "layer": 36,
+      "datatype": 0,
+      "shapes": 72
+    },
+    {
+      "layer": 67,
+      "datatype": 2,
+      "shapes": 72
+    },
+    {
+      "layer": 129,
+      "datatype": 0,
+      "shapes": 9288
+    }
+  ],
+  "device_classes": [
+    "nfet",
+    "pfet",
+    "cap_cmim",
+    "rfcmim",
+    "cap_cmomi",
+    "cap_cmomf",
+    "resistor",
+    "dantenna",
+    "dpantenna"
+  ],
+  "devices": [
+    {
+      "name": "$1",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$1",
+        "b": "\\$12"
+      },
+      "params": {
+        "c_f": 7.440855e-14,
+        "area_um2": 48.8601,
+        "perimeter_um": 27.96
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$10",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$9",
+        "b": "\\$16"
+      },
+      "params": {
+        "c_f": 2.939584e-13,
+        "area_um2": 194.4576,
+        "perimeter_um": 56.8
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$11",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$10",
+        "b": "\\$20"
+      },
+      "params": {
+        "c_f": 2.7535835e-13,
+        "area_um2": 182.0245,
+        "perimeter_um": 58.04
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$12",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$21",
+        "b": "\\$22"
+      },
+      "params": {
+        "c_f": 7.440855e-14,
+        "area_um2": 48.8601,
+        "perimeter_um": 27.96
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$13",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$21",
+        "b": "\\$22"
+      },
+      "params": {
+        "c_f": 7.440855e-14,
+        "area_um2": 48.8601,
+        "perimeter_um": 27.96
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$14",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$21",
+        "b": "\\$22"
+      },
+      "params": {
+        "c_f": 7.440855e-14,
+        "area_um2": 48.8601,
+        "perimeter_um": 27.96
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$15",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$23",
+        "b": "\\$31"
+      },
+      "params": {
+        "c_f": 1.601128e-13,
+        "area_um2": 105.6384,
+        "perimeter_um": 41.38
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$16",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$24",
+        "b": "\\$33"
+      },
+      "params": {
+        "c_f": 4.654084e-13,
+        "area_um2": 308.3976,
+        "perimeter_um": 70.3
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$17",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$25",
+        "b": "\\$34"
+      },
+      "params": {
+        "c_f": 2.625064e-13,
+        "area_um2": 173.5776,
+        "perimeter_um": 53.5
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$18",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$26",
+        "b": "\\$35"
+      },
+      "params": {
+        "c_f": 4.589448e-13,
+        "area_um2": 304.1024,
+        "perimeter_um": 69.78
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$19",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$27",
+        "b": "\\$36"
+      },
+      "params": {
+        "c_f": 4.878789e-13,
+        "area_um2": 323.3342,
+        "perimeter_um": 71.94
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$2",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$2",
+        "b": "\\$13"
+      },
+      "params": {
+        "c_f": 7.440855e-14,
+        "area_um2": 48.8601,
+        "perimeter_um": 27.96
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$20",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$28",
+        "b": "\\$37"
+      },
+      "params": {
+        "c_f": 2.6605915e-13,
+        "area_um2": 175.8933,
+        "perimeter_um": 55.48
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$21",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$29",
+        "b": "\\$32"
+      },
+      "params": {
+        "c_f": 4.640285e-13,
+        "area_um2": 307.4766,
+        "perimeter_um": 70.34
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$22",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$30",
+        "b": "\\$38"
+      },
+      "params": {
+        "c_f": 2.434135e-13,
+        "area_um2": 160.785,
+        "perimeter_um": 55.9
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$23",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$39",
+        "b": "\\$47"
+      },
+      "params": {
+        "c_f": 1.415376e-13,
+        "area_um2": 93.312,
+        "perimeter_um": 39.24
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$24",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$40",
+        "b": "\\$49"
+      },
+      "params": {
+        "c_f": 4.483677e-13,
+        "area_um2": 297.0702,
+        "perimeter_um": 69.06
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$25",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$41",
+        "b": "\\$50"
+      },
+      "params": {
+        "c_f": 3.0004765e-13,
+        "area_um2": 198.4851,
+        "perimeter_um": 58.0
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$26",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$42",
+        "b": "\\$51"
+      },
+      "params": {
+        "c_f": 5.2793165e-13,
+        "area_um2": 349.9555,
+        "perimeter_um": 74.96
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$27",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$43",
+        "b": "\\$48"
+      },
+      "params": {
+        "c_f": 4.8422445e-13,
+        "area_um2": 320.9027,
+        "perimeter_um": 71.76
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$28",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$44",
+        "b": "\\$52"
+      },
+      "params": {
+        "c_f": 2.327704e-13,
+        "area_um2": 153.8208,
+        "perimeter_um": 50.98
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$29",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$45",
+        "b": "\\$53"
+      },
+      "params": {
+        "c_f": 4.671864e-13,
+        "area_um2": 309.5792,
+        "perimeter_um": 70.44
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$3",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$2",
+        "b": "\\$13"
+      },
+      "params": {
+        "c_f": 7.440855e-14,
+        "area_um2": 48.8601,
+        "perimeter_um": 27.96
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$30",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$46",
+        "b": "\\$54"
+      },
+      "params": {
+        "c_f": 2.486568e-13,
+        "area_um2": 164.3264,
+        "perimeter_um": 54.18
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$31",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$55",
+        "b": "\\$67"
+      },
+      "params": {
+        "c_f": 2.544675e-13,
+        "area_um2": 168.1778,
+        "perimeter_um": 55.02
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$32",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$56",
+        "b": "\\$68"
+      },
+      "params": {
+        "c_f": 2.505244e-13,
+        "area_um2": 165.5928,
+        "perimeter_um": 53.38
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$33",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$57",
+        "b": "\\$58"
+      },
+      "params": {
+        "c_f": 4.475304e-13,
+        "area_um2": 296.5088,
+        "perimeter_um": 69.18
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$34",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$59",
+        "b": "\\$69"
+      },
+      "params": {
+        "c_f": 5.0822735e-13,
+        "area_um2": 336.8545,
+        "perimeter_um": 73.64
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$35",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$60",
+        "b": "\\$64"
+      },
+      "params": {
+        "c_f": 3.069784e-13,
+        "area_um2": 203.0976,
+        "perimeter_um": 58.3
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$36",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$61",
+        "b": "\\$65"
+      },
+      "params": {
+        "c_f": 4.9426765e-13,
+        "area_um2": 327.5811,
+        "perimeter_um": 72.4
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$37",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$62",
+        "b": "\\$66"
+      },
+      "params": {
+        "c_f": 4.398032e-13,
+        "area_um2": 291.3792,
+        "perimeter_um": 68.36
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$38",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$63",
+        "b": "\\$70"
+      },
+      "params": {
+        "c_f": 1.360341e-13,
+        "area_um2": 89.667,
+        "perimeter_um": 38.34
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$39",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$71",
+        "b": "\\$80"
+      },
+      "params": {
+        "c_f": 2.198096e-13,
+        "area_um2": 145.152,
+        "perimeter_um": 52.04
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$4",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$3",
+        "b": "\\$11"
+      },
+      "params": {
+        "c_f": 2.319173e-13,
+        "area_um2": 153.171,
+        "perimeter_um": 54.02
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$40",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$72",
+        "b": "\\$81"
+      },
+      "params": {
+        "c_f": 4.500806e-13,
+        "area_um2": 298.2084,
+        "perimeter_um": 69.2
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$41",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$73",
+        "b": "\\$82"
+      },
+      "params": {
+        "c_f": 3.121864e-13,
+        "area_um2": 206.5536,
+        "perimeter_um": 58.9
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$42",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$74",
+        "b": "\\$79"
+      },
+      "params": {
+        "c_f": 5.0299815e-13,
+        "area_um2": 333.3833,
+        "perimeter_um": 73.08
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$43",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$75",
+        "b": "\\$83"
+      },
+      "params": {
+        "c_f": 4.6788205e-13,
+        "area_um2": 310.0419,
+        "perimeter_um": 70.48
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$44",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$76",
+        "b": "\\$84"
+      },
+      "params": {
+        "c_f": 4.697144e-13,
+        "area_um2": 311.248,
+        "perimeter_um": 71.06
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$45",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$77",
+        "b": "\\$85"
+      },
+      "params": {
+        "c_f": 2.825284e-13,
+        "area_um2": 186.8616,
+        "perimeter_um": 55.9
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$46",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$78",
+        "b": "\\$86"
+      },
+      "params": {
+        "c_f": 1.3645495e-13,
+        "area_um2": 89.9577,
+        "perimeter_um": 37.96
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$47",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$87",
+        "b": "\\$101"
+      },
+      "params": {
+        "c_f": 1.5388705e-13,
+        "area_um2": 101.5119,
+        "perimeter_um": 40.48
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$48",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$88",
+        "b": "\\$95"
+      },
+      "params": {
+        "c_f": 4.816644e-13,
+        "area_um2": 319.2008,
+        "perimeter_um": 71.58
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$49",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$89",
+        "b": "\\$96"
+      },
+      "params": {
+        "c_f": 4.241664e-13,
+        "area_um2": 280.9856,
+        "perimeter_um": 67.2
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$5",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$4",
+        "b": "\\$17"
+      },
+      "params": {
+        "c_f": 2.413515e-13,
+        "area_um2": 159.5106,
+        "perimeter_um": 52.14
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$50",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$90",
+        "b": "\\$97"
+      },
+      "params": {
+        "c_f": 2.955208e-13,
+        "area_um2": 195.4944,
+        "perimeter_um": 56.98
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$51",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$91",
+        "b": "\\$102"
+      },
+      "params": {
+        "c_f": 2.6162065e-13,
+        "area_um2": 172.9503,
+        "perimeter_um": 54.88
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$52",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$92",
+        "b": "\\$98"
+      },
+      "params": {
+        "c_f": 5.3688815e-13,
+        "area_um2": 355.9105,
+        "perimeter_um": 75.56
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$53",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$93",
+        "b": "\\$99"
+      },
+      "params": {
+        "c_f": 4.870303e-13,
+        "area_um2": 322.761,
+        "perimeter_um": 72.22
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$54",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$94",
+        "b": "\\$100"
+      },
+      "params": {
+        "c_f": 2.240901e-13,
+        "area_um2": 147.987,
+        "perimeter_um": 52.74
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$55",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$103",
+        "b": "\\$113"
+      },
+      "params": {
+        "c_f": 2.249462e-13,
+        "area_um2": 148.554,
+        "perimeter_um": 52.88
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$56",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$104",
+        "b": "\\$118"
+      },
+      "params": {
+        "c_f": 2.721837e-13,
+        "area_um2": 179.9982,
+        "perimeter_um": 54.66
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$57",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$105",
+        "b": "\\$114"
+      },
+      "params": {
+        "c_f": 4.848264e-13,
+        "area_um2": 321.3056,
+        "perimeter_um": 71.7
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$58",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$106",
+        "b": "\\$115"
+      },
+      "params": {
+        "c_f": 4.8602215e-13,
+        "area_um2": 322.1001,
+        "perimeter_um": 71.8
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$59",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$107",
+        "b": "\\$116"
+      },
+      "params": {
+        "c_f": 4.696695e-13,
+        "area_um2": 311.2298,
+        "perimeter_um": 70.62
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$6",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$5",
+        "b": "\\$18"
+      },
+      "params": {
+        "c_f": 4.961559e-13,
+        "area_um2": 328.8362,
+        "perimeter_um": 72.54
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$60",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$108",
+        "b": "\\$111"
+      },
+      "params": {
+        "c_f": 2.731264e-13,
+        "area_um2": 180.6336,
+        "perimeter_um": 54.4
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$61",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$109",
+        "b": "\\$117"
+      },
+      "params": {
+        "c_f": 4.565184e-13,
+        "area_um2": 302.4896,
+        "perimeter_um": 69.6
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$62",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$110",
+        "b": "\\$112"
+      },
+      "params": {
+        "c_f": 2.6235345e-13,
+        "area_um2": 173.4047,
+        "perimeter_um": 56.16
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$63",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$119",
+        "b": "\\$129"
+      },
+      "params": {
+        "c_f": 2.5349905e-13,
+        "area_um2": 167.5359,
+        "perimeter_um": 54.88
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$64",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$120",
+        "b": "\\$130"
+      },
+      "params": {
+        "c_f": 5.055404e-13,
+        "area_um2": 335.068,
+        "perimeter_um": 73.46
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$65",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$121",
+        "b": "\\$131"
+      },
+      "params": {
+        "c_f": 4.340784e-13,
+        "area_um2": 287.5712,
+        "perimeter_um": 68.04
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$66",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$122",
+        "b": "\\$132"
+      },
+      "params": {
+        "c_f": 2.5185595e-13,
+        "area_um2": 166.4757,
+        "perimeter_um": 53.56
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$67",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$123",
+        "b": "\\$133"
+      },
+      "params": {
+        "c_f": 2.9504215e-13,
+        "area_um2": 195.1641,
+        "perimeter_um": 57.4
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$68",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$124",
+        "b": "\\$127"
+      },
+      "params": {
+        "c_f": 5.1153165e-13,
+        "area_um2": 339.0563,
+        "perimeter_um": 73.68
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$69",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$125",
+        "b": "\\$128"
+      },
+      "params": {
+        "c_f": 2.831952e-13,
+        "area_um2": 187.3152,
+        "perimeter_um": 55.56
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$7",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$6",
+        "b": "\\$14"
+      },
+      "params": {
+        "c_f": 4.767384e-13,
+        "area_um2": 315.9296,
+        "perimeter_um": 71.1
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$70",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$126",
+        "b": "\\$134"
+      },
+      "params": {
+        "c_f": 1.206243e-13,
+        "area_um2": 79.461,
+        "perimeter_um": 35.82
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$71",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$135",
+        "b": "\\$136"
+      },
+      "params": {
+        "c_f": 3.069784e-13,
+        "area_um2": 203.0976,
+        "perimeter_um": 58.3
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$72",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$137",
+        "b": "\\$138"
+      },
+      "params": {
+        "c_f": 4.697144e-13,
+        "area_um2": 311.248,
+        "perimeter_um": 71.06
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$8",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$7",
+        "b": "\\$19"
+      },
+      "params": {
+        "c_f": 2.8403005e-13,
+        "area_um2": 187.8579,
+        "perimeter_um": 56.08
+      },
+      "instance_path": []
+    },
+    {
+      "name": "$9",
+      "class": "cap_cmim",
+      "nets": {
+        "a": "\\$8",
+        "b": "\\$15"
+      },
+      "params": {
+        "c_f": 4.324264e-13,
+        "area_um2": 286.4736,
+        "perimeter_um": 67.9
+      },
+      "instance_path": []
+    }
+  ],
+  "nets": [
+    {
+      "name": "\\$1",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 1,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$10",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 10,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$100",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 100,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$101",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 101,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$102",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 102,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$103",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 103,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$104",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 104,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$105",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 105,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$106",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 106,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$107",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 107,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$108",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 108,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$109",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 109,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$11",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 11,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$110",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 110,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$111",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 111,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$112",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 112,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$113",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 113,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$114",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 114,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$115",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 115,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$116",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 116,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$117",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 117,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$118",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 118,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$119",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 119,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$12",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 12,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$120",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 120,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$121",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 121,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$122",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 122,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$123",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 123,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$124",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 124,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$125",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 125,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$126",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 126,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$127",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 127,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$128",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 128,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$129",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 129,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$13",
+      "pin": false,
+      "device_count": 2,
+      "net_id": 13,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$130",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 130,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$131",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 131,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$132",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 132,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$133",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 133,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$134",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 134,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$135",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 135,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$136",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 136,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$137",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 137,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$138",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 138,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$14",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 14,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$15",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 15,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$16",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 16,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$17",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 17,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$18",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 18,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$19",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 19,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$2",
+      "pin": false,
+      "device_count": 2,
+      "net_id": 2,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$20",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 20,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$21",
+      "pin": false,
+      "device_count": 3,
+      "net_id": 21,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$22",
+      "pin": false,
+      "device_count": 3,
+      "net_id": 22,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$23",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 23,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$24",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 24,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$25",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 25,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$26",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 26,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$27",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 27,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$28",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 28,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$29",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 29,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$3",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 3,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$30",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 30,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$31",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 31,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$32",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 32,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$33",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 33,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$34",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 34,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$35",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 35,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$36",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 36,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$37",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 37,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$38",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 38,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$39",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 39,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$4",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 4,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$40",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 40,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$41",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 41,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$42",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 42,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$43",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 43,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$44",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 44,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$45",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 45,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$46",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 46,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$47",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 47,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$48",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 48,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$49",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 49,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$5",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 5,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$50",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 50,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$51",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 51,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$52",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 52,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$53",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 53,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$54",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 54,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$55",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 55,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$56",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 56,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$57",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 57,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$58",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 58,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$59",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 59,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$6",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 6,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$60",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 60,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$61",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 61,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$62",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 62,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$63",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 63,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$64",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 64,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$65",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 65,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$66",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 66,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$67",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 67,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$68",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 68,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$69",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 69,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$7",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 7,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$70",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 70,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$71",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 71,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$72",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 72,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$73",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 73,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$74",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 74,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$75",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 75,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$76",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 76,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$77",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 77,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$78",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 78,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$79",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 79,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$8",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 8,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$80",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 80,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$81",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 81,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$82",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 82,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$83",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 83,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$84",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 84,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$85",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 85,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$86",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 86,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$87",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 87,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$88",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 88,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$89",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 89,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$9",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 9,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$90",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 90,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$91",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 91,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$92",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 92,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$93",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 93,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$94",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 94,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$95",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 95,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$96",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 96,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$97",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 97,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$98",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 98,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$99",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 99,
+      "pin_index": null,
+      "label_positions_um": []
+    }
+  ],
+  "warnings": [
+    "found 0 pin-name label(s) on any of this deck's label layers (5/1, 8/25, 10/25, 30/25, 50/25, 67/25, 126/25, 134/25) anywhere in 'cap_cmim' -- no net can be named, so 0 top-level pins will be promoted below and `klt lvs` will have no net/device anchor to seed a match against a reference netlist. Compare the layers `klt layers` reports for this GDS against the list above; for a `klt place-and-route` layout in particular, check that request.io.layer_h/layer_v chose a layer this --deck actually scans for pin labels (issue #1385)",
+    "0 top-level pins are promoted on 'cap_cmim' after extraction -- `klt lvs` has no net/device anchor to seed correspondence against a reference netlist and will report a full mismatch regardless of device-count agreement. If this design genuinely has zero top-level pins by intent, this warning can be ignored; otherwise see the pin-name-label warning above (if present) or check that --top-cell-pins/--pins/--def-pins did not demote every promoted pin (issue #1385)",
+    "72 drawn capacitors ('cap_cmim') written as a fixed-value 'C' card (the deck's nominal area+perimeter value) -- PDK process corners (e.g. mimcap_ff/mimcap_ss) do not apply to it, so schematic-vs-extracted deltas at non-typical corners include a capacitor-corner term; pass --pdk to bind the PDK capacitor subcircuit instead. See docs/cli/extract.md's 'SPICE model binding' section.",
+    "134 nets connect to exactly one device terminal -- source/drain/body/resistor-equivalent, not a gate -- and are not a declared pin; this can be a legitimate single-terminal tie (e.g. an intentionally unterminated dummy's diffusion tie), but confirm these nets have no other intended connectivity -- see single_terminal_nets[] for the full list.",
+    "2 layers (63/0, 126/2) carrying 216 shapes are outside 'sg13g2' deck's connectivity graph -- this geometry is invisible to extraction, so a net routed only through it extracts as multiple disconnected nets instead of one, which will silently mismatch a downstream `klt lvs` reference netlist -- see ignored_layers[] for the full per-layer shape counts. See docs/cli/extract.md's 'ignored_layers' field documentation."
+  ],
+  "black_box_regions": [],
+  "abstracted_cells": [],
+  "unmodelled_poly": [],
+  "merged_net_labels": [],
+  "split_net_labels": [],
+  "voltage_domain_warnings": [],
+  "missing_flavour_markers": [],
+  "unsupported_devices": [],
+  "unbiased_pmos_body_nets": [],
+  "single_terminal_nets": [
+    {
+      "net": "\\$1",
+      "device": "$1",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$10",
+      "device": "$11",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$100",
+      "device": "$54",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$101",
+      "device": "$47",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$102",
+      "device": "$51",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$103",
+      "device": "$55",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$104",
+      "device": "$56",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$105",
+      "device": "$57",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$106",
+      "device": "$58",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$107",
+      "device": "$59",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$108",
+      "device": "$60",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$109",
+      "device": "$61",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$11",
+      "device": "$4",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$110",
+      "device": "$62",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$111",
+      "device": "$60",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$112",
+      "device": "$62",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$113",
+      "device": "$55",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$114",
+      "device": "$57",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$115",
+      "device": "$58",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$116",
+      "device": "$59",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$117",
+      "device": "$61",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$118",
+      "device": "$56",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$119",
+      "device": "$63",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$12",
+      "device": "$1",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$120",
+      "device": "$64",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$121",
+      "device": "$65",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$122",
+      "device": "$66",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$123",
+      "device": "$67",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$124",
+      "device": "$68",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$125",
+      "device": "$69",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$126",
+      "device": "$70",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$127",
+      "device": "$68",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$128",
+      "device": "$69",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$129",
+      "device": "$63",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$130",
+      "device": "$64",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$131",
+      "device": "$65",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$132",
+      "device": "$66",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$133",
+      "device": "$67",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$134",
+      "device": "$70",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$135",
+      "device": "$71",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$136",
+      "device": "$71",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$137",
+      "device": "$72",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$138",
+      "device": "$72",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$14",
+      "device": "$7",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$15",
+      "device": "$9",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$16",
+      "device": "$10",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$17",
+      "device": "$5",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$18",
+      "device": "$6",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$19",
+      "device": "$8",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$20",
+      "device": "$11",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$23",
+      "device": "$15",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$24",
+      "device": "$16",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$25",
+      "device": "$17",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$26",
+      "device": "$18",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$27",
+      "device": "$19",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$28",
+      "device": "$20",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$29",
+      "device": "$21",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$3",
+      "device": "$4",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$30",
+      "device": "$22",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$31",
+      "device": "$15",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$32",
+      "device": "$21",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$33",
+      "device": "$16",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$34",
+      "device": "$17",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$35",
+      "device": "$18",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$36",
+      "device": "$19",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$37",
+      "device": "$20",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$38",
+      "device": "$22",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$39",
+      "device": "$23",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$4",
+      "device": "$5",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$40",
+      "device": "$24",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$41",
+      "device": "$25",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$42",
+      "device": "$26",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$43",
+      "device": "$27",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$44",
+      "device": "$28",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$45",
+      "device": "$29",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$46",
+      "device": "$30",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$47",
+      "device": "$23",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$48",
+      "device": "$27",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$49",
+      "device": "$24",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$5",
+      "device": "$6",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$50",
+      "device": "$25",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$51",
+      "device": "$26",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$52",
+      "device": "$28",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$53",
+      "device": "$29",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$54",
+      "device": "$30",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$55",
+      "device": "$31",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$56",
+      "device": "$32",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$57",
+      "device": "$33",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$58",
+      "device": "$33",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$59",
+      "device": "$34",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$6",
+      "device": "$7",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$60",
+      "device": "$35",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$61",
+      "device": "$36",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$62",
+      "device": "$37",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$63",
+      "device": "$38",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$64",
+      "device": "$35",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$65",
+      "device": "$36",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$66",
+      "device": "$37",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$67",
+      "device": "$31",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$68",
+      "device": "$32",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$69",
+      "device": "$34",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$7",
+      "device": "$8",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$70",
+      "device": "$38",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$71",
+      "device": "$39",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$72",
+      "device": "$40",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$73",
+      "device": "$41",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$74",
+      "device": "$42",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$75",
+      "device": "$43",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$76",
+      "device": "$44",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$77",
+      "device": "$45",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$78",
+      "device": "$46",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$79",
+      "device": "$42",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$8",
+      "device": "$9",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$80",
+      "device": "$39",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$81",
+      "device": "$40",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$82",
+      "device": "$41",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$83",
+      "device": "$43",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$84",
+      "device": "$44",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$85",
+      "device": "$45",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$86",
+      "device": "$46",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$87",
+      "device": "$47",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$88",
+      "device": "$48",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$89",
+      "device": "$49",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$9",
+      "device": "$10",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$90",
+      "device": "$50",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$91",
+      "device": "$51",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$92",
+      "device": "$52",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$93",
+      "device": "$53",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$94",
+      "device": "$54",
+      "terminal": "a",
+      "terminal_kind": "a"
+    },
+    {
+      "net": "\\$95",
+      "device": "$48",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$96",
+      "device": "$49",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$97",
+      "device": "$50",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$98",
+      "device": "$52",
+      "terminal": "b",
+      "terminal_kind": "b"
+    },
+    {
+      "net": "\\$99",
+      "device": "$53",
+      "terminal": "b",
+      "terminal_kind": "b"
+    }
+  ],
+  "dead_metal": [],
+  "matched_device_groups": [],
+  "def_pin_promotion": null,
+  "pin_renames": null,
+  "rename_declared_pins": false,
+  "declared_pins": null,
+  "def_pins": null,
+  "label_layers": null,
+  "device_models": null,
+  "probes": [],
+  "pdk": null,
+  "provenance": {
+    "klt_version": "0.9.2.dev1022+g2a9c52b27ce7",
+    "klt_git_commit": "2a9c52b27ce7986b4372ae5d73129dac4773e02c",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@2a9c52b27ce7986b4372ae5d73129dac4773e02c",
+    "klayout_version": "0.30.13",
+    "pdk": null,
+    "deck": {
+      "name": "sg13g2",
+      "content_hash": "sha256:cf6dfeadf75bd95bf89beb0a64e06ed43b65f6ff782df10ae200ea200a73d8e9",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:80cb907a35f1098d59864a1d227045ca020855f42af5f2af3a1ee84385c24749",
+      "role": "layout"
+    }
+  },
+  "parasitics": null,
+  "spef_path": null,
+  "subcircuit": null,
+  "metrics": {
+    "extract__device__count": 72,
+    "extract__net__count": 138,
+    "extract__pin__count": 0
+  },
+  "timing": {
+    "stages": {
+      "read_layout": 0.002,
+      "device_extraction": 0.046,
+      "diagnostics": 0.0,
+      "netlist_write": 0.001,
+      "netlist_hash": 0.0,
+      "netlist_normalized_hash": 0.001
+    },
+    "total_seconds": 0.057,
+    "unattributed_seconds": 0.008
+  }
+}

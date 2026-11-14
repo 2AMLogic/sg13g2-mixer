@@ -1,0 +1,149 @@
+* extracted by klt extract --deck sg13g2
+
+* cell cap_cmim
+.SUBCKT cap_cmim
+* device instance $1 r0 *1 3.495,3.495 cap_cmim
+C$1 \$1 \$12 7.440855e-14
+* device instance $2 r0 *1 23.495,3.495 cap_cmim
+C$2 \$2 \$13 7.440855e-14
+* device instance $3 r0 *1 43.495,3.495 cap_cmim
+C$3 \$2 \$13 7.440855e-14
+* device instance $4 r0 *1 66.531,9.455 cap_cmim
+C$4 \$3 \$11 2.319173e-13
+* device instance $5 r0 *1 111.231,4.905 cap_cmim
+C$5 \$4 \$17 2.413515e-13
+* device instance $6 r0 *1 152.686,9.17 cap_cmim
+C$6 \$5 \$18 4.961559e-13
+* device instance $7 r0 *1 193.156,8.96 cap_cmim
+C$7 \$6 \$14 4.767384e-13
+* device instance $8 r0 *1 233.446,5.535 cap_cmim
+C$8 \$7 \$19 2.8403005e-13
+* device instance $9 r0 *1 273.421,9.135 cap_cmim
+C$9 \$8 \$15 4.324264e-13
+* device instance $10 r0 *1 314.641,5.76 cap_cmim
+C$10 \$9 \$16 2.939584e-13
+* device instance $11 r0 *1 351.406,9.925 cap_cmim
+C$11 \$10 \$20 2.7535835e-13
+* device instance $12 r0 *1 8.495,28.495 cap_cmim
+C$12 \$21 \$22 7.440855e-14
+* device instance $13 r0 *1 23.495,28.495 cap_cmim
+C$13 \$21 \$22 7.440855e-14
+* device instance $14 r0 *1 43.495,28.495 cap_cmim
+C$14 \$21 \$22 7.440855e-14
+* device instance $15 r0 *1 67.066,46.38 cap_cmim
+C$15 \$23 \$31 1.601128e-13
+* device instance $16 r0 *1 111.541,49.755 cap_cmim
+C$16 \$24 \$33 4.654084e-13
+* device instance $17 r0 *1 151.561,46.155 cap_cmim
+C$17 \$25 \$34 2.625064e-13
+* device instance $18 r0 *1 192.826,49.58 cap_cmim
+C$18 \$26 \$35 4.589448e-13
+* device instance $19 r0 *1 233.776,49.79 cap_cmim
+C$19 \$27 \$36 4.878789e-13
+* device instance $20 r0 *1 274.546,45.525 cap_cmim
+C$20 \$28 \$37 2.6605915e-13
+* device instance $21 r0 *1 314.331,50.075 cap_cmim
+C$21 \$29 \$32 4.640285e-13
+* device instance $22 r0 *1 350.871,50.545 cap_cmim
+C$22 \$30 \$38 2.434135e-13
+* device instance $23 r0 *1 66.531,87 cap_cmim
+C$23 \$39 \$47 1.415376e-13
+* device instance $24 r0 *1 111.231,90.375 cap_cmim
+C$24 \$40 \$49 4.483677e-13
+* device instance $25 r0 *1 152.686,86.775 cap_cmim
+C$25 \$41 \$50 3.0004765e-13
+* device instance $26 r0 *1 193.156,91.165 cap_cmim
+C$26 \$42 \$51 5.2793165e-13
+* device instance $27 r0 *1 233.446,90.695 cap_cmim
+C$27 \$43 \$48 4.8422445e-13
+* device instance $28 r0 *1 273.421,86.145 cap_cmim
+C$28 \$44 \$52 2.327704e-13
+* device instance $29 r0 *1 314.641,90.41 cap_cmim
+C$29 \$45 \$53 4.671864e-13
+* device instance $30 r0 *1 351.406,90.2 cap_cmim
+C$30 \$46 \$54 2.486568e-13
+* device instance $31 r0 *1 67.066,131.03 cap_cmim
+C$31 \$55 \$67 2.544675e-13
+* device instance $32 r0 *1 111.541,126.765 cap_cmim
+C$32 \$56 \$68 2.505244e-13
+* device instance $33 r0 *1 151.561,131.315 cap_cmim
+C$33 \$57 \$58 4.475304e-13
+* device instance $34 r0 *1 192.826,131.785 cap_cmim
+C$34 \$59 \$69 5.0822735e-13
+* device instance $35 r0 *1 233.776,127.62 cap_cmim
+C$35 \$60 \$64 3.069784e-13
+* device instance $36 r0 *1 274.546,130.995 cap_cmim
+C$36 \$61 \$65 4.9426765e-13
+* device instance $37 r0 *1 314.331,130.82 cap_cmim
+C$37 \$62 \$66 4.398032e-13
+* device instance $38 r0 *1 350.871,127.395 cap_cmim
+C$38 \$63 \$70 1.360341e-13
+* device instance $39 r0 *1 66.531,171.44 cap_cmim
+C$39 \$71 \$80 2.198096e-13
+* device instance $40 r0 *1 111.231,171.65 cap_cmim
+C$40 \$72 \$81 4.500806e-13
+* device instance $41 r0 *1 152.686,168.24 cap_cmim
+C$41 \$73 \$82 3.121864e-13
+* device instance $42 r0 *1 193.156,171.935 cap_cmim
+C$42 \$74 \$79 5.0299815e-13
+* device instance $43 r0 *1 233.446,171.615 cap_cmim
+C$43 \$75 \$83 4.6788205e-13
+* device instance $44 r0 *1 273.421,172.405 cap_cmim
+C$44 \$76 \$84 4.697144e-13
+* device instance $45 r0 *1 314.641,168.015 cap_cmim
+C$45 \$77 \$85 2.825284e-13
+* device instance $46 r0 *1 351.406,167.385 cap_cmim
+C$46 \$78 \$86 1.3645495e-13
+* device instance $47 r0 *1 67.066,208.635 cap_cmim
+C$47 \$87 \$101 1.5388705e-13
+* device instance $48 r0 *1 111.541,212.555 cap_cmim
+C$48 \$88 \$95 4.816644e-13
+* device instance $49 r0 *1 151.561,212.06 cap_cmim
+C$49 \$89 \$96 4.241664e-13
+* device instance $50 r0 *1 192.826,208.86 cap_cmim
+C$50 \$90 \$97 2.955208e-13
+* device instance $51 r0 *1 233.776,208.005 cap_cmim
+C$51 \$91 \$102 2.6162065e-13
+* device instance $52 r0 *1 274.546,213.025 cap_cmim
+C$52 \$92 \$98 5.3688815e-13
+* device instance $53 r0 *1 314.331,213.025 cap_cmim
+C$53 \$93 \$99 4.870303e-13
+* device instance $54 r0 *1 350.871,212.235 cap_cmim
+C$54 \$94 \$100 2.240901e-13
+* device instance $55 r0 *1 66.531,252.89 cap_cmim
+C$55 \$103 \$113 2.249462e-13
+* device instance $56 r0 *1 111.231,249.255 cap_cmim
+C$56 \$104 \$118 2.721837e-13
+* device instance $57 r0 *1 152.686,252.68 cap_cmim
+C$57 \$105 \$114 4.848264e-13
+* device instance $58 r0 *1 193.156,252.855 cap_cmim
+C$58 \$106 \$115 4.8602215e-13
+* device instance $59 r0 *1 233.446,252.89 cap_cmim
+C$59 \$107 \$116 4.696695e-13
+* device instance $60 r0 *1 273.421,249.48 cap_cmim
+C$60 \$108 \$111 2.731264e-13
+* device instance $61 r0 *1 314.641,252.68 cap_cmim
+C$61 \$109 \$117 4.565184e-13
+* device instance $62 r0 *1 351.406,253.175 cap_cmim
+C$62 \$110 \$112 2.6235345e-13
+* device instance $63 r0 *1 67.066,293.475 cap_cmim
+C$63 \$119 \$129 2.5349905e-13
+* device instance $64 r0 *1 111.541,294.265 cap_cmim
+C$64 \$120 \$130 5.055404e-13
+* device instance $65 r0 *1 151.561,293.51 cap_cmim
+C$65 \$121 \$131 4.340784e-13
+* device instance $66 r0 *1 192.826,289.245 cap_cmim
+C$66 \$122 \$132 2.5185595e-13
+* device instance $67 r0 *1 233.776,289.875 cap_cmim
+C$67 \$123 \$133 2.9504215e-13
+* device instance $68 r0 *1 274.546,293.795 cap_cmim
+C$68 \$124 \$127 5.1153165e-13
+* device instance $69 r0 *1 314.331,290.1 cap_cmim
+C$69 \$125 \$128 2.831952e-13
+* device instance $70 r0 *1 350.871,289.245 cap_cmim
+C$70 \$126 \$134 1.206243e-13
+* device instance $71 r0 *1 71.296,330.72 cap_cmim
+C$71 \$135 \$136 3.069784e-13
+* device instance $72 r0 *1 110.941,334.885 cap_cmim
+C$72 \$137 \$138 4.697144e-13
+.ENDS cap_cmim

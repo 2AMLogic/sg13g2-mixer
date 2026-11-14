@@ -1,0 +1,52 @@
+* extracted by klt extract --deck sg13g2
+
+* cell sg13_lv_pmos
+.SUBCKT sg13_lv_pmos
+* device instance $1 r0 *1 258.929,-8.356 pfet
+M$1 \$19 \$18 \$17 \$1 pfet L=4.99U W=5.65U AS=1.921P AD=1.921P PS=11.98U
++ PD=11.98U
+* device instance $2 r0 *1 89.448,-9.107 pfet
+M$2 \$5 \$2 \$4 \$1 pfet L=3.45U W=7.46U AS=2.5364P AD=2.5364P PS=15.6U PD=15.6U
+* device instance $3 r0 *1 213.109,-8.439 pfet
+M$3 \$13 \$12 \$11 \$1 pfet L=0.53U W=7.15U AS=2.431P AD=2.431P PS=14.98U
++ PD=14.98U
+* device instance $4 r0 *1 130.234,-8.011 pfet
+M$4 \$16 \$15 \$14 \$1 pfet L=9.12U W=6.34U AS=2.1556P AD=2.1556P PS=13.36U
++ PD=13.36U
+* device instance $5 r0 *1 45.243,-7.884 pfet
+M$5 \$10 \$9 \$8 \$1 pfet L=2.22U W=8.26U AS=2.8084P AD=2.8084P PS=17.2U
++ PD=17.2U
+* device instance $6 r0 *1 171.944,-8.192 pfet
+M$6 \$7 \$3 \$6 \$1 pfet L=5.38U W=9.29U AS=3.1586P AD=3.1586P PS=19.26U
++ PD=19.26U
+* device instance $7 r0 *1 0.142,-2.188 pfet
+M$7 \$22 \$23 \$21 \$20 pfet L=0.15U W=0.2U AS=0.104P AD=0.059P PS=1.34U
++ PD=0.74U
+* device instance $8 r0 *1 0.732,-2.188 pfet
+M$8 \$21 \$23 \$22 \$20 pfet L=0.15U W=0.2U AS=0.059P AD=0.104P PS=0.74U
++ PD=1.34U
+* device instance $9 r0 *1 0.435,0.15 pfet
+M$9 \$30 \$29 \$28 \$20 pfet L=0.13U W=0.15U AS=0.1005P AD=0.1005P PS=1.34U
++ PD=1.34U
+* device instance $10 r0 *1 5.249,0.15 pfet
+M$10 \$27 \$32 \$26 \$20 pfet L=0.15U W=0.2U AS=0.104P AD=0.104P PS=1.34U
++ PD=1.34U
+* device instance $11 r0 *1 2.688,0.162 pfet
+M$11 \$25 \$31 \$24 \$20 pfet L=0.15U W=0.15U AS=0.1005P AD=0.1005P PS=1.34U
++ PD=1.34U
+* device instance $12 r0 *1 171.584,20.885 pfet
+M$12 \$47 \$46 \$45 \$1 pfet L=4.66U W=2.74U AS=0.9316P AD=0.9316P PS=6.16U
++ PD=6.16U
+* device instance $13 r0 *1 43.414,21.327 pfet
+M$13 \$39 \$33 \$38 \$1 pfet L=9.84U W=6.34U AS=2.1556P AD=2.1556P PS=13.36U
++ PD=13.36U
+* device instance $14 r0 *1 212.298,22.267 pfet
+M$14 \$37 \$36 \$35 \$1 pfet L=4.66U W=9.29U AS=3.1586P AD=3.1586P PS=19.26U
++ PD=19.26U
+* device instance $15 r0 *1 126.784,22.802 pfet
+M$15 \$41 \$34 \$40 \$1 pfet L=2.22U W=9.29U AS=3.1586P AD=3.1586P PS=19.26U
++ PD=19.26U
+* device instance $16 r0 *1 87.004,24.16 pfet
+M$16 \$44 \$43 \$42 \$1 pfet L=9.84U W=9.29U AS=3.1586P AD=3.1586P PS=19.26U
++ PD=19.26U
+.ENDS sg13_lv_pmos
