@@ -13,6 +13,7 @@
   comparison; it makes no re-pin decision.
 - [`decision-records/`](decision-records/) — numbered decision records.
   - [0001 — target spec ratification](decision-records/0001-target-spec-ratification.md)
+  - [0002 — shared bench mechanics with `sg13g2-sat-rx`](decision-records/0002-shared-bench-mechanics.md)
 
 Spec changes go through a decision record. Agents do not relax a ratified row to
 make a result pass.
