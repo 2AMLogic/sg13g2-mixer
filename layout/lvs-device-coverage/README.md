@@ -26,16 +26,36 @@ is stale and the rows must be re-run, not trusted.
 |---|---|---|
 | `klt` version | `0.9.2.dev1022+g2a9c52b27ce7` | `klt --version` |
 | `klt` git commit | `2a9c52b27ce7986b4372ae5d73129dac4773e02c` | `provenance.klt_git_commit` in any report here |
-| KLayout (klt-resolved) | `0.30.13` | `provenance.klayout_version` in any report here |
-| KLayout (system binary) | `0.30.12` | `klayout -v` |
+| KLayout — `klt`'s bundled module (produced the `extract` + curated-deck rows) | `0.30.13` | `provenance.klayout_version` in any report here |
+| KLayout — system binary (produced the `LVS (PDK runset)` rows **and** the `run_lvs.py` cross-check) | `0.30.12` | `klayout -v`; `environment.klayout_binary` and `provenance.runset.klayout_application_version` in any `*.lvs-pdk-runset.json` |
 | `sg13g2` deck `content_hash` | `sha256:cf6dfeadf75bd95bf89beb0a64e06ed43b65f6ff782df10ae200ea200a73d8e9` | `klt deck info --deck sg13g2` |
 | PDK | IHP-Open-PDK `v0.3.0` @ `5cccb161f7492697cfa52eb14dc03beb00bdca9e` | `sim/pdk-artifact.json` → `upstream.commit` |
 
 `klt` warns that it resolved KLayout `0.30.13` while this `klt` build was tested against
 `0.30.12`, and that report **counts** may differ across that gap even where the verdict
-does not. The two KLayout versions on this host are not the same: `klt` uses its own
-bundled Python `klayout` module, the PDK's `run_lvs.py` cross-check below used the same
-module (the system `klayout` binary is `0.30.12` and was not used for any row here).
+does not (`klt` records this as `provenance.klayout_version_mismatch: true` on the
+curated-deck reports). **Both KLayout versions on this host produced rows below**, and the
+split is by engine, not by cell:
+
+- **`klt extract` and `LVS (klt curated deck)` rows** ran inside `klt` on its own bundled
+  Python `klayout` module, `0.30.13`. The curated-deck reports say so in
+  `environment.engine: klayout` / `environment.engine_version: 0.30.13` with no
+  `environment.klayout_binary`; the `extract` reports carry no `environment` block at all,
+  so their evidence is `provenance.klayout_version: 0.30.13` and the absence of any
+  `provenance.runset` block.
+- **`LVS (PDK runset)` rows did not.** `engine: klayout-runset` shells out to the system
+  KLayout application, so all five of those rows were produced by `/usr/bin/klayout`
+  `0.30.12` — `environment.klayout_binary: /usr/bin/klayout`,
+  `environment.engine_version: 0.30.12`, and
+  `provenance.runset.klayout_application_version: 0.30.12` in every
+  `*.lvs-pdk-runset.json`.
+- **The `run_lvs.py` cross-check** (§ *…but `klt lvs` still scores those as errors*) ran on
+  that **same** system binary at `0.30.12`: the PDK's script invokes `klayout -b -r <deck>`
+  from `PATH` (`run_lvs.py:572`, and its own `check_klayout_version()` reads `klayout -b
+  -v`), which on this host resolves to `/usr/bin/klayout`. The cross-check therefore
+  compares `klt lvs` against the identical engine, deck and switch it wrapped — the version
+  gap is **not** a candidate explanation for that disagreement, which is what makes
+  `klayout-tools#5664` a wrapper-scoring defect rather than a version artefact.
 
 ## Deck device coverage
 
@@ -175,7 +195,8 @@ needs *size-filtered* (`with_bbox_min`/`with_bbox_max`) and dynamic per-instance
 relationships that the static model cannot express. The documented consequence is that a
 SiGe HBT "continues to extract as ordinary unconnected geometry (a `klt lvs`
 `device.unmatched`/short, never a wrong device)" — which is exactly what the committed
-`npn13G2.lvs-klt-deck.json` shows (`device.unmatched: 3`, `topology: 3`).
+`npn13G2.lvs-klt-deck.json` shows (`device.unmatched: 3`, `net.unmatched: 11`,
+`topology: 1`).
 
 **The HBT is not unreachable, though.** The PDK's own runset *does* recognise it: via
 `engine: klayout-runset`, `npn13G2` matches **3/3 devices and 10/10 nets**
@@ -269,6 +290,16 @@ geometry*, while the runset netlist is *schematic-equivalent* after its own `sim
 and after folding `m`/`ng` multiplicity, so one schematic device can be several extracted
 shapes. `rppd` goes the other way — the curated deck finds **fewer** resistors than both
 the runset and the reference netlist — which that explanation does not cover.
+
+**Version confounder, not eliminated:** the two count columns were not produced by the same
+KLayout. The curated-deck column ran on `klt`'s bundled module `0.30.13` and the runset
+column on the system binary `0.30.12` (§ *Environment identity*), and `klt`'s own warning
+across that gap is specifically that report **counts** may differ even where the verdict
+does not. A version difference is therefore a live candidate explanation for every delta in
+this table — including the `rppd` **−2** that the census-vs-schematic-equivalent reasoning
+above does not cover. Before reading these deltas as a curated-deck defect, re-run both
+sides on one KLayout version; that is cheaper than the geometry trace below and may remove
+the question entirely.
 
 It is not filed because it has not been traced to a defect: a plausible benign cause is the
 reference's two resistors with `b` (bend) parameters being split or merged differently by
