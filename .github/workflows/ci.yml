@@ -4,7 +4,9 @@ name: ci
 # headless and needs neither a PDK nor a simulator. A job with nothing to check
 # yet passes trivially but still exists, so the first bench or record is
 # checked the day it lands. Each job is a thin call to a script under scripts/
-# that package.json also runs (scripts/check-all.sh), so local and CI agree.
+# that package.json also runs (scripts/check-all.sh). scripts/test-checks.sh
+# asserts both wirings cover every scripts/ entry point, so local and CI
+# cannot drift.
 
 on:
   push:
