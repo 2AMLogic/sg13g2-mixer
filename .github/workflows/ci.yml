@@ -86,6 +86,32 @@ jobs:
             # step before jq runs. klt's rc carries no signal here; the jq
             # assertion below is the only verdict.
             out=$("${KLT[@]}" signoff --manifest "$1" --repo-root . --format json) || true
+            # Issue #65 pin-bump tripwire. Measured 2026-11-15 against klt
+            # dce956c3: the two conjuncts asserted below are *equivalent* for
+            # item 10 under this pin — item 10 can only grade `met` from a
+            # "generic" citation, which only grades `met` once its artifact
+            # binding is verified, and an `unmet` item 10 carries no citation
+            # at all — so NO manifest state separates them and neither
+            # conjunct can be controlled on its own. The gap is unclosable
+            # under this pin, not merely unclosed. This probe asserts the
+            # equivalence itself for every manifest state exercised below:
+            # silent today, red on a pin bump that decouples the two
+            # predicates. Two shapes here are load-bearing, not style:
+            #  - the sentinel is a FILE, not `fail=1`: verdict() runs in a
+            #    subshell (expect() calls it via command substitution), so an
+            #    assignment to `fail` here is discarded, and anything echoed
+            #    here is captured into expect()'s $got instead of the log.
+            #  - `if length==1 then … else "ERR"`, never `// "ERR"`: jq's `//`
+            #    treats `false` as empty, which would report a legitimate
+            #    `false` as "ERR" and make a missing item 10 compare equal to
+            #    a real answer. ERR is a failure, not agreement.
+            _q() { printf '%s' "$out" | jq -r "[.items[]|select(.id==10)|$1]|if length==1 then (.[0]|tostring) else \"ERR\" end" 2>/dev/null || echo ERR; }
+            _met=$(_q '.status=="met"')
+            _ver=$(_q '.citation.artifact_binding.input_verified==true')
+            if [ "$_met" != "$_ver" ] || [ "$_met" = ERR ]; then
+              printf 'manifest %s: status==met:%s input_verified==true:%s\n' \
+                "$1" "$_met" "$_ver" >> "$T/conjunct-disagreement"
+            fi
             if printf '%s' "$out" | jq -e '.items[] | select(.id==10)
                 | select(.status=="met" and .citation.artifact_binding.input_verified==true)' >/dev/null; then
               echo pass; return 0
@@ -119,6 +145,12 @@ jobs:
           expect pass "scratch copy through the harness passes" "$T/ok.json"
           expect unanchored_evidence "deleted content_hash fails: unanchored_evidence" "$T/unanchored.json"
           expect stale_evidence "envelope's own hash fails: stale_evidence" "$T/stale.json"
+          # Drain the tripwire's subshell sentinel into the parent shell's
+          # `fail` where `exit $fail` can see it (see the tripwire comment in
+          # verdict(); $T is the mktemp -d above, outside the checkout).
+          if [ -s "$T/conjunct-disagreement" ]; then
+            echo "FAIL item-10 conjunct equivalence broke (#65):"; cat "$T/conjunct-disagreement"; fail=1
+          fi
           if [ -n "$(git status --porcelain)" ]; then
             echo "FAIL the step wrote into the checkout:"; git status --porcelain; fail=1
           fi
