@@ -4,6 +4,8 @@ Chronological record of merged PRs and closed issues. Maintained by the Guide tr
 
 ### 2026-11-15
 
+- **PR #52**: docs(roadmap): drop hand-synced status sections duplicated by WORK_PLAN.md and tracker #5
+- **Issue #51** (closed): Trim ROADMAP.md: drop stale hand-synced status sections that WORK_PLAN.md and #5 already own
 - **PR #45**: test: add PDK-independent fixture control for the verify_pdk gate
 - **Issue #43** (closed): PDK integrity gate has no CI-executed negative control: all 5 tests in sim/tools/tests skip without PDK_ROOT
 
