@@ -4,6 +4,14 @@ Chronological record of merged PRs and closed issues. Maintained by the Guide tr
 
 ### 2026-11-15
 
+- **PR #69**: docs: drop duplicated derived-artefacts tables from lvs-device-coverage PROVENANCE.md
+- **Issue #67** (closed): Trim the five duplicated 'Derived artefacts' tables from lvs-device-coverage PROVENANCE.md files
+- **PR #68**: ci: item-10 conjunct-equivalence tripwire for klt pin bumps
+- **Issue #65** (closed): item-10 control harness does not pin which conjunct of the assertion does the rejecting
+- **PR #66**: fix: select assert_invoked wiring needles by path form, not basename prefix
+- **Issue #63** (closed): assert_invoked matches a basename, so a nested scripts/ gate can pass on a sibling's wiring
+- **PR #62**: ci: negative and positive controls for the item-10 manifest-binding gate
+- **Issue #59** (closed): The new item-10 manifest-binding CI gate has no re-runnable negative control
 - **PR #61**: test: assert check-all.sh covers every derived scripts/ entry point
 - **Issue #55** (closed): Two unchecked copies of the gate list remain after #42: check-all.sh and signoff inventory.json
 - **PR #58**: test: close the three mutation gaps in the verify_pdk fixture control
