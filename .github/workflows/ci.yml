@@ -66,3 +66,11 @@ jobs:
       # includes `klt signoff --attest`.
       - name: Item 10 envelope still reproduces (no drift)
         run: uvx --from "git+https://github.com/2AMLogic/klayout-tools@dce956c3c39995643ff2a5c31b53c474b3c2aada" klt signoff --attest 10 --inventory signoff/repo-hygiene/inventory.json --check signoff/repo-hygiene/envelope.json
+      - name: Item 10 manifest binding is anchored and fresh
+        run: |
+          out=$(uvx --from "git+https://github.com/2AMLogic/klayout-tools@dce956c3c39995643ff2a5c31b53c474b3c2aada" \
+            klt signoff --manifest signoff/manifest.json --repo-root . --format json) || true
+          printf '%s' "$out" | jq -e '.items[] | select(.id==10)
+            | select(.status=="met" and .citation.artifact_binding.input_verified==true)' \
+            || { printf '%s' "$out" | jq -r '.items[] | select(.id==10)
+                 | "item 10 is \(.status): \(.reason)"' >&2; exit 1; }
