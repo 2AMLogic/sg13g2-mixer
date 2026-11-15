@@ -27,17 +27,19 @@ LEAF_B = "models/leaf_b.lib"
 SUBTREE = "fpdk"
 
 
-def make_fixture(tmp):
-    """Fixture install tree (top.lib includes two leaves) + artifact JSON.
+def make_fixture(tmp, top_includes=".include leaf_a.lib\n.include leaf_b.lib\n"):
+    """Fixture install tree (top.lib loads two leaves) + artifact JSON.
 
-    The artifact hashes are computed at test time from the files just written.
-    Returns (pdk_root, artifact_path); pdk_root is the parent of the
-    install_subtree ("fpdk"), as verify() joins the two.
+    top_includes is the top file's directive text; the default reproduces the
+    historical tree byte-for-byte. The artifact hashes are computed at test
+    time from the files just written. Returns (pdk_root, artifact_path);
+    pdk_root is the parent of the install_subtree ("fpdk"), as verify() joins
+    the two.
     """
     root = os.path.join(tmp, SUBTREE)
     os.makedirs(os.path.join(root, "models"))
     files = {
-        TOP: "* fixture top\n.include leaf_a.lib\n.include leaf_b.lib\n",
+        TOP: "* fixture top\n" + top_includes,
         LEAF_A: "* fixture leaf A\n.model npna npn (bf=100)\n",
         LEAF_B: "* fixture leaf B\n.model npnb npn (bf=120)\n",
     }
@@ -67,6 +69,11 @@ class FixtureGate(unittest.TestCase):
         self.addCleanup(shutil.rmtree, self.tmp)
         self.root, self.artifact = make_fixture(self.tmp)
         self.install = os.path.join(self.root, SUBTREE)
+
+    def rebuild(self, top_includes):
+        """Replace the fixture with one whose top file uses these directives."""
+        shutil.rmtree(os.path.join(self.tmp, SUBTREE))
+        self.root, self.artifact = make_fixture(self.tmp, top_includes=top_includes)
 
     def cli(self):
         return subprocess.run(
@@ -128,6 +135,53 @@ class FixtureGate(unittest.TestCase):
         artifact["files"]["models/leaf_d.lib"] = verify_pdk.sha256(p)
         self.assertEqual(verify_pdk.verify(self.root, artifact),
                          ["pinned file not in closure: models/leaf_d.lib"])
+
+    def test_sha256_known_answers(self):
+        cases = [
+            (b"", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"),
+            (b"abc", "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"),
+            (b"* fixture leaf A\n",
+             "a0132bc2f3074b44767193541ad422dd7942f2d8eb8f1f47d3f2b6636afc608e"),
+        ]
+        for data, want in cases:
+            p = os.path.join(self.tmp, "known_answer.bin")
+            with open(p, "wb") as f:
+                f.write(data)
+            self.assertEqual(verify_pdk.sha256(p), want, repr(data))
+        data = b"A" * ((1 << 16) * 2 + 9)
+        p = os.path.join(self.tmp, "multichunk.bin")
+        with open(p, "wb") as f:
+            f.write(data)
+        self.assertEqual(
+            verify_pdk.sha256(p),
+            "863afb10bbeead1da9a7456971b36edf3989a2d245603a2c59d959a7d1571e7d")
+
+    def test_quoted_include_paths_resolve(self):
+        self.rebuild('.include "leaf_a.lib"\n.include \'leaf_b.lib\'\n')
+        self.assertEqual(verify_pdk.verify(self.root, self.load_artifact()), [])
+
+    def test_quoted_path_with_space_resolves(self):
+        self.rebuild(
+            '.include "leaf a.lib"\n.include leaf_a.lib\n.include leaf_b.lib\n')
+        p = os.path.join(self.install, "models", "leaf a.lib")
+        with open(p, "w") as f:
+            f.write("* quoted path with a space\n")
+        artifact = self.load_artifact()
+        artifact["files"]["models/leaf a.lib"] = verify_pdk.sha256(p)
+        self.assertEqual(verify_pdk.verify(self.root, artifact), [])
+
+    def test_lib_section_directives_both_forms(self):
+        self.rebuild(
+            ".lib cornerTyp\n"
+            "* inline section body\n"
+            ".endl\n"
+            ".include leaf_a.lib\n"
+            ".lib leaf_b.lib cornerTyp\n")
+        derived = verify_pdk.closure(TOP, self.install)
+        self.assertNotIn("models/cornerTyp", derived)
+        self.assertIn("models/leaf_a.lib", derived)
+        self.assertIn("models/leaf_b.lib", derived)
+        self.assertEqual(verify_pdk.verify(self.root, self.load_artifact()), [])
 
 
 if __name__ == "__main__":
