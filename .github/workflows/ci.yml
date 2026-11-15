@@ -96,8 +96,13 @@ jobs:
             return 1
           }
           expect() { # expect <pass|FAIL-substring> <label> <manifest-path>
-            local want="$1" label="$2" mf="$3" got rc
-            got="$(verdict "$mf")"; rc=$?
+            local want="$1" label="$2" mf="$3" got rc=0
+            # `|| rc=$?` not `; rc=$?`: verdict returns non-zero by design on
+            # the negative controls, and Actions runs this block as bash -e, so
+            # a bare failing assignment would abort the step before the
+            # expectation is compared — the step would die silently after the
+            # two positive controls instead of failing the case.
+            got="$(verdict "$mf")" || rc=$?
             if { [ "$want" = pass ] && [ "$rc" -eq 0 ]; } || \
                { [ "$want" != pass ] && [ "$rc" -ne 0 ] \
                  && printf '%s' "$got" | grep -qF -- "$want"; }; then
