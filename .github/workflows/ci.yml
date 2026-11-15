@@ -66,11 +66,53 @@ jobs:
       # includes `klt signoff --attest`.
       - name: Item 10 envelope still reproduces (no drift)
         run: uvx --from "git+https://github.com/2AMLogic/klayout-tools@dce956c3c39995643ff2a5c31b53c474b3c2aada" klt signoff --attest 10 --inventory signoff/repo-hygiene/inventory.json --check signoff/repo-hygiene/envelope.json
-      - name: Item 10 manifest binding is anchored and fresh
+      - name: Item 10 manifest binding is anchored and fresh (with controls)
         run: |
-          out=$(uvx --from "git+https://github.com/2AMLogic/klayout-tools@dce956c3c39995643ff2a5c31b53c474b3c2aada" \
-            klt signoff --manifest signoff/manifest.json --repo-root . --format json) || true
-          printf '%s' "$out" | jq -e '.items[] | select(.id==10)
-            | select(.status=="met" and .citation.artifact_binding.input_verified==true)' \
-            || { printf '%s' "$out" | jq -r '.items[] | select(.id==10)
-                 | "item 10 is \(.status): \(.reason)"' >&2; exit 1; }
+          set -u
+          KLT=(uvx --from "git+https://github.com/2AMLogic/klayout-tools@dce956c3c39995643ff2a5c31b53c474b3c2aada" klt)
+          T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
+          fail=0
+          # The ONE copy of the item-10 assertion: rc 0 = item 10 anchored and
+          # fresh; on failure prints klt's own reason. Every case below,
+          # positive and negative, goes through this function, so a weakened
+          # assertion turns a control red instead of passing silently.
+          verdict() { # verdict <manifest-path>; echoes "pass" or the reason line
+            local out
+            # `|| true` is REQUIRED, not defensive: klt signoff exits 3 whenever
+            # the overall T1 signoff is unmet (the normal state, 1 of 11 met),
+            # and Actions runs this block as bash -e, so dropping it aborts the
+            # step before jq runs. klt's rc carries no signal here; the jq
+            # assertion below is the only verdict.
+            out=$("${KLT[@]}" signoff --manifest "$1" --repo-root . --format json) || true
+            if printf '%s' "$out" | jq -e '.items[] | select(.id==10)
+                | select(.status=="met" and .citation.artifact_binding.input_verified==true)' >/dev/null; then
+              echo pass; return 0
+            fi
+            printf '%s' "$out" | jq -re '.items[] | select(.id==10)
+                | "item 10 is \(.status): \(.reason)"' 2>/dev/null \
+              || echo "item 10: no usable klt output (klt or jq failed)"
+            return 1
+          }
+          expect() { # expect <pass|FAIL-substring> <label> <manifest-path>
+            local want="$1" label="$2" mf="$3" got rc
+            got="$(verdict "$mf")"; rc=$?
+            if { [ "$want" = pass ] && [ "$rc" -eq 0 ]; } || \
+               { [ "$want" != pass ] && [ "$rc" -ne 0 ] \
+                 && printf '%s' "$got" | grep -qF -- "$want"; }; then
+              echo "ok   $label"
+            else
+              echo "FAIL $label: want '$want', got (rc=$rc): $got"; fail=1
+            fi
+          }
+          cp signoff/manifest.json "$T/ok.json"
+          jq 'del(.evidence."10".content_hash)' signoff/manifest.json > "$T/unanchored.json"
+          jq --arg h "sha256:$(sha256sum signoff/repo-hygiene/envelope.json | cut -d' ' -f1)" \
+             '.evidence."10".content_hash = $h' signoff/manifest.json > "$T/stale.json"
+          expect pass "committed manifest anchors item 10 (the gate itself)" signoff/manifest.json
+          expect pass "scratch copy through the harness passes" "$T/ok.json"
+          expect unanchored_evidence "deleted content_hash fails: unanchored_evidence" "$T/unanchored.json"
+          expect stale_evidence "envelope's own hash fails: stale_evidence" "$T/stale.json"
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "FAIL the step wrote into the checkout:"; git status --porcelain; fail=1
+          fi
+          exit $fail
