@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Self-test of the CI gates: each must fail on its negative control and pass on
 # its positive one, so a gate that cannot fail is caught. Also asserts that
-# every scripts/ entry point is run by .github/workflows/ci.yml.
+# every scripts/ entry point is run by .github/workflows/ci.yml and by
+# scripts/check-all.sh (the local wrapper package.json delegates to), so the
+# two wirings cannot drift apart.
 # Needs bash, git, python3.
 set -u
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -41,7 +43,7 @@ expect 1 "append-only fails on a renamed record" -- AO
 expect 2 "append-only fails closed on an unknown base" -- "$S/check-sim-append-only" --root "$T" --base nosuchref
 
 # empty tree: every gate passes trivially
-E="$(mktemp -d)"; trap 'rm -rf "$T" "$E"' EXIT
+E="$(mktemp -d)"; trap 'rm -rf "$T" "$E" "$N" "$V"' EXIT
 git -C "$E" init -q
 expect 0 "check-python passes with nothing to check" -- "$S/check-python.sh" --root "$E"
 expect 0 "reuse-lock passes when absent"             -- "$S/check-reuse-lock.sh" "$E"
@@ -50,23 +52,68 @@ expect 1 "check-python fails on a syntax error"      -- "$S/check-python.sh" --r
 printf '[1,2]\n' > "$E/reuse.lock.json"
 expect 1 "reuse-lock rejects a non-object"           -- "$S/check-reuse-lock.sh" "$E"
 
-# workflow wiring: derive the entry-point set from the tracked tree instead of
-# hardcoding names, so a gate added under scripts/ later cannot silently skip
-# this check. Entry points are tracked scripts/ files excluding scripts/fixtures/
-# that are executable.
-mapfile -t entries < <(git -C "$ROOT" ls-files scripts/ | grep -v '^scripts/fixtures/')
-if [ "${#entries[@]}" -eq 0 ]; then
-  echo "FAIL no tracked scripts/ entry points found; wiring assertion would be vacuous"; fail=1
-fi
-for s in "${entries[@]}"; do
-  [ -x "$ROOT/$s" ] || continue
-  if [ "$s" = "scripts/check-all.sh" ]; then
-    # check-all.sh is the local-only convenience wrapper that runs the other
-    # gates (see its header); ci.yml documents it as the local counterpart,
-    # not a CI job. Exempted as a named single case, never a second list.
-    continue
+# wiring assertions: every tracked, executable scripts/ entry point must be
+# invoked by each wiring target, or a gate added under scripts/ later could be
+# wired into one copy and silently left out of the other. The entry-point set
+# is always derived from the tracked tree (git ls-files), never hardcoded;
+# taking the root as a parameter lets the negative controls below drive the
+# same assertion against a fixture root.
+# assert_invoked <root> <target-file> <match-prefix>
+# The needle is <match-prefix><basename>. "scripts/" reproduces the tracked
+# path as written in ci.yml; '$S/' reproduces the invocation form check-all.sh
+# actually uses ("$S/<basename>") — the tracked path never appears there, so
+# greping for it would report FAIL on every gate. The assertion is presence of
+# the invocation, not unconditional execution: check-all.sh may run a gate
+# conditionally (it runs check-sim-append-only only when BASE is set).
+assert_invoked() {
+  local root="$1" target="$2" prefix="$3" s rc=0
+  local -a ents
+  mapfile -t ents < <(git -C "$root" ls-files scripts/ | grep -v '^scripts/fixtures/')
+  if [ "${#ents[@]}" -eq 0 ]; then
+    echo "FAIL no tracked scripts/ entry points under $root; $(basename "$target") coverage assertion would be vacuous"
+    rc=1
   fi
-  if grep -qF "$s" "$ROOT/.github/workflows/ci.yml"; then echo "ok   ci.yml runs $s"
-  else echo "FAIL ci.yml does not run $s"; fail=1; fi
-done
+  for s in "${ents[@]}"; do
+    [ -x "$root/$s" ] || continue
+    if [ "$s" = "scripts/check-all.sh" ]; then
+      # check-all.sh is the local-only convenience wrapper that runs the other
+      # gates (see its header); ci.yml documents it as the local counterpart,
+      # not a CI job, and it does not invoke itself. Exempted as a named single
+      # case, never a second list. (Load-bearing for ci.yml: its header comment
+      # names scripts/check-all.sh in prose, so a path grep alone would pass on
+      # the comment.)
+      continue
+    fi
+    if grep -qF "$prefix$(basename "$s")" "$target"; then echo "ok   $(basename "$target") runs $s"
+    else echo "FAIL $(basename "$target") does not run $s"; rc=1; fi
+  done
+  return $rc
+}
+assert_invoked "$ROOT" "$ROOT/.github/workflows/ci.yml" "scripts/" || fail=1
+assert_invoked "$ROOT" "$ROOT/scripts/check-all.sh" '$S/' || fail=1
+
+# negative controls for the wiring assertions themselves — same standard as
+# every gate above: a check that cannot fail is indistinguishable from no
+# check. N: a tracked, executable gate absent from check-all.sh must fail the
+# assertion and name the gate. V: an empty derived set must fail loudly, not
+# pass vacuously.
+N="$(mktemp -d)"
+git -C "$N" init -q
+mkdir -p "$N/scripts"
+cp "$ROOT/scripts/check-all.sh" "$N/scripts/check-all.sh"
+printf '#!/usr/bin/env bash\nexit 0\n' > "$N/scripts/check-new-gate.sh"
+chmod +x "$N/scripts/check-new-gate.sh" "$N/scripts/check-all.sh"
+git -C "$N" add scripts/
+expect 1 "coverage fails when a gate is missing from check-all.sh" \
+  -- assert_invoked "$N" "$N/scripts/check-all.sh" '$S/'
+if assert_invoked "$N" "$N/scripts/check-all.sh" '$S/' 2>&1 | grep -qF 'check-new-gate.sh'; then
+  echo "ok   coverage failure names the missing gate"
+else
+  echo "FAIL coverage failure does not name the missing gate"; fail=1
+fi
+V="$(mktemp -d)"
+git -C "$V" init -q
+expect 1 "coverage fails loudly when the derived set is empty" \
+  -- assert_invoked "$V" "$V/scripts/check-all.sh" '$S/'
+
 exit $fail
