@@ -27,15 +27,3 @@ Apache-2.0 permits redistribution of these files. The licence header inside `npn
 is preserved verbatim; `npn13G2.gds` is a binary stream with no in-file header, so this
 note carries its attribution. The repository's own `LICENSE` does not apply to these two
 files.
-
-## Derived artefacts in this directory
-
-Produced locally from the two files above; see `../README.md` for the exact commands and
-the environment identity.
-
-| file | produced by |
-|---|---|
-| `npn13G2.extract.json` | `klt extract … --deck sg13g2 --format json` |
-| `npn13G2.extracted.spice` | the same run's `-o` netlist output |
-| `npn13G2.lvs-klt-deck.json` | `klt lvs`, curated `sg13g2` deck + native comparer |
-| `npn13G2.lvs-pdk-runset.json` | `klt lvs`, `engine: klayout-runset` against the PDK's `sg13g2.lvs` |

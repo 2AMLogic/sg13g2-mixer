@@ -27,15 +27,3 @@ Apache-2.0 permits redistribution of these files. The licence header inside
 `cap_cmim.cdl` is preserved verbatim; `cap_cmim.gds` is a binary stream with no in-file
 header, so this note carries its attribution. The repository's own `LICENSE` does not
 apply to these two files.
-
-## Derived artefacts in this directory
-
-Produced locally from the two files above; see `../README.md` for the exact commands and
-the environment identity.
-
-| file | produced by |
-|---|---|
-| `cap_cmim.extract.json` | `klt extract … --deck sg13g2 --format json` |
-| `cap_cmim.extracted.spice` | the same run's `-o` netlist output |
-| `cap_cmim.lvs-klt-deck.json` | `klt lvs`, curated `sg13g2` deck + native comparer (needs `reference.form: "subckt-call"`) |
-| `cap_cmim.lvs-pdk-runset.json` | `klt lvs`, `engine: klayout-runset` against the PDK's `sg13g2.lvs` |
