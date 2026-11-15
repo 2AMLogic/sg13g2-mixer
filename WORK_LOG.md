@@ -2,13 +2,21 @@
 
 Chronological record of merged PRs and closed issues. Maintained by the Guide triage role.
 
+### 2026-11-15
+
+- **PR #45**: test: add PDK-independent fixture control for the verify_pdk gate
+- **Issue #43** (closed): PDK integrity gate has no CI-executed negative control: all 5 tests in sim/tools/tests skip without PDK_ROOT
+
 ### 2026-11-14
 
+- **PR #44**: fix: point lint at scripts/check-all.sh, drop dead worktree:return entry
 - **PR #41**: refactor: drop the unenforced PDK-pin copy from sim/pdk.json
 - **PR #36**: feat(layout): add klt LVS device-coverage evidence for five SG13G2 golden cells
 - **PR #35**: docs: decide D4 — classify sg13g2-sat-rx bench mechanics and specify the reuse-lock entry shape
 - **PR #34**: docs(spec): record the pinned-LNA-interface re-check against LNA main
 - **PR #28**: docs: roadmap as of 2026-11-13
+- **Issue #40** (closed): spec/target-spec.md PDK-pin row cites sim/pdk.json, which no longer carries a pin
+- **Issue #38** (closed): Trim package.json scripts: a dead worktree:return entry and lint's diverged copy of the gate list
 - **Issue #33** (closed): Remove the duplicated PDK-pin fields in sim/pdk.json: an unchecked second copy of the enforced pin
 - **Issue #31** (closed): LVS device-coverage probe for npn13G2 and candidate passives before topology selection
 - **Issue #30** (closed): Decide deferred item D4: which bench mechanics are shared with sg13g2-sat-rx
