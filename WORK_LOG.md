@@ -4,6 +4,14 @@ Chronological record of merged PRs and closed issues. Maintained by the Guide tr
 
 ### 2026-11-15
 
+- **PR #61**: test: assert check-all.sh covers every derived scripts/ entry point
+- **Issue #55** (closed): Two unchecked copies of the gate list remain after #42: check-all.sh and signoff inventory.json
+- **PR #58**: test: close the three mutation gaps in the verify_pdk fixture control
+- **Issue #50** (closed): verify_pdk CI control cannot catch a hash-algorithm swap or two _target() parser branches
+- **PR #57**: ci: gate the item-10 manifest hash binding, label the pin, document signoff regeneration
+- **Issue #39** (closed): Gate the item-10 manifest hash binding in CI, and label what it anchors
+- **PR #48**: test: derive ci.yml wiring assertion from tracked entry points
+- **Issue #42** (closed): Derive the ci.yml wiring assertion in scripts/test-checks.sh instead of hardcoding a five-name list
 - **PR #52**: docs(roadmap): drop hand-synced status sections duplicated by WORK_PLAN.md and tracker #5
 - **Issue #51** (closed): Trim ROADMAP.md: drop stale hand-synced status sections that WORK_PLAN.md and #5 already own
 - **PR #45**: test: add PDK-independent fixture control for the verify_pdk gate
