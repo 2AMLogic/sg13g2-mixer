@@ -1,8 +1,9 @@
 # 0003 — Value-preserving citation repairs in `target-spec.md`
 
 - **Status**: PROPOSED. This record states one rule — what a
-  value-preserving citation repair is — and applies it to two stale
-  citations in [`../target-spec.md`](../target-spec.md). It ratifies no row
+  value-preserving citation repair is — and applies it to two citation
+  repairs in [`../target-spec.md`](../target-spec.md) (one stale pointer,
+  one ambiguous cross-repo citation). It ratifies no row
   of `target-spec.md`, changes no protocol number, no row R1–R15, no
   tolerance and no PVT corner. Approving the PR that carries this record is
   not ratification of the spec.
@@ -40,25 +41,38 @@ moved, because this record is that history.
   and left the correction "to be folded into the next record that touches
   the measurement protocol". No such record is pending; waiting was the
   ownerless state this record ends.
-- **The PDK-pin row named a file without the pin.** The ratified PDK-pin
-  row pointed at `sim/pdk.json`, which — after
-  [#33](https://github.com/2AMLogic/sg13g2-mixer/issues/33) — carries no
-  pin fields at all. The enforced pin lives in `sim/pdk-artifact.json`
-  (the only file `sim/tools/verify_pdk.py` reads), whose `upstream.tag` /
-  `upstream.commit` are exactly the values the row quotes. Filed as #40
-  and consolidated into #47: same file, same repair shape, same question —
-  does a citation repair need its own record? This record answers once for
-  both.
+- **The PDK-pin row's bare filename was ambiguous.** The ratified PDK-pin
+  row cites `sim/pdk.json` "there" — the LNA repo at the pinned commit,
+  where that file does carry the pin (verified by blob SHA in
+  [`lna-interface-recheck.md`](../lna-interface-recheck.md), §"Evidence").
+  [#40](https://github.com/2AMLogic/sg13g2-mixer/issues/40) read the bare
+  filename as a path in this repo, where — after
+  [#33](https://github.com/2AMLogic/sg13g2-mixer/issues/33) — `sim/pdk.json`
+  indeed carries no pin fields at all (the enforced local pin lives in
+  `sim/pdk-artifact.json`, the only file `sim/tools/verify_pdk.py` reads,
+  whose `upstream.tag` / `upstream.commit` equal the values the row
+  quotes). The defect is the terseness of "there", not a stale pointer;
+  the repair is a disambiguation, not a file swap. Filed as #40 and
+  consolidated into #47: same row, same question — does a citation repair
+  need its own record? This record answers once for both.
 
 ## The repairs
 
 Both applied to `../target-spec.md` in the PR carrying this record.
 
 1. **PDK-pin row** — the file citation only; the pinned tag and commit are
-   untouched and still equal `sim/pdk-artifact.json`'s values.
+   untouched. The table's source line (under "Interface to
+   `sg13g2-lna`") reads files in the LNA repo at commit `5532789…`, so
+   bare filenames in that column are LNA-repo-relative; the
+   disambiguation makes that explicit and stays consistent with
+   [`lna-interface-recheck.md`](../lna-interface-recheck.md) ("recorded in
+   `sim/pdk.json` (LNA repo)"). The LNA file carries the pin (`v0.3.0`,
+   `5cccb161…`); this repo's `sim/pdk-artifact.json` `upstream.tag` /
+   `upstream.commit` equal those values — one fact, three copies, now
+   unambiguous which citation names which.
 
    - Before: `` (`sim/pdk.json` there) ``
-   - After: `` (`sim/pdk-artifact.json` there) ``
+   - After: `` (`sim/pdk.json` in the LNA repo at the pinned commit) ``
 
 2. **D4 sentence, §"Measurement protocol"** — the paragraph's preceding
    three sentences (one master; stamped copy tracked in `reuse.lock.json`;

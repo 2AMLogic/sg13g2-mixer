@@ -48,7 +48,7 @@ The LNA's current pass/fail standing is not restated here; read its
 | IIP3 numeric | > 0 dBm (former draft) | **NOT RATIFIED** (`status: not-ratified` in `ratified-rows.json`) | an *assumption* in the cascade, provisional |
 | IIP3 protocol | two-tone, f1 = 2.44140625 GHz, Δ = 7.62939453125 MHz, FFT N = 65536 at 4 ps, rectangular window, coherent bins, 1 µs discarded, double drive levels with 3:1 IM3 slope check | RATIFIED | the pattern this block's IIP3 bench follows (parameters adapted below) |
 | Corner box | process {typ, bcs, wcs} × {−40, 27, 125} °C × {1.62, 1.80, 1.98} V | RATIFIED | the base of this block's PVT box |
-| PDK pin | IHP-Open-PDK v0.3.0, `5cccb161f7492697cfa52eb14dc03beb00bdca9e` (`sim/pdk-artifact.json` there) | — | referenced here; the pin is *committed* by [#3](https://github.com/2AMLogic/sg13g2-mixer/issues/3), not this issue |
+| PDK pin | IHP-Open-PDK v0.3.0, `5cccb161f7492697cfa52eb14dc03beb00bdca9e` (`sim/pdk.json` in the LNA repo at the pinned commit) | — | referenced here; the pin is *committed* by [#3](https://github.com/2AMLogic/sg13g2-mixer/issues/3), not this issue |
 
 **Interface requirement placed on this block (and findings that go upstream).**
 The mixer RF input must present a 50 Ω single-ended match to the LNA output
