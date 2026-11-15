@@ -20,6 +20,24 @@ newest release wheel, so the pin is a commit, not a release).
   envelope.provenance.input.content_hash`, so editing or deleting the pin
   renders item 10 UNMET (`stale_evidence` / `unanchored_evidence`).
 
+## Which checks `repo-hygiene/inventory.json` lists
+
+`checks` is a deliberate subset of the headless CI job set, not a second copy
+of it: it lists exactly the gates that are reproducible and context-free —
+the identical command passes locally and in CI, with no PR-specific argument
+and no network. Two CI jobs are deliberately excluded:
+
+- `records-append-only` — it requires `--base REF` (it exits 2 without one),
+  and any base ref baked into the inventory would be PR-context dependent,
+  i.e. not reproducible, which is exactly what the envelope's `exit_status`
+  claims to be.
+- `signoff-item10` — it attests the attestation itself (circular) and needs
+  the network plus the pinned external `klt` tool.
+
+A new gate joins `checks` only after it is wired into both `ci.yml` and
+`scripts/check-all.sh` (`scripts/test-checks.sh` asserts both wirings), and
+then the regeneration order below is re-run in the same change.
+
 ## Regeneration order (envelope first, manifest pin second)
 
 When the inventory changes (checks or hygiene files added/changed), regenerate
