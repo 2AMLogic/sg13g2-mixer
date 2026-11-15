@@ -3,6 +3,7 @@
   "kind": "analog",
   "evidence": {
     "10": {
+      "_comment": "content_hash is klt's binding anchor for this item: it pins signoff/repo-hygiene/inventory.json (the envelope's provenance.input), and is NOT the hash of the file named beside it.",
       "file": "signoff/repo-hygiene/envelope.json",
       "content_hash": "sha256:0daa698b1f3c42935c539be6e1a319391d29e4454c8fd2e2ff42cf2000579ab2"
     }
