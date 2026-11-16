@@ -9,6 +9,7 @@ Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a h
 
 - **#23**: docs(spec): record operator ratification of target spec, mark provisional rows
 - **#56**: spec: repair two stale citations in target-spec.md under record 0003
+- **#73**: chore(loom): resync installed Loom to v0.19.1302
 
 ## Very Important
 
@@ -47,6 +48,7 @@ PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 - **#23**: docs(spec): record operator ratification of target spec, mark provisional rows
 - **#56**: spec: repair two stale citations in target-spec.md under record 0003
+- **#73**: chore(loom): resync installed Loom to v0.19.1302
 
 ## Proposed
 
@@ -69,13 +71,13 @@ _None._
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 2 |
+| Operator merge-risk holds | 3 |
 | Very important | 0 |
 | Important | 1 |
 | Ready (`loom:issue`) | 2 |
 | In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 2 |
+| Approved PRs awaiting merge | 3 |
 | Curated | 4 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 0 |
