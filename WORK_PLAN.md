@@ -33,7 +33,6 @@ Human-approved issues ready for implementation (`loom:issue`).
 
 Issues currently being built (`loom:building`).
 
-- **#2**: Draft and ratify the target spec
 - **#47**: spec/target-spec.md still defers D4 to closed issue #3; record 0002 decided it
 
 ## PRs Awaiting Review
@@ -74,7 +73,7 @@ _None._
 | Very important | 0 |
 | Important | 1 |
 | Ready (`loom:issue`) | 2 |
-| In Progress (`loom:building`) | 2 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 2 |
 | Curated | 4 |
