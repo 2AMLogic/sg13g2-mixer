@@ -2,6 +2,10 @@
 
 Chronological record of merged PRs and closed issues. Maintained by the Guide triage role.
 
+### 2026-11-16
+
+- **PR #73**: chore(loom): resync installed Loom to v0.19.1302
+
 ### 2026-11-15
 
 - **PR #69**: docs: drop duplicated derived-artefacts tables from lvs-device-coverage PROVENANCE.md
