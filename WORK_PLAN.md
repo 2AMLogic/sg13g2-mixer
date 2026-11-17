@@ -7,9 +7,7 @@ Generated from GitHub label state by the Guide triage role. Everything between t
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
 
-- **#23**: docs(spec): record operator ratification of target spec, mark provisional rows
 - **#56**: spec: repair two stale citations in target-spec.md under record 0003
-- **#77**: chore(loom): resync installed Loom to v0.19.1306
 
 ## Very Important
 
@@ -27,6 +25,7 @@ _None._
 
 Human-approved issues ready for implementation (`loom:issue`).
 
+- **#2**: Draft and ratify the target spec
 - **#54**: Refresh tracker #5's body: its T1 checklist predates PRs #6/#8 and now reads false
 
 ## In Progress
@@ -45,9 +44,7 @@ _None._
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-- **#23**: docs(spec): record operator ratification of target spec, mark provisional rows
 - **#56**: spec: repair two stale citations in target-spec.md under record 0003
-- **#77**: chore(loom): resync installed Loom to v0.19.1306
 
 ## Proposed
 
@@ -69,13 +66,13 @@ _None._
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 3 |
+| Operator merge-risk holds | 1 |
 | Very important | 0 |
 | Important | 1 |
-| Ready (`loom:issue`) | 1 |
+| Ready (`loom:issue`) | 2 |
 | In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 3 |
+| Approved PRs awaiting merge | 1 |
 | Curated | 3 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 0 |
