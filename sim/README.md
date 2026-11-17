@@ -5,8 +5,8 @@ spec is owned by `spec/` (issue #2).
 
 | Path | What |
 |---|---|
-| `pdk.json` | Greppable fact sheet for the pinned PDK (IHP-Open-PDK v0.3.0, commit `5cccb161f7492697cfa52eb14dc03beb00bdca9e`) |
-| `pdk-artifact.json` | The enforced pin: per-file sha256 of the `cornerHBT.lib` closure |
+| `pdk.json` | What this block uses from the PDK: fetch method, install layout, devices exercised so far. Carries no pin — it is mutable and no gate reads it |
+| `pdk-artifact.json` | The enforced pin, and the only copy of it: upstream release tag + commit, install subtree, per-file sha256 of the `cornerHBT.lib` closure |
 | `toolchain.json` | ngspice 46 source tarball + sha256, Python floor (3.10) |
 | `tools/verify_pdk.py` | Integrity gate: refuses on any mismatch before a simulator starts |
 | `tools/tests/` | Negative control: tampered / missing / unlisted model files are rejected |

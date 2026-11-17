@@ -3,10 +3,9 @@
   "description": "Loom-managed workspace with AI development orchestration",
   "private": true,
   "scripts": {
-    "worktree:return": "./.loom/scripts/worktree-return.sh",
     "check:ci": "scripts/check-all.sh",
     "check:all": "scripts/check-all.sh",
     "test": "scripts/test-checks.sh",
-    "lint": "scripts/check-python.sh && python3 -I scripts/check-tb-json.py && scripts/check-reuse-lock.sh"
+    "lint": "scripts/check-all.sh"
   }
 }

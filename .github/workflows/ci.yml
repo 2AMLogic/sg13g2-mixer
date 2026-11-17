@@ -4,7 +4,9 @@ name: ci
 # headless and needs neither a PDK nor a simulator. A job with nothing to check
 # yet passes trivially but still exists, so the first bench or record is
 # checked the day it lands. Each job is a thin call to a script under scripts/
-# that package.json also runs (scripts/check-all.sh), so local and CI agree.
+# that package.json also runs (scripts/check-all.sh). scripts/test-checks.sh
+# asserts both wirings cover every scripts/ entry point, so local and CI
+# cannot drift.
 
 on:
   push:
@@ -66,3 +68,90 @@ jobs:
       # includes `klt signoff --attest`.
       - name: Item 10 envelope still reproduces (no drift)
         run: uvx --from "git+https://github.com/2AMLogic/klayout-tools@dce956c3c39995643ff2a5c31b53c474b3c2aada" klt signoff --attest 10 --inventory signoff/repo-hygiene/inventory.json --check signoff/repo-hygiene/envelope.json
+      - name: Item 10 manifest binding is anchored and fresh (with controls)
+        run: |
+          set -u
+          KLT=(uvx --from "git+https://github.com/2AMLogic/klayout-tools@dce956c3c39995643ff2a5c31b53c474b3c2aada" klt)
+          T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
+          fail=0
+          # The ONE copy of the item-10 assertion: rc 0 = item 10 anchored and
+          # fresh; on failure prints klt's own reason. Every case below,
+          # positive and negative, goes through this function, so a weakened
+          # assertion turns a control red instead of passing silently.
+          verdict() { # verdict <manifest-path>; echoes "pass" or the reason line
+            local out
+            # `|| true` is REQUIRED, not defensive: klt signoff exits 3 whenever
+            # the overall T1 signoff is unmet (the normal state, 1 of 11 met),
+            # and Actions runs this block as bash -e, so dropping it aborts the
+            # step before jq runs. klt's rc carries no signal here; the jq
+            # assertion below is the only verdict.
+            out=$("${KLT[@]}" signoff --manifest "$1" --repo-root . --format json) || true
+            # Issue #65 pin-bump tripwire. Measured 2026-11-15 against klt
+            # dce956c3: the two conjuncts asserted below are *equivalent* for
+            # item 10 under this pin — item 10 can only grade `met` from a
+            # "generic" citation, which only grades `met` once its artifact
+            # binding is verified, and an `unmet` item 10 carries no citation
+            # at all — so NO manifest state separates them and neither
+            # conjunct can be controlled on its own. The gap is unclosable
+            # under this pin, not merely unclosed. This probe asserts the
+            # equivalence itself for every manifest state exercised below:
+            # silent today, red on a pin bump that decouples the two
+            # predicates. Two shapes here are load-bearing, not style:
+            #  - the sentinel is a FILE, not `fail=1`: verdict() runs in a
+            #    subshell (expect() calls it via command substitution), so an
+            #    assignment to `fail` here is discarded, and anything echoed
+            #    here is captured into expect()'s $got instead of the log.
+            #  - `if length==1 then … else "ERR"`, never `// "ERR"`: jq's `//`
+            #    treats `false` as empty, which would report a legitimate
+            #    `false` as "ERR" and make a missing item 10 compare equal to
+            #    a real answer. ERR is a failure, not agreement.
+            _q() { printf '%s' "$out" | jq -r "[.items[]|select(.id==10)|$1]|if length==1 then (.[0]|tostring) else \"ERR\" end" 2>/dev/null || echo ERR; }
+            _met=$(_q '.status=="met"')
+            _ver=$(_q '.citation.artifact_binding.input_verified==true')
+            if [ "$_met" != "$_ver" ] || [ "$_met" = ERR ]; then
+              printf 'manifest %s: status==met:%s input_verified==true:%s\n' \
+                "$1" "$_met" "$_ver" >> "$T/conjunct-disagreement"
+            fi
+            if printf '%s' "$out" | jq -e '.items[] | select(.id==10)
+                | select(.status=="met" and .citation.artifact_binding.input_verified==true)' >/dev/null; then
+              echo pass; return 0
+            fi
+            printf '%s' "$out" | jq -re '.items[] | select(.id==10)
+                | "item 10 is \(.status): \(.reason)"' 2>/dev/null \
+              || echo "item 10: no usable klt output (klt or jq failed)"
+            return 1
+          }
+          expect() { # expect <pass|FAIL-substring> <label> <manifest-path>
+            local want="$1" label="$2" mf="$3" got rc=0
+            # `|| rc=$?` not `; rc=$?`: verdict returns non-zero by design on
+            # the negative controls, and Actions runs this block as bash -e, so
+            # a bare failing assignment would abort the step before the
+            # expectation is compared — the step would die silently after the
+            # two positive controls instead of failing the case.
+            got="$(verdict "$mf")" || rc=$?
+            if { [ "$want" = pass ] && [ "$rc" -eq 0 ]; } || \
+               { [ "$want" != pass ] && [ "$rc" -ne 0 ] \
+                 && printf '%s' "$got" | grep -qF -- "$want"; }; then
+              echo "ok   $label"
+            else
+              echo "FAIL $label: want '$want', got (rc=$rc): $got"; fail=1
+            fi
+          }
+          cp signoff/manifest.json "$T/ok.json"
+          jq 'del(.evidence."10".content_hash)' signoff/manifest.json > "$T/unanchored.json"
+          jq --arg h "sha256:$(sha256sum signoff/repo-hygiene/envelope.json | cut -d' ' -f1)" \
+             '.evidence."10".content_hash = $h' signoff/manifest.json > "$T/stale.json"
+          expect pass "committed manifest anchors item 10 (the gate itself)" signoff/manifest.json
+          expect pass "scratch copy through the harness passes" "$T/ok.json"
+          expect unanchored_evidence "deleted content_hash fails: unanchored_evidence" "$T/unanchored.json"
+          expect stale_evidence "envelope's own hash fails: stale_evidence" "$T/stale.json"
+          # Drain the tripwire's subshell sentinel into the parent shell's
+          # `fail` where `exit $fail` can see it (see the tripwire comment in
+          # verdict(); $T is the mktemp -d above, outside the checkout).
+          if [ -s "$T/conjunct-disagreement" ]; then
+            echo "FAIL item-10 conjunct equivalence broke (#65):"; cat "$T/conjunct-disagreement"; fail=1
+          fi
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "FAIL the step wrote into the checkout:"; git status --porcelain; fail=1
+          fi
+          exit $fail

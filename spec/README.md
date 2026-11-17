@@ -7,8 +7,14 @@
   Status: RATIFIED by operator on issue #2 (2026-11-10), ratifying PR #7, as
   targets; R4, R9 load, R14 and the LNA-IIP3-dependent cascade values are
   provisional.
+- [`lna-interface-recheck.md`](lna-interface-recheck.md) — re-check of the pinned
+  `sg13g2-lna` interface rows against a later LNA `main` commit, with the git
+  object evidence, the "no interface row changed" result, and the answer to
+  deferred item D1 (the LNA IIP3 row is still unratified). A record of a
+  comparison; it makes no re-pin decision.
 - [`decision-records/`](decision-records/) — numbered decision records.
   - [0001 — target spec ratification](decision-records/0001-target-spec-ratification.md)
+  - [0002 — shared bench mechanics with `sg13g2-sat-rx`](decision-records/0002-shared-bench-mechanics.md)
 
 Spec changes go through a decision record. Agents do not relax a ratified row to
 make a result pass.
