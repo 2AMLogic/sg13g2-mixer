@@ -160,11 +160,16 @@ the PDK (per `sg13g2-lna`), so passive-inductor-dependent topologies cannot be
 simulated with PDK models; layout/parasitic extraction, pads/package, and
 self-heating beyond the VBIC thermal network at ambient.
 
-## Requirements trace (proposed assumptions vs. approved requirements)
+## Requirements trace (derivation basis vs. ratification status)
 
 **Approved requirements are only the INTERFACE rows** (band, 50 Ω ports,
 supply, LNA gain/NF/S22 as bounds), owned and ratified in `sg13g2-lna` at the
-pinned commit. Everything else is a proposed assumption of this block. No
+pinned commit. Everything else is an assumption of this block. Here "approved"
+and the Class column below describe each row's **derivation basis** — what it
+rests on — not its ratification status: the operator ruling on issue #2
+(2026-11-10) ratified R1–R15 as targets without supplying a derivation, and
+ratification is not evidence. The authoritative status of every row is the
+Status column of the target table below. No
 system-level receive requirement (target standard, sensitivity, blocker
 profile, channel bandwidth, ADC/IF-filter allocation) exists in this
 repository, so **no numeric mixer row below is derived from a receiver
@@ -173,12 +178,12 @@ requirement**. The table says what supports each row and what is missing.
 | Rows | Class | Support today | Missing to support it |
 |---|---|---|---|
 | R1, R13 supply | INTERFACE (approved upstream) | LNA ratified rows at the pin | nothing here; re-pin only by decision record |
-| R2 | Proposed, interface-driven | LNA S22 row is a 50 Ω reference; mixer must be matched to it | LNA committed design does not meet its S22 (tracked in `sg13g2-lna`); a real LNA-output impedance to match to |
-| R5, R6, R7, R10, R13 power, R15 | Proposed assumption, **from the former README draft, no derivation** | cascade arithmetic shows their *consequence* (NF 2.1–3.8 dB cascade, IIP3 −20…−10 dBm at LNA input), not their origin | a receive-chain budget: sensitivity, SNR_min, channel BW, blocker/IM level |
-| R3, R4 | Proposed assumption, R4 explicit **placeholder** | R3 is a bench convenience (0 dBm, low-side); R4 has none | LO source capability (owner: whatever supplies the LO) and a reciprocal-mixing budget from the blocker profile |
-| R8 | Proposed, **derived** from R7 by a rule of thumb | P1dB ≈ IIP3 − 9.6 dB (third-order-dominated) | only as sound as R7 |
-| R9 | Proposed; load **has no agreed downstream allocation** | f_IF is a bench-coherent bin, not a system choice; 1 kΩ ∥ 2 pF is a placeholder | the following filter/ADC driver input impedance, IF channel BW, and the f_IF its image-rejection/filtering plan wants |
-| R11, R12 | Proposed assumption | none beyond bench convenience | IF filtering plan and LO/RF leakage tolerance at the ADC |
+| R2 | Assumption, interface-driven | LNA S22 row is a 50 Ω reference; mixer must be matched to it | LNA committed design does not meet its S22 (tracked in `sg13g2-lna`); a real LNA-output impedance to match to |
+| R5, R6, R7, R10, R13 power, R15 | Assumption, **from the former README draft, no derivation** | cascade arithmetic shows their *consequence* (NF 2.1–3.8 dB cascade, IIP3 −20…−10 dBm at LNA input), not their origin | a receive-chain budget: sensitivity, SNR_min, channel BW, blocker/IM level |
+| R3, R4 | Assumption, R4 explicit **placeholder** | R3 is a bench convenience (0 dBm, low-side); R4 has none | LO source capability (owner: whatever supplies the LO) and a reciprocal-mixing budget from the blocker profile |
+| R8 | Assumption, **derived** from R7 by a rule of thumb | P1dB ≈ IIP3 − 9.6 dB (third-order-dominated) | only as sound as R7 |
+| R9 | Assumption; load **has no agreed downstream allocation** | f_IF is a bench-coherent bin, not a system choice; 1 kΩ ∥ 2 pF is a placeholder | the following filter/ADC driver input impedance, IF channel BW, and the f_IF its image-rejection/filtering plan wants |
+| R11, R12 | Assumption | none beyond bench convenience | IF filtering plan and LO/RF leakage tolerance at the ADC |
 | R14 | Placeholder, **no evidence** | none | schematic and floorplan |
 
 ### Intended-use and market framing (assumed, to be confirmed)
@@ -271,7 +276,7 @@ Grid runs go to the batch fleet through `klt sim` requests, never
 hand-launched loops. Results are append-only under `sim/`, labelled simulated
 with corner and testbench.
 
-## Proposed-target table
+## Target table
 
 Columns: **Fallback / Target / Stretch** are the three levels of the
 maturity ladder. "Binding conditions" are the conditions every figure must
