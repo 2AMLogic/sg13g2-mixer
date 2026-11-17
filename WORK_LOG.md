@@ -2,6 +2,10 @@
 
 Chronological record of merged PRs and closed issues. Maintained by the Guide triage role.
 
+### 2026-11-17
+
+- **Issue #46** (closed): File record 0002's three sg13g2-sat-rx findings on that repo
+
 ### 2026-11-16
 
 - **PR #73**: chore(loom): resync installed Loom to v0.19.1302
