@@ -9,7 +9,7 @@ Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a h
 
 - **#23**: docs(spec): record operator ratification of target spec, mark provisional rows
 - **#56**: spec: repair two stale citations in target-spec.md under record 0003
-- **#73**: chore(loom): resync installed Loom to v0.19.1302
+- **#75**: chore(loom): resync installed Loom to v0.19.1305
 
 ## Very Important
 
@@ -34,7 +34,7 @@ Human-approved issues ready for implementation (`loom:issue`).
 
 Issues currently being built (`loom:building`).
 
-- **#47**: spec/target-spec.md still defers D4 to closed issue #3; record 0002 decided it
+_None._
 
 ## PRs Awaiting Review
 
@@ -48,7 +48,7 @@ PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 - **#23**: docs(spec): record operator ratification of target spec, mark provisional rows
 - **#56**: spec: repair two stale citations in target-spec.md under record 0003
-- **#73**: chore(loom): resync installed Loom to v0.19.1302
+- **#75**: chore(loom): resync installed Loom to v0.19.1305
 
 ## Proposed
 
@@ -75,7 +75,7 @@ _None._
 | Very important | 0 |
 | Important | 1 |
 | Ready (`loom:issue`) | 2 |
-| In Progress (`loom:building`) | 1 |
+| In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 3 |
 | Curated | 4 |
