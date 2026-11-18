@@ -3,10 +3,13 @@ name: ci
 # T1 item 10 CI: keeps the harness and evidence formats valid. Every job is
 # headless and needs neither a PDK nor a simulator. A job with nothing to check
 # yet passes trivially but still exists, so the first bench or record is
-# checked the day it lands. Each job is a thin call to a script under scripts/
-# that package.json also runs (scripts/check-all.sh). scripts/test-checks.sh
-# asserts both wirings cover every scripts/ entry point, so local and CI
-# cannot drift.
+# checked the day it lands. The command list lives once, in
+# scripts/check-all.sh — the same script package.json runs locally — and each
+# job passes its group name, so a job log shows one step; the script prints an
+# `== <command>` header per gate, which names the check that failed.
+# signoff-item10 is the one plain multi-step job left: it attests the
+# attestation itself (a checker testing itself) and needs the network plus the
+# pinned klt, so its steps stay in the workflow.
 
 on:
   push:
@@ -22,21 +25,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Byte-compile Python and run unit tests
-        run: scripts/check-python.sh
+        run: scripts/check-all.sh python
 
   tb-json:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Validate every sim/*/testbench/tb.json
-        run: python3 -I scripts/check-tb-json.py
+        run: scripts/check-all.sh tb-json
 
   reuse-lock:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Validate reuse.lock.json
-        run: scripts/check-reuse-lock.sh
+        run: scripts/check-all.sh reuse-lock
 
   # Gate self-test: a check that cannot fail is indistinguishable from no check.
   gate-self-test:
@@ -44,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Negative and positive controls for every gate
-        run: scripts/test-checks.sh
+        run: scripts/check-all.sh gate-self-test
 
   # Pull requests only: a push to main has no base to diff against, and the PR
   # that introduced a change was already checked.
@@ -56,7 +59,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Committed records are never edited, deleted or renamed
-        run: scripts/check-sim-append-only --base "origin/${{ github.base_ref }}"
+        run: BASE="origin/${{ github.base_ref }}" scripts/check-all.sh records-append-only
 
   signoff-item10:
     runs-on: ubuntu-latest
