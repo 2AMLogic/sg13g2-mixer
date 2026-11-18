@@ -2,7 +2,7 @@
 # The single command list for every CI check that needs neither a PDK nor a
 # simulator: .github/workflows/ci.yml jobs call this script with their group
 # name, package.json runs it locally, and the commands are written here once.
-# With no argument every group runs in CI job order. The append-only gate
+# With no argument every group runs, in the order declared below. The append-only gate
 # needs a base ref: set BASE (e.g. BASE=origin/main) to include it, otherwise
 # it is skipped with a message (CI runs it on pull requests).
 set -u
