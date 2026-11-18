@@ -4,6 +4,8 @@ Chronological record of merged PRs and closed issues. Maintained by the Guide tr
 
 ### 2026-11-18
 
+- **PR #89**: ci: run the required checks on merge_group and fail the records gate closed without a base
+- **Issue #87** (closed): Merge queue: add the merge_group trigger and adapt the PR-metadata gates
 - **PR #85**: test: assert gate failure propagates through check-all.sh; fix the CI-job-order wording
 - **Issue #83** (closed): check-all.sh: add a control that a failing gate exits nonzero, and fix the "CI job order" wording
 - **PR #82**: ci: single-source the gate list in check-all.sh, drop the wiring-drift test
