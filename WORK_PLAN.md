@@ -32,7 +32,7 @@ Human-approved issues (`loom:issue`) ready for implementation — excluding held
 
 Issues currently being built (`loom:building`).
 
-_None._
+- **#81**: Single-source the CI gate: ci.yml jobs call scripts/check-all.sh, drop the wiring-drift assertion
 
 ## PRs Awaiting Review
 
@@ -46,6 +46,7 @@ PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 - **#23**: docs(spec): record operator ratification of target spec, mark provisional rows — closes #2
 - **#56**: spec: repair two stale citations in target-spec.md under record 0003 — closes #47
+- **#82**: ci: single-source the gate list in check-all.sh, drop the wiring-drift test — closes #81
 
 ## Proposed
 
@@ -54,6 +55,7 @@ Issues carrying `loom:curated`.
 - **#2**: Draft and ratify the target spec *(curated)*
 - **#47**: spec/target-spec.md still defers D4 to closed issue #3; record 0002 decided it *(curated)*
 - **#54**: Refresh tracker #5's body: its T1 checklist predates PRs #6/#8 and now reads false *(curated)*
+- **#81**: Single-source the CI gate: ci.yml jobs call scripts/check-all.sh, drop the wiring-drift assertion *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -71,10 +73,10 @@ _None._
 | Very important | 0 |
 | Important | 1 |
 | Ready (`loom:issue`, net of holds/building/merge-pending) | 1 |
-| In Progress (`loom:building`) | 0 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 2 |
-| Curated | 3 |
+| Approved PRs awaiting merge | 3 |
+| Curated | 4 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
