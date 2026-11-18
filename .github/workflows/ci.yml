@@ -15,6 +15,9 @@ on:
   push:
     branches: [main]
   pull_request:
+  # The merge queue's trial merge: every required context must report on the
+  # combined tree, or the queue treats the check as skipped, not passed.
+  merge_group:
 
 permissions:
   contents: read
@@ -49,17 +52,31 @@ jobs:
       - name: Negative and positive controls for every gate
         run: scripts/check-all.sh gate-self-test
 
-  # Pull requests only: a push to main has no base to diff against, and the PR
-  # that introduced a change was already checked.
+  # Pull requests and merge-queue trial merges: a push to main has no base to
+  # diff against, and the PR / queued merge that introduced a change was
+  # already checked. Merge queue: the trial-merge commit is checked against
+  # the event's merge_group.base_sha -- github.base_ref is empty there, so
+  # the base comes from the event payload, and an absent or unresolvable base
+  # FAILS (RECORDS_BASE_REQUIRED=1 disables the local developer skip), never
+  # silently skips or passes. The base sha is plumbed as an env value, not
+  # interpolated into the shell.
   records-append-only:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Committed records are never edited, deleted or renamed
-        run: BASE="origin/${{ github.base_ref }}" scripts/check-all.sh records-append-only
+        env:
+          PR_BASE: origin/${{ github.base_ref }}
+          MG_BASE: ${{ github.event.merge_group.base_sha }}
+        run: |
+          BASE="$PR_BASE"
+          if [ "$GITHUB_EVENT_NAME" = "merge_group" ]; then
+            BASE="$MG_BASE"
+          fi
+          RECORDS_BASE_REQUIRED=1 BASE="$BASE" scripts/check-all.sh records-append-only
 
   signoff-item10:
     runs-on: ubuntu-latest
