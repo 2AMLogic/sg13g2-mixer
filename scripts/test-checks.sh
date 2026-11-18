@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 # Self-test of the CI gates: each must fail on its negative control and pass on
-# its positive one, so a gate that cannot fail is caught. Also asserts that
-# every scripts/ entry point is run by .github/workflows/ci.yml and by
-# scripts/check-all.sh (the local wrapper package.json delegates to), so the
-# two wirings cannot drift apart.
+# its positive one, so a gate that cannot fail is caught. Also tests the group
+# dispatch of scripts/check-all.sh — the single command list the ci.yml jobs
+# and package.json both call — by observing which gates each group invokes.
 # Needs bash, git, python3.
 set -u
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -46,7 +45,7 @@ expect 2 "append-only fails closed on an unknown base" -- "$S/check-sim-append-o
 E="$(mktemp -d)"
 cleanup() {
   local d
-  for d in "$T" "$E" "${N:-}" "${V:-}" "${C:-}" "${W:-}"; do
+  for d in "$T" "$E" "${G:-}"; do
     [ -n "$d" ] && rm -rf "$d"
   done
 }
@@ -59,108 +58,51 @@ expect 1 "check-python fails on a syntax error"      -- "$S/check-python.sh" --r
 printf '[1,2]\n' > "$E/reuse.lock.json"
 expect 1 "reuse-lock rejects a non-object"           -- "$S/check-reuse-lock.sh" "$E"
 
-# wiring assertions: every tracked, executable scripts/ entry point must be
-# invoked by each wiring target, or a gate added under scripts/ later could be
-# wired into one copy and silently left out of the other. The entry-point set
-# is always derived from the tracked tree (git ls-files), never hardcoded;
-# taking the root as a parameter lets the negative controls below drive the
-# same assertion against a fixture root.
-# assert_invoked <root> <target-file> <path-form>
-# <path-form> selects the needle: "tracked-path" is the full tracked path ($s),
-# the form ci.yml invokes gates in; "basename" is "$S/<basename>", the form
-# check-all.sh actually uses — the tracked path never appears there, so
-# greping for it would report FAIL on every gate. ci.yml needs the full path:
-# a basename needle collapses two gates sharing a name at different depths
-# (scripts/x.sh vs scripts/sub/x.sh) onto one match — a false pass when only
-# the top-level gate is wired, a false FAIL when only the nested one is. The
-# assertion is presence of the invocation, not unconditional execution:
-# check-all.sh may run a gate conditionally (it runs check-sim-append-only
-# only when BASE is set).
-assert_invoked() {
-  local root="$1" target="$2" form="$3" s rc=0 needle
-  local -a ents
-  mapfile -t ents < <(git -C "$root" ls-files scripts/ | grep -v '^scripts/fixtures/')
-  if [ "${#ents[@]}" -eq 0 ]; then
-    echo "FAIL no tracked scripts/ entry points under $root; $(basename "$target") coverage assertion would be vacuous"
-    rc=1
+# check-all.sh group dispatch — the script's own behaviour, not a copy of any
+# wiring: each group must invoke exactly its own gate and nothing else, the
+# append-only group must respect BASE, and an unknown group must fail. The
+# script is copied into a fixture tree of stub gates that append their name to
+# $CALL_LOG, so what actually ran is observed, not assumed.
+G="$(mktemp -d)"
+mkdir -p "$G/scripts"
+cp "$S/check-all.sh" "$G/scripts/check-all.sh"
+CALL_LOG="$G/called.log"; export CALL_LOG
+for gate in test-checks.sh check-python.sh check-reuse-lock.sh check-sim-append-only; do
+  printf '#!/usr/bin/env bash\nprintf "%%s\\n" "$(basename "$0")" >> "$CALL_LOG"\nexit 0\n' > "$G/scripts/$gate"
+  chmod +x "$G/scripts/$gate"
+done
+# check-all.sh invokes this one through python3 -I, so the stub must be Python
+cat > "$G/scripts/check-tb-json.py" <<'EOF'
+import os
+with open(os.environ["CALL_LOG"], "a") as f:
+    f.write("check-tb-json.py\n")
+EOF
+chmod +x "$G/scripts/check-tb-json.py"
+expect_group() { # expect_group <group> <expected gate basenames...>
+  local group="$1"; shift; : > "$CALL_LOG"
+  "$G/scripts/check-all.sh" "$group" >/dev/null 2>&1 || { echo "FAIL group $group exits nonzero"; fail=1; return; }
+  if [ "$(sort "$CALL_LOG" | tr '\n' ' ' | sed 's/ $//')" = "$(printf '%s\n' "$@" | sort | tr '\n' ' ' | sed 's/ $//')" ]; then
+    echo "ok   group $group runs only: $*"
+  else
+    echo "FAIL group $group ran: $(tr '\n' ' ' < "$CALL_LOG")— want: $*"; fail=1
   fi
-  for s in "${ents[@]}"; do
-    [ -x "$root/$s" ] || continue
-    if [ "$s" = "scripts/check-all.sh" ]; then
-      # check-all.sh is the local-only convenience wrapper that runs the other
-      # gates (see its header); ci.yml documents it as the local counterpart,
-      # not a CI job, and it does not invoke itself. Exempted as a named single
-      # case, never a second list. (Load-bearing for ci.yml: its header comment
-      # names scripts/check-all.sh in prose, so a path grep alone would pass on
-      # the comment.)
-      continue
-    fi
-    case "$form" in
-      tracked-path) needle="$s" ;;
-      basename)     needle="\$S/$(basename "$s")" ;;
-      *) echo "FAIL unknown path form '$form'"; rc=1; continue ;;
-    esac
-    if grep -qF "$needle" "$target"; then echo "ok   $(basename "$target") runs $s"
-    else echo "FAIL $(basename "$target") does not run $s"; rc=1; fi
-  done
-  return $rc
 }
-assert_invoked "$ROOT" "$ROOT/.github/workflows/ci.yml" tracked-path || fail=1
-assert_invoked "$ROOT" "$ROOT/scripts/check-all.sh" basename || fail=1
-
-# negative controls for the wiring assertions themselves — same standard as
-# every gate above: a check that cannot fail is indistinguishable from no
-# check. N: a tracked, executable gate absent from check-all.sh must fail the
-# assertion and name the gate. V: an empty derived set must fail loudly, not
-# pass vacuously. C/W: the ci.yml needle must be the full tracked path —
-# C: a nested gate sharing a basename with a wired top-level gate must fail
-# and name the nested path (a basename needle matches the top-level wiring
-# and passes falsely); W: a nested gate wired into ci.yml by its full tracked
-# path must pass (a basename needle cannot match it — a false FAIL). W also
-# carries a tracked, non-executable scripts/ file, which must be skipped.
-N="$(mktemp -d)"
-git -C "$N" init -q
-mkdir -p "$N/scripts"
-cp "$ROOT/scripts/check-all.sh" "$N/scripts/check-all.sh"
-printf '#!/usr/bin/env bash\nexit 0\n' > "$N/scripts/check-new-gate.sh"
-chmod +x "$N/scripts/check-new-gate.sh" "$N/scripts/check-all.sh"
-git -C "$N" add scripts/
-expect 1 "coverage fails when a gate is missing from check-all.sh" \
-  -- assert_invoked "$N" "$N/scripts/check-all.sh" basename
-if assert_invoked "$N" "$N/scripts/check-all.sh" basename 2>&1 | grep -qF 'check-new-gate.sh'; then
-  echo "ok   coverage failure names the missing gate"
-else
-  echo "FAIL coverage failure does not name the missing gate"; fail=1
-fi
-V="$(mktemp -d)"
-git -C "$V" init -q
-expect 1 "coverage fails loudly when the derived set is empty" \
-  -- assert_invoked "$V" "$V/scripts/check-all.sh" basename
-
-C="$(mktemp -d)"
-git -C "$C" init -q
-mkdir -p "$C/scripts/sub"
-printf '#!/usr/bin/env bash\nexit 0\n' > "$C/scripts/check-python.sh"
-printf '#!/usr/bin/env bash\nexit 0\n' > "$C/scripts/sub/check-python.sh"
-chmod +x "$C/scripts/check-python.sh" "$C/scripts/sub/check-python.sh"
-printf 'run: scripts/check-python.sh\n' > "$C/ci.yml"
-git -C "$C" add scripts/ ci.yml
-expect 1 "coverage fails when a same-basename nested gate is unwired" \
-  -- assert_invoked "$C" "$C/ci.yml" tracked-path
-if assert_invoked "$C" "$C/ci.yml" tracked-path 2>&1 | grep -qF 'scripts/sub/check-python.sh'; then
-  echo "ok   collision failure names the nested path"
-else
-  echo "FAIL collision failure does not name the nested path"; fail=1
-fi
-W="$(mktemp -d)"
-git -C "$W" init -q
-mkdir -p "$W/scripts/sub"
-printf '#!/usr/bin/env bash\nexit 0\n' > "$W/scripts/sub/check-python.sh"
-printf 'notes, not a gate\n' > "$W/scripts/sub/not-a-gate.txt"
-chmod +x "$W/scripts/sub/check-python.sh"
-printf 'run: scripts/sub/check-python.sh\n' > "$W/ci.yml"
-git -C "$W" add scripts/ ci.yml
-expect 0 "coverage passes when a nested gate is wired by its full tracked path" \
-  -- assert_invoked "$W" "$W/ci.yml" tracked-path
+expect_group python              "check-python.sh"
+expect_group tb-json             "check-tb-json.py"
+expect_group reuse-lock          "check-reuse-lock.sh"
+expect_group gate-self-test      "test-checks.sh"
+BASE="$G"; export BASE
+expect_group records-append-only "check-sim-append-only"
+: > "$CALL_LOG"
+"$G/scripts/check-all.sh" >/dev/null 2>&1 && \
+  [ "$(sort "$CALL_LOG" | tr '\n' ' ' | sed 's/ $//')" = \
+    "$(printf '%s\n' test-checks.sh check-python.sh check-tb-json.py check-reuse-lock.sh check-sim-append-only | sort | tr '\n' ' ' | sed 's/ $//')" ] && \
+  echo "ok   no argument runs every gate in CI job order" || { echo "FAIL no-argument run: rc or gate set wrong: $(tr '\n' ' ' < "$CALL_LOG")"; fail=1; }
+BASE=""
+: > "$CALL_LOG"
+"$G/scripts/check-all.sh" records-append-only >/dev/null 2>&1 && [ ! -s "$CALL_LOG" ] && \
+  echo "ok   records-append-only without BASE skips and passes" || \
+  { echo "FAIL records-append-only without BASE: $(tr '\n' ' ' < "$CALL_LOG")"; fail=1; }
+expect 2 "check-all.sh rejects an unknown group" -- "$G/scripts/check-all.sh" nonsense
 
 exit $fail

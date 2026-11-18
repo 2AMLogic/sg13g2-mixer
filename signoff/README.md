@@ -34,9 +34,10 @@ and no network. Two CI jobs are deliberately excluded:
 - `signoff-item10` — it attests the attestation itself (circular) and needs
   the network plus the pinned external `klt` tool.
 
-A new gate joins `checks` only after it is wired into both `ci.yml` and
-`scripts/check-all.sh` (`scripts/test-checks.sh` asserts both wirings), and
-then the regeneration order below is re-run in the same change.
+A new gate joins `checks` only once it is in `scripts/check-all.sh` — the
+single command list that the `ci.yml` jobs call with their group name and that
+`package.json` runs locally — and then the regeneration order below is re-run
+in the same change.
 
 ## Regeneration order (envelope first, manifest pin second)
 
