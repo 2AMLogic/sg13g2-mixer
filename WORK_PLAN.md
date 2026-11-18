@@ -9,7 +9,6 @@ Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a h
 
 - **#23**: docs(spec): record operator ratification of target spec, mark provisional rows
 - **#56**: spec: repair two stale citations in target-spec.md under record 0003
-- **#77**: chore(loom): resync installed Loom to v0.19.1306
 
 ## Very Important
 
@@ -25,7 +24,7 @@ _None._
 
 ## Ready
 
-Human-approved issues ready for implementation (`loom:issue`).
+Human-approved issues (`loom:issue`) ready for implementation — excluding held (`loom:blocked`/`loom:operator`/`loom:frozen`), `loom:building`, and issues closed by an open `loom:pr` PR (listed under Approved).
 
 - **#54**: Refresh tracker #5's body: its T1 checklist predates PRs #6/#8 and now reads false
 
@@ -45,9 +44,8 @@ _None._
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-- **#23**: docs(spec): record operator ratification of target spec, mark provisional rows
-- **#56**: spec: repair two stale citations in target-spec.md under record 0003
-- **#77**: chore(loom): resync installed Loom to v0.19.1306
+- **#23**: docs(spec): record operator ratification of target spec, mark provisional rows — closes #2
+- **#56**: spec: repair two stale citations in target-spec.md under record 0003 — closes #47
 
 ## Proposed
 
@@ -59,7 +57,7 @@ Issues carrying `loom:curated`.
 
 ## Proposed (Architect / Hermit)
 
-- **#37**: Remove the duplicated R1–R15 spec table and status prose from README.md: a second, ungated copy of the ratified spec *(hermit)*
+- **#37**: Remove the duplicated R1–R15 spec table and status prose from README.md: a second, ungated copy of the ratified spec *(hermit)* *(held)*
 
 ## Epics
 
@@ -69,13 +67,13 @@ _None._
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 3 |
+| Operator merge-risk holds | 2 |
 | Very important | 0 |
 | Important | 1 |
-| Ready (`loom:issue`) | 1 |
+| Ready (`loom:issue`, net of holds/building/merge-pending) | 1 |
 | In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 3 |
+| Approved PRs awaiting merge | 2 |
 | Curated | 3 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 0 |
