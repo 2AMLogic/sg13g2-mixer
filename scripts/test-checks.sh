@@ -95,14 +95,29 @@ BASE="$G"; export BASE
 expect_group records-append-only "check-sim-append-only"
 : > "$CALL_LOG"
 "$G/scripts/check-all.sh" >/dev/null 2>&1 && \
-  [ "$(sort "$CALL_LOG" | tr '\n' ' ' | sed 's/ $//')" = \
-    "$(printf '%s\n' test-checks.sh check-python.sh check-tb-json.py check-reuse-lock.sh check-sim-append-only | sort | tr '\n' ' ' | sed 's/ $//')" ] && \
-  echo "ok   no argument runs every gate in CI job order" || { echo "FAIL no-argument run: rc or gate set wrong: $(tr '\n' ' ' < "$CALL_LOG")"; fail=1; }
+  [ "$(tr '\n' ' ' < "$CALL_LOG" | sed 's/ $//')" = \
+    "$(printf '%s ' test-checks.sh check-python.sh check-tb-json.py check-reuse-lock.sh check-sim-append-only | sed 's/ $//')" ] && \
+  echo "ok   no argument runs every gate in check-all.sh's order" || { echo "FAIL no-argument run: rc or gate order wrong: $(tr '\n' ' ' < "$CALL_LOG")"; fail=1; }
 BASE=""
 : > "$CALL_LOG"
 "$G/scripts/check-all.sh" records-append-only >/dev/null 2>&1 && [ ! -s "$CALL_LOG" ] && \
   echo "ok   records-append-only without BASE skips and passes" || \
   { echo "FAIL records-append-only without BASE: $(tr '\n' ' ' < "$CALL_LOG")"; fail=1; }
 expect 2 "check-all.sh rejects an unknown group" -- "$G/scripts/check-all.sh" nonsense
+
+# A failing gate must propagate: after the gate list moved here, every ci.yml
+# job reaches its gate through check-all.sh, so run()'s `|| rc=1` and the
+# final `exit $rc` are load-bearing. Every stub gate is made to exit 1, and
+# each group — which the dispatch tests above prove invokes only its own gate
+# — and the no-argument run must then exit nonzero.
+BASE="$G"; export BASE
+for gate in test-checks.sh check-python.sh check-reuse-lock.sh check-sim-append-only; do
+  printf '#!/usr/bin/env bash\nexit 1\n' > "$G/scripts/$gate"
+done
+printf 'import sys\nsys.exit(1)\n' > "$G/scripts/check-tb-json.py"
+for group in python tb-json reuse-lock gate-self-test records-append-only; do
+  expect 1 "failing gate makes group $group exit nonzero" -- "$G/scripts/check-all.sh" "$group"
+done
+expect 1 "failing gates make the no-argument run exit nonzero" -- "$G/scripts/check-all.sh"
 
 exit $fail
