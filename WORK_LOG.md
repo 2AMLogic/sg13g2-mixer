@@ -2,6 +2,13 @@
 
 Chronological record of merged PRs and closed issues. Maintained by the Guide triage role.
 
+### 2026-11-18
+
+- **PR #85**: test: assert gate failure propagates through check-all.sh; fix the CI-job-order wording
+- **Issue #83** (closed): check-all.sh: add a control that a failing gate exits nonzero, and fix the "CI job order" wording
+- **PR #82**: ci: single-source the gate list in check-all.sh, drop the wiring-drift test
+- **Issue #81** (closed): Single-source the CI gate: ci.yml jobs call scripts/check-all.sh, drop the wiring-drift assertion
+
 ### 2026-11-17
 
 - **PR #77**: chore(loom): resync installed Loom to v0.19.1306
