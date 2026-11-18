@@ -4,7 +4,9 @@
 # name, package.json runs it locally, and the commands are written here once.
 # With no argument every group runs, in the order declared below. The append-only gate
 # needs a base ref: set BASE (e.g. BASE=origin/main) to include it, otherwise
-# it is skipped with a message (CI runs it on pull requests).
+# it is skipped with a message (CI runs it on pull requests). CI additionally
+# sets RECORDS_BASE_REQUIRED=1, which turns that skip into a failure: in a
+# merge-queue run an absent base must fail the job, never pass it as skipped.
 set -u
 S="$(cd "$(dirname "$0")" && pwd)"
 rc=0
@@ -16,6 +18,9 @@ group_tb_json()             { run python3 -I "$S/check-tb-json.py"; }
 group_reuse_lock()          { run "$S/check-reuse-lock.sh"; }
 group_records_append_only() {
   if [ -n "${BASE:-}" ]; then run "$S/check-sim-append-only" --base "$BASE"
+  elif [ -n "${RECORDS_BASE_REQUIRED:-}" ]; then
+    echo "check-sim-append-only: no base available for this event; failing, not skipping" >&2
+    rc=1
   else echo "== check-sim-append-only skipped (set BASE=<ref> to run it)"; fi
 }
 

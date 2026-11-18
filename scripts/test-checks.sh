@@ -31,8 +31,14 @@ AO() { "$S/check-sim-append-only" --root "$T" --base main; }
 expect 0 "append-only passes with no change"  -- AO
 echo three > "$T/sim/b1/records/r3.md"; g add -A; g commit -q -m add
 expect 0 "append-only passes on an added record" -- AO
+# Merge-group shape: the merge queue checks the trial-merge commit against a
+# base given as a raw sha (merge_group.base_sha), not an origin/ ref. The
+# gate takes any ref git can resolve, so a sha must behave like a ref name.
+expect 0 "append-only passes with the base as a sha (merge-group shape)" \
+  -- "$S/check-sim-append-only" --root "$T" --base "$(g rev-parse main)"
 echo edited >> "$T/sim/b1/records/r1.md"; g commit -q -am edit
-expect 1 "append-only fails on an edited record" -- AO
+expect 1 "append-only fails on an edited record vs a sha base" \
+  -- "$S/check-sim-append-only" --root "$T" --base "$(g rev-parse main)"
 g reset -q --hard HEAD~1
 g rm -q sim/b1/records/r2.md; g commit -q -m delete
 expect 1 "append-only fails on a deleted record" -- AO
@@ -40,6 +46,7 @@ g reset -q --hard HEAD~1
 g mv sim/b1/records/r1.md sim/b1/records/r1-renamed.md; g commit -q -m rename
 expect 1 "append-only fails on a renamed record" -- AO
 expect 2 "append-only fails closed on an unknown base" -- "$S/check-sim-append-only" --root "$T" --base nosuchref
+expect 2 "append-only fails closed on an empty base" -- "$S/check-sim-append-only" --root "$T" --base ""
 
 # empty tree: every gate passes trivially
 E="$(mktemp -d)"
@@ -103,6 +110,15 @@ BASE=""
 "$G/scripts/check-all.sh" records-append-only >/dev/null 2>&1 && [ ! -s "$CALL_LOG" ] && \
   echo "ok   records-append-only without BASE skips and passes" || \
   { echo "FAIL records-append-only without BASE: $(tr '\n' ' ' < "$CALL_LOG")"; fail=1; }
+# CI's fail-closed mode: RECORDS_BASE_REQUIRED=1 turns the no-BASE skip into
+# a failure (a merge-queue run with no base must not pass as skipped), and
+# must not run the gate either.
+: > "$CALL_LOG"
+RECORDS_BASE_REQUIRED=1 "$G/scripts/check-all.sh" records-append-only >/dev/null 2>&1
+rc=$?
+[ "$rc" -ne 0 ] && [ ! -s "$CALL_LOG" ] && \
+  echo "ok   records-append-only with RECORDS_BASE_REQUIRED=1 and no BASE fails closed, gate not run" || \
+  { echo "FAIL fail-closed no-BASE: rc=$rc, log: $(tr '\n' ' ' < "$CALL_LOG")"; fail=1; }
 expect 2 "check-all.sh rejects an unknown group" -- "$G/scripts/check-all.sh" nonsense
 
 # A failing gate must propagate: after the gate list moved here, every ci.yml
