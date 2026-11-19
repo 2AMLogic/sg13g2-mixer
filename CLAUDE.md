@@ -38,6 +38,18 @@ verified by AI agents.
 - **A single low IF is the target.** Zero-IF I/Q is a stretch; do not let it
   drive the core architecture before the single-IF target closes.
 
+## T1 tracker maintenance (Guide)
+
+Issue #5 — the T1 tracker — has a standing owner: Guide. At the end of each
+Guide triage cycle it re-derives #5's claims against `origin/main` and edits
+the tracker body only when a claim has actually changed; when the claims
+still hold it writes nothing — body, survey stamp and comments stay alone.
+The check runs even when the Document Maintenance phase opens no
+documentation PR. The full procedure (trigger, survey mechanics, PATCH
+usage, preservation rules, the no-write rule) lives in
+[`AGENTS.md` § "Keeping the T1 tracker current (Guide duty)"](AGENTS.md#keeping-the-t1-tracker-current-guide-duty) —
+one copy shared by both runtimes; do not duplicate it here.
+
 <!-- BEGIN LOOM ORCHESTRATION -->
 This repository uses [Loom](https://github.com/rjwalters/loom) for AI-powered development orchestration — see the Loom repository for the full guide (roles, labels, worktrees, configuration). When installed, Loom also writes a locally-substituted copy of that guide to `.loom/CLAUDE.md`.
 
