@@ -3,7 +3,7 @@
 Generated from GitHub label state by the Guide triage role. Everything between the markers is overwritten.
 
 <!-- guide:plan-body:start -->
-_Generated: 2026-11-19T08:29:09Z (snapshot; compare against live labels)_
+_Generated: 2026-11-19T18:21:00Z (snapshot; compare against live labels)_
 ## Operator Attention: Merge-Risk-Hold Pileup
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
@@ -33,7 +33,7 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#91**: Assign Guide responsibility for keeping T1 tracker #5 current
+_None._
 
 ## PRs Awaiting Review
 
@@ -54,7 +54,6 @@ Issues carrying `loom:curated`.
 
 - **#2**: Draft and ratify the target spec *(curated)*
 - **#47**: spec/target-spec.md still defers D4 to closed issue #3; record 0002 decided it *(curated)*
-- **#91**: Assign Guide responsibility for keeping T1 tracker #5 current *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -72,10 +71,10 @@ _None._
 | Very important | 0 |
 | Important | 1 |
 | Ready (`loom:issue`, net of holds/building/merge-pending) | 0 |
-| In Progress (`loom:building`) | 1 |
+| In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 2 |
-| Curated | 3 |
+| Curated | 2 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
