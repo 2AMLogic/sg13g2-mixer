@@ -41,22 +41,29 @@ never retype it. Keep a pristine copy of the version your edit starts
 from; the collision check below compares against it:
 
 ```bash
-gh api repos/2AMLogic/sg13g2-mixer/issues/5 --jq .body > /tmp/issue-5-body.md
-cp /tmp/issue-5-body.md /tmp/issue-5-body.prepared
-# edit /tmp/issue-5-body.md
-gh api -X PATCH repos/2AMLogic/sg13g2-mixer/issues/5 -F body=@/tmp/issue-5-body.md
+WORK="$(mktemp -d)"   # per-pass scratch directory — never a fixed /tmp path:
+                      # every Guide targets #5, so a name keyed on the issue
+                      # number is still shared by concurrent passes on this
+                      # host, and a peer can clobber your files mid-procedure
+gh api repos/2AMLogic/sg13g2-mixer/issues/5 --jq .body > "$WORK/body.md"
+cp "$WORK/body.md" "$WORK/prepared"
+# edit "$WORK/body.md"
+gh api -X PATCH repos/2AMLogic/sg13g2-mixer/issues/5 -F "body=@$WORK/body.md"
 ```
 
 `-F body=@file` reads the file; `--body @file` posts the literal string
 `@file`. That read-edit-write sequence is not atomic, and nothing
 serializes two Guides across hosts, so **immediately before the PATCH**,
-fetch #5's body again — a plain GET, which the API never serves from a
-cache — and compare it with `/tmp/issue-5-body.prepared`, the exact
-version the edit was prepared from:
+fetch #5's body again with a literal `gh api` call — **not** routed
+through `.loom/scripts/gh-cached` / `$GH_READ`, which caches `gh api`
+GETs for 30 seconds and could serve a body up to that old, matching your
+prepared copy and masking exactly the peer write this check exists to
+detect — and compare it with `$WORK/prepared`, the exact version the edit
+was prepared from:
 
 ```bash
-gh api repos/2AMLogic/sg13g2-mixer/issues/5 --jq .body > /tmp/issue-5-body-final.md
-cmp -s /tmp/issue-5-body.prepared /tmp/issue-5-body-final.md \
+gh api repos/2AMLogic/sg13g2-mixer/issues/5 --jq .body > "$WORK/final"
+cmp -s "$WORK/prepared" "$WORK/final" \
   || echo "peer wrote first — stand down"
 ```
 
@@ -84,10 +91,11 @@ When preparing the edit:
 - Tick a box only when the artifact exists AND passes. A partial item
   states what is done and what is still missing, and stays unticked until
   its stated requirements pass.
-- Post a short comment on #5 recording what was refreshed and the commit
-  surveyed — a dated audit trail the body alone does not keep — **only
-  after a successful PATCH for a change this Guide still needed to
-  make**. A stand-down and a failed PATCH post none.
+
+After a successful PATCH for a change this Guide still needed to make,
+post a short comment on #5 recording what was refreshed and the commit
+surveyed — a dated audit trail the body alone does not keep. A stand-down
+and a failed PATCH post none.
 
 **Residual race.** The final read and the PATCH are two separate calls, so
 two Guides whose final reads both complete before either write proceeds
