@@ -37,16 +37,42 @@ changes:
    checklist items.
 
 **When a claim has changed**, fetch the body, edit it, PATCH it back —
-never retype it:
+never retype it. Keep a pristine copy of the version your edit starts
+from; the collision check below compares against it:
 
 ```bash
 gh api repos/2AMLogic/sg13g2-mixer/issues/5 --jq .body > /tmp/issue-5-body.md
+cp /tmp/issue-5-body.md /tmp/issue-5-body.prepared
 # edit /tmp/issue-5-body.md
 gh api -X PATCH repos/2AMLogic/sg13g2-mixer/issues/5 -F body=@/tmp/issue-5-body.md
 ```
 
 `-F body=@file` reads the file; `--body @file` posts the literal string
-`@file`. Then:
+`@file`. That read-edit-write sequence is not atomic, and nothing
+serializes two Guides across hosts, so **immediately before the PATCH**,
+fetch #5's body again — a plain GET, which the API never serves from a
+cache — and compare it with `/tmp/issue-5-body.prepared`, the exact
+version the edit was prepared from:
+
+```bash
+gh api repos/2AMLogic/sg13g2-mixer/issues/5 --jq .body > /tmp/issue-5-body-final.md
+cmp -s /tmp/issue-5-body.prepared /tmp/issue-5-body-final.md \
+  || echo "peer wrote first — stand down"
+```
+
+- **Identical** → nothing landed in between: proceed with the PATCH.
+- **Different** → a peer completed a write between your first read and
+  your final read. Discard the prepared edit and re-run the step-3
+  comparison against the latest body. If the peer's refresh already
+  applied the change, end the pass silently — zero PATCHes, zero
+  comments. If it was an unrelated edit and a claim still needs
+  correction, re-apply your derivation on top of the latest body,
+  preserving the unrelated edit, and PATCH that — applying the same
+  final-read check before that PATCH too.
+- **The PATCH itself fails** → post no comment. The body keeps whatever
+  the last successful write left; the next pass re-derives from it.
+
+When preparing the edit:
 
 - Re-derive only the affected text, clause by clause — no blanket rewrite.
   A claim that is still true stays word-for-word.
@@ -59,7 +85,19 @@ gh api -X PATCH repos/2AMLogic/sg13g2-mixer/issues/5 -F body=@/tmp/issue-5-body.
   states what is done and what is still missing, and stays unticked until
   its stated requirements pass.
 - Post a short comment on #5 recording what was refreshed and the commit
-  surveyed — a dated audit trail the body alone does not keep.
+  surveyed — a dated audit trail the body alone does not keep — **only
+  after a successful PATCH for a change this Guide still needed to
+  make**. A stand-down and a failed PATCH post none.
+
+**Residual race.** The final read and the PATCH are two separate calls, so
+two Guides whose final reads both complete before either write proceeds
+both see an unchanged body, both PATCH their own prepared edit, and both
+post an audit comment. Last write wins; when the two surveys started from
+different tips, the loser's stale text overwrites the winner's. The body
+self-heals — the next pass re-derives every claim and corrects it — but
+duplicate audit comments do not. The procedure guarantees only that a
+Guide whose final read sees a peer's completed refresh writes nothing; it
+does not serialize simultaneous final reads.
 
 Always preserve: unrelated edits, the 11-item structure and numbering, the
 block-kind line, the gate note, the "Work that can start now" section, the
