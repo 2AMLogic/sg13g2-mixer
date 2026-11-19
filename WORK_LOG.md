@@ -2,6 +2,10 @@
 
 Chronological record of merged PRs and closed issues. Maintained by the Guide triage role.
 
+### 2026-11-19
+
+- **Issue #54** (closed): Refresh tracker #5's body: its T1 checklist predates PRs #6/#8 and now reads false
+
 ### 2026-11-18
 
 - **PR #89**: ci: run the required checks on merge_group and fail the records gate closed without a base
