@@ -3,6 +3,7 @@
 Generated from GitHub label state by the Guide triage role. Everything between the markers is overwritten.
 
 <!-- guide:plan-body:start -->
+_Generated: 2026-11-19T08:29:09Z (snapshot; compare against live labels)_
 ## Operator Attention: Merge-Risk-Hold Pileup
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
@@ -26,13 +27,13 @@ _None._
 
 Human-approved issues (`loom:issue`) ready for implementation — excluding held (`loom:blocked`/`loom:operator`/`loom:frozen`), `loom:building`, and issues closed by an open `loom:pr` PR (listed under Approved).
 
-- **#54**: Refresh tracker #5's body: its T1 checklist predates PRs #6/#8 and now reads false
+_None._
 
 ## In Progress
 
 Issues currently being built (`loom:building`).
 
-_None._
+- **#91**: Assign Guide responsibility for keeping T1 tracker #5 current
 
 ## PRs Awaiting Review
 
@@ -53,7 +54,7 @@ Issues carrying `loom:curated`.
 
 - **#2**: Draft and ratify the target spec *(curated)*
 - **#47**: spec/target-spec.md still defers D4 to closed issue #3; record 0002 decided it *(curated)*
-- **#54**: Refresh tracker #5's body: its T1 checklist predates PRs #6/#8 and now reads false *(curated)*
+- **#91**: Assign Guide responsibility for keeping T1 tracker #5 current *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -70,8 +71,8 @@ _None._
 | Operator merge-risk holds | 2 |
 | Very important | 0 |
 | Important | 1 |
-| Ready (`loom:issue`, net of holds/building/merge-pending) | 1 |
-| In Progress (`loom:building`) | 0 |
+| Ready (`loom:issue`, net of holds/building/merge-pending) | 0 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 2 |
 | Curated | 3 |
