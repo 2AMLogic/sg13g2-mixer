@@ -4,6 +4,10 @@ Chronological record of merged PRs and closed issues. Maintained by the Guide tr
 
 ### 2026-11-19
 
+- **PR #95**: docs: gate the tracker refresh on a final read before its PATCH
+- **Issue #94** (closed): Tracker #5 refresh has no cross-host mutual exclusion (duplicate audit comment)
+- **PR #93**: docs: give Guide a standing procedure for keeping tracker #5 current
+- **Issue #91** (closed): Assign Guide responsibility for keeping T1 tracker #5 current
 - **Issue #54** (closed): Refresh tracker #5's body: its T1 checklist predates PRs #6/#8 and now reads false
 
 ### 2026-11-18
