@@ -1,0 +1,13 @@
+* extracted by klt extract --engine klayout-runset --deck-file sg13g2.lvs
+* no parasitics: this engine extracts devices and connectivity only
+* no device parameters: each device is an X call onto its class's subcircuit with no parameters, so the subcircuit's own declared defaults apply -- the measured geometry is in the report's devices[].params, and warnings[] names it per class
+
+* cell npn13G2
+.SUBCKT npn13G2
+* device instance $1 r0 *1 9.25,-22.43 npn13G2
+X$1 \$3 \$2 \$10 \$1 npn13G2
+* device instance $2 r0 *1 -2.45,-2.43 npn13G2
+X$2 \$23 \$44 \$45 \$1 npn13G2
+* device instance $3 r0 *1 9.25,-2.43 npn13G2
+X$3 \$24 \$46 \$47 \$1 npn13G2
+.ENDS npn13G2
