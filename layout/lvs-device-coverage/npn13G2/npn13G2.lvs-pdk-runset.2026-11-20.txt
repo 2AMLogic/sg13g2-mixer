@@ -1,0 +1,27 @@
+layout: layout/lvs-device-coverage/npn13G2/npn13G2.gds
+reference: npn13G2/npn13G2.cdl
+top: npn13G2
+reference top: NPN13G2
+engine: klayout-runset
+status: match
+mismatches: 10
+errors: 0
+  nets: layout=10  reference=10  matched=10
+  devices: layout=3  reference=3  matched=3
+  pins: layout=0  reference=10  matched=0
+power_connectivity: unchecked
+  (no subcircuit instance in the runset's extracted netlist declares a power/ground-named pin -- the extraction carries no instance-level power connectivity to check)
+
+category_counts:
+  pin.unmatched: 10
+
+[warning] pin.unmatched  (reference)  pin 'B1' of circuit 'npn13G2' is present only on the reference side, but the runset's own compare graded the pin pair matched (Match)
+[warning] pin.unmatched  (reference)  pin 'B2' of circuit 'npn13G2' is present only on the reference side, but the runset's own compare graded the pin pair matched (Match)
+[warning] pin.unmatched  (reference)  pin 'B3' of circuit 'npn13G2' is present only on the reference side, but the runset's own compare graded the pin pair matched (Match)
+[warning] pin.unmatched  (reference)  pin 'C1' of circuit 'npn13G2' is present only on the reference side, but the runset's own compare graded the pin pair matched (Match)
+[warning] pin.unmatched  (reference)  pin 'C2' of circuit 'npn13G2' is present only on the reference side, but the runset's own compare graded the pin pair matched (Match)
+[warning] pin.unmatched  (reference)  pin 'C3' of circuit 'npn13G2' is present only on the reference side, but the runset's own compare graded the pin pair matched (Match)
+[warning] pin.unmatched  (reference)  pin 'E1' of circuit 'npn13G2' is present only on the reference side, but the runset's own compare graded the pin pair matched (Match)
+[warning] pin.unmatched  (reference)  pin 'E2' of circuit 'npn13G2' is present only on the reference side, but the runset's own compare graded the pin pair matched (Match)
+[warning] pin.unmatched  (reference)  pin 'E3' of circuit 'npn13G2' is present only on the reference side, but the runset's own compare graded the pin pair matched (Match)
+[warning] pin.unmatched  (reference)  pin 'SUB!' of circuit 'npn13G2' is present only on the reference side, but the runset's own compare graded the pin pair matched (Match)

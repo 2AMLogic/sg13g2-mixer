@@ -1,0 +1,206 @@
+{
+  "schema_version": 4,
+  "engine": "klayout-runset",
+  "file": {
+    "path": "layout/lvs-device-coverage/npn13G2/npn13G2.gds",
+    "scope": "repo"
+  },
+  "deck": null,
+  "deck_file": "/home/ubuntu/share/pdk/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+  "deck_vars": {},
+  "top": "npn13G2",
+  "dbu_um": 0.001,
+  "netlist_path": "npn13G2/npn13G2.extracted.runset.2026-11-20.spice",
+  "netlist_sha256": "73bfce35bc6610b775c073e18c5273db90a8cef87f0c881dbc4ec085f804e4ce",
+  "netlist_normalized_sha256": "9496f4fc888d1719001411c81fee5f61660ef1474e682ec1277b15ce1c83eb34",
+  "status": "extracted",
+  "device_count": 3,
+  "net_count": 10,
+  "pin_count": 0,
+  "device_counts": {
+    "npn13G2": 3
+  },
+  "device_classes": [
+    "npn13G2"
+  ],
+  "devices": [
+    {
+      "name": "$1",
+      "class": "npn13G2",
+      "nets": {
+        "c": "\\$3",
+        "b": "\\$2",
+        "e": "\\$10",
+        "s": "\\$1"
+      },
+      "params": {},
+      "instance_path": []
+    },
+    {
+      "name": "$2",
+      "class": "npn13G2",
+      "nets": {
+        "c": "\\$23",
+        "b": "\\$44",
+        "e": "\\$45",
+        "s": "\\$1"
+      },
+      "params": {},
+      "instance_path": []
+    },
+    {
+      "name": "$3",
+      "class": "npn13G2",
+      "nets": {
+        "c": "\\$24",
+        "b": "\\$46",
+        "e": "\\$47",
+        "s": "\\$1"
+      },
+      "params": {},
+      "instance_path": []
+    }
+  ],
+  "nets": [
+    {
+      "name": "\\$1",
+      "pin": false,
+      "device_count": 3,
+      "net_id": 1,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$10",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 4,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$2",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 2,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$23",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 5,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$24",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 6,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$3",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 3,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$44",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 7,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$45",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 8,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$46",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 9,
+      "pin_index": null,
+      "label_positions_um": []
+    },
+    {
+      "name": "\\$47",
+      "pin": false,
+      "device_count": 1,
+      "net_id": 10,
+      "pin_index": null,
+      "label_positions_um": []
+    }
+  ],
+  "device_models": null,
+  "params_not_carried": {
+    "npn13G2": [
+      "Nx",
+      "le",
+      "m",
+      "we"
+    ]
+  },
+  "instantiated_device_counts": {
+    "npn13G2": 3
+  },
+  "extra_circuits": [],
+  "parasitics": null,
+  "pdk": null,
+  "warnings": [
+    "device class 'npn13G2' is written as an X call onto subcircuit 'npn13G2' with no parameters: the measured Nx, le, m, we are not carried onto the card, so the subcircuit's own declared defaults apply (every measured value this report has a field for is in devices[].params). The klayout-runset engine does not guess a per-PDK unit rescale or parameter spelling -- see docs/cli/extract.md, 'Engine'"
+  ],
+  "provenance": {
+    "klt_version": "0.9.3.dev2575+g6bd18bbc8637",
+    "klt_git_commit": "6bd18bbc8637f6d767b3c24e77bd5db7a39e4bbe",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@6bd18bbc8637f6d767b3c24e77bd5db7a39e4bbe",
+    "klayout_version": "0.30.12",
+    "pdk": null,
+    "deck": {
+      "name": "sg13g2.lvs",
+      "content_hash": "sha256:e01bcb1ec5858e8069bade8f7fd7ec28c1026fc2fd0590e8f611d3398a5bbbd7",
+      "released": null
+    },
+    "input": {
+      "content_hash": "sha256:cb381d067c1862b0df2a0d7a9303423cf0a3737cddf4dc98d39e32ede8c5853d",
+      "role": "layout"
+    },
+    "runset": {
+      "deck_file": "/home/ubuntu/share/pdk/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+      "deck_vars": {},
+      "content_hash": "sha256:e01bcb1ec5858e8069bade8f7fd7ec28c1026fc2fd0590e8f611d3398a5bbbd7",
+      "klayout_application_version": "0.30.12",
+      "exit_status": 0,
+      "engine_error_lines": []
+    }
+  },
+  "metrics": {
+    "extract__device__count": 3,
+    "extract__net__count": 10,
+    "extract__pin__count": 0
+  },
+  "timing": {
+    "stages": {
+      "layout_load": 0.001,
+      "runset": 3.748,
+      "lvsdb_read": 0.247,
+      "netlist_write": 0.0,
+      "netlist_hash": 0.0,
+      "describe_devices": 0.0,
+      "describe_nets": 0.0
+    },
+    "total_seconds": 4.191,
+    "unattributed_seconds": 0.194
+  }
+}
