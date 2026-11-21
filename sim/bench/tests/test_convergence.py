@@ -34,6 +34,12 @@ class TestConvergenceGate(unittest.TestCase):
         self.assertTrue(convergence.convergence_failures(-0.01, name="x"))
         self.assertTrue(convergence.convergence_failures(0.0, -1.0, name="x"))
 
+    def test_nonfinite_deltas_fail_independently(self):
+        for invalid in (float("nan"), float("inf"), float("-inf")):
+            self.assertTrue(convergence.convergence_failures(invalid, 0.0))
+            self.assertTrue(convergence.convergence_failures(0.0, invalid))
+            self.assertEqual(len(convergence.convergence_failures(invalid, invalid)), 2)
+
     def test_named_failure_strings(self):
         out = convergence.convergence_failures(0.5, 0.5, name="b_cg")
         self.assertTrue(all(l.startswith("b_cg:") for l in out))

@@ -60,12 +60,6 @@ rl if 0 1k
 cl if 0 2p
 """
 
-RECIPE = """let a_if = am[64]
-let a_sum = am[31936]
-let a_3lo_rf = am[31808]
-print a_if a_sum a_3lo_rf
-"""
-
 BINS = {"if": 64, "sum": 31936, "3lo_rf": 31808}
 
 
@@ -82,17 +76,16 @@ def power_gain_db(if_amplitude):
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("--ngspice", default=os.environ.get("NGSPICE", "ngspice"))
-    ap.add_argument("--record", default=os.path.join(
-        HERE, "records",
-        datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d") + "-v3.json"))
+    ap.add_argument("--ngspice", type=runner.ngspice_command,
+                    default=os.environ.get("NGSPICE", "ngspice"))
+    ap.add_argument("--record", help="output path (default: new UTC-stamped evidence record)")
     ap.add_argument("--workdir", default=os.path.join(ROOT, ".tools", "ka2-work"))
     ap.add_argument("--dump-deck", action="store_true")
     args = ap.parse_args(argv)
 
     if args.dump_deck:
         sys.stdout.write(runner.render_deck(
-            RECIPE, DECK_BODY, "if", runner.DT_S, "samples-s1.txt"))
+            BINS, DECK_BODY, "if", runner.DT_S, "samples-s1.txt"))
         return 0
 
     problems = coherence.coherence_problems(
@@ -110,31 +103,23 @@ def main(argv=None):
         return 1
 
     os.makedirs(args.workdir, exist_ok=True)
-    runs = runner.two_step_run(args.ngspice, DECK_BODY, RECIPE, "if", args.workdir)
+    runs = runner.two_step_run(args.ngspice, DECK_BODY, BINS, "if", args.workdir)
 
     t0 = time.monotonic()
-    amps = {tag: runner.window_amplitudes(step, BINS) for tag, step in runs.items()}
+    readings = runner.tone_readings(runs, BINS)
     a_if_exp = expected_if_amplitude()
-    a_if_meas = amps["s1"]["if"]["python_dft_w1_v"]
-    if_delta = abs(runner.db20(a_if_meas / a_if_exp))
-
-    fig_if = {
-        "following_window_db": amps["s1"]["if"]["following_window_db"],
-        "step_halving_db": abs(runner.db20(
-            amps["s1"]["if"]["python_dft_w1_v"] / amps["s2"]["if"]["python_dft_w1_v"])),
+    deltas, failures = runner.grade_tones(readings, BINS, TOL_M1_DB)
+    deltas["if_voltage_db"], if_failures = runner.grade_known_answer(
+        readings, runner.db20, runner.db20(a_if_exp), TOL_IF_DB, "IF voltage")
+    failures.extend(if_failures)
+    power_gain = {
+        leg: {window: power_gain_db(tones["if"]["python_dft_v"]) for window, tones in windows.items()}
+        for leg, windows in readings.items()
     }
-    failures = runner.convergence_failures_for({"if_voltage": fig_if})
-    if if_delta >= TOL_IF_DB:
-        failures.append(f"IF-voltage delta {if_delta:.4f} dB >= {TOL_IF_DB} dB "
-                        f"(measured {a_if_meas:.6e} V vs closed form {a_if_exp:.6e} V)")
-    for name in BINS:
-        if amps["s1"][name]["m1_delta_db"] >= TOL_M1_DB:
-            failures.append(f"M1 deck-vs-python delta on bin '{name}' "
-                            f"{amps['s1'][name]['m1_delta_db']:.4f} dB >= {TOL_M1_DB} dB")
     post_s = time.monotonic() - t0
 
     record = {
-        "schema": 1,
+        "schema": 2,
         "bench": "ka2-switch-mixer",
         "check": "spec/target-spec.md 'Known-answer validation' case 2 "
                  "(hard-switched ideal mixer): IF voltage = 2/pi x RF voltage",
@@ -144,6 +129,8 @@ def main(argv=None):
         "corner": "single corner, nominal (behavioural elements carry no PVT)",
         "toolchain": {"ngspice": version, "python": platform.python_version()},
         "protocol": {
+            "legs": {"s1": "12.5 ps", "s2": "6.25 ps"},
+            "windows": {"w1": "analysis", "w2": "following"},
             "step_s": runner.DT_S, "step_halved_s": runner.DT_S / 2,
             "window_points": runner.N_WINDOW,
             "window_s": runner.N_WINDOW * runner.DT_S,
@@ -170,16 +157,8 @@ def main(argv=None):
                        "matched load",
             "power_gain_diagnostic_db": power_gain_db(a_if_exp),
         },
-        "measured": {
-            "step_12.5ps": {name: amps["s1"][name] for name in BINS},
-            "power_gain_diagnostic_db": power_gain_db(a_if_meas),
-            "step_6.25ps_if_amplitude_v": amps["s2"]["if"]["python_dft_w1_v"],
-        },
-        "deltas": {"if_voltage_db": if_delta,
-                   "m1_deck_vs_python_db": max(amps["s1"][n]["m1_delta_db"]
-                                               for n in BINS),
-                   "following_window_db": fig_if["following_window_db"],
-                   "step_halving_db": fig_if["step_halving_db"]},
+        "measured": {"tone_amplitudes": readings, "power_gain_diagnostic_db": power_gain},
+        "deltas": deltas,
         "tolerances_db": {"if_voltage": TOL_IF_DB, "m1_deck_vs_python": TOL_M1_DB,
                           "following_window": 0.1, "step_halving": 0.1},
         "pass": not failures,
@@ -190,13 +169,9 @@ def main(argv=None):
         "command": "sim/ka2-switch-mixer/run.sh",
         "date": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d"),
     }
-    runner.write_record(args.record, record)
-    print(f"KA2 IF measured={a_if_meas:.6e} V expected={a_if_exp:.6e} V "
-          f"delta={if_delta:.4f} dB (tol {TOL_IF_DB}), "
-          f"following-window={fig_if['following_window_db']:.4f} dB, "
-          f"step-halving={fig_if['step_halving_db']:.4f} dB, "
-          f"wall={runs['s1']['wall_s']:.1f}+{runs['s2']['wall_s']:.1f} s")
-    print(f"record: {args.record}  pass={not failures}")
+    path = runner.save_bench_record(HERE, args.record, record)
+    print(f"KA2 expected IF={a_if_exp:.6e} V, worst error={deltas['if_voltage_db']:.4f} dB")
+    print(f"record: {path}  pass={not failures}")
     for line in failures:
         print("FAIL:", line, file=sys.stderr)
     return 1 if failures else 0

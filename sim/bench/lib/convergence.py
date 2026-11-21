@@ -17,6 +17,8 @@ noise benches that need it -- nothing here pre-empts it.
 
 from __future__ import annotations
 
+import math
+
 FOLLOWING_WINDOW_MAX_DB = 0.1
 """The same analysis on the following window must reproduce every reported
 figure to better than this (protocol "Settling"), else the settling discard
@@ -38,16 +40,17 @@ def convergence_failures(following_window_db, step_halving_db=None,
     the following-window leg, and a reported result still needs both).
     """
     out = []
-    if following_window_db is None or following_window_db < 0:
-        out.append(f"{name}: following-window delta missing or negative")
+    if (following_window_db is None or not math.isfinite(following_window_db)
+            or following_window_db < 0):
+        out.append(f"{name}: following-window delta missing, non-finite or negative")
     elif following_window_db >= FOLLOWING_WINDOW_MAX_DB:
         out.append(
             f"{name}: following-window delta {following_window_db:.4f} dB "
             f">= {FOLLOWING_WINDOW_MAX_DB} dB: lengthen the settling discard "
             "and repeat the run")
     if step_halving_db is not None:
-        if step_halving_db < 0:
-            out.append(f"{name}: step-halving delta negative")
+        if not math.isfinite(step_halving_db) or step_halving_db < 0:
+            out.append(f"{name}: step-halving delta non-finite or negative")
         elif step_halving_db >= STEP_HALVING_MAX_DB:
             out.append(
                 f"{name}: step-halving delta {step_halving_db:.4f} dB "

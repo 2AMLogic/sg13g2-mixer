@@ -55,13 +55,6 @@ rl if 0 1k
 cl if 0 2p
 """
 
-RECIPE = """let a_if = am[64]
-let a_sum = am[31936]
-let a_lofeed = am[15936]
-let a_image = am[15872]
-print a_if a_sum a_lofeed a_image
-"""
-
 BINS = {"if": 64, "sum": 31936, "lofeed": 15936, "image": 15872}
 
 
@@ -78,17 +71,16 @@ def b_cg_db(if_amplitude):
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("--ngspice", default=os.environ.get("NGSPICE", "ngspice"))
-    ap.add_argument("--record", default=os.path.join(
-        HERE, "records",
-        datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d") + "-v3.json"))
+    ap.add_argument("--ngspice", type=runner.ngspice_command,
+                    default=os.environ.get("NGSPICE", "ngspice"))
+    ap.add_argument("--record", help="output path (default: new UTC-stamped evidence record)")
     ap.add_argument("--workdir", default=os.path.join(ROOT, ".tools", "ka1-work"))
     ap.add_argument("--dump-deck", action="store_true")
     args = ap.parse_args(argv)
 
     if args.dump_deck:
         sys.stdout.write(runner.render_deck(
-            RECIPE, DECK_BODY, "if", runner.DT_S, "samples-s1.txt"))
+            BINS, DECK_BODY, "if", runner.DT_S, "samples-s1.txt"))
         return 0
 
     problems = coherence.coherence_problems(
@@ -106,33 +98,26 @@ def main(argv=None):
         return 1
 
     os.makedirs(args.workdir, exist_ok=True)
-    runs = runner.two_step_run(args.ngspice, DECK_BODY, RECIPE, "if", args.workdir)
+    runs = runner.two_step_run(args.ngspice, DECK_BODY, BINS, "if", args.workdir)
 
     t0 = time.monotonic()
-    amps = {tag: runner.window_amplitudes(step, BINS) for tag, step in runs.items()}
-    a_if_exp = expected_if_amplitude()
-    cg_exp = b_cg_db(a_if_exp)
-    cg_meas = b_cg_db(amps["s1"]["if"]["python_dft_w1_v"])
-    cg_delta = abs(cg_meas - cg_exp)
-
-    # following-window / step-halving deltas on the IF tone:
-    fig_if = {
-        "following_window_db": amps["s1"]["if"]["following_window_db"],
-        "step_halving_db": abs(runner.db20(
-            amps["s1"]["if"]["python_dft_w1_v"] / amps["s2"]["if"]["python_dft_w1_v"])),
-    }
-    failures = runner.convergence_failures_for({"b_cg_if_tone": fig_if})
-    if cg_delta >= TOL_CG_DB:
-        failures.append(f"B-CG delta {cg_delta:.4f} dB >= {TOL_CG_DB} dB "
-                        f"(measured {cg_meas:.4f} vs closed form {cg_exp:.4f})")
-    for name in ("if", "sum"):
-        if amps["s1"][name]["m1_delta_db"] >= TOL_M1_DB:
-            failures.append(f"M1 deck-vs-python delta on bin '{name}' "
-                            f"{amps['s1'][name]['m1_delta_db']:.4f} dB >= {TOL_M1_DB} dB")
+    readings = runner.tone_readings(runs, BINS)
+    cg_exp = 10.0 * math.log10((K_MULT * A_LO / 2) ** 2 * 4 * runner.RS_RF / runner.R_LOAD)
+    deltas, failures = runner.grade_tones(readings, ("if", "sum"), TOL_M1_DB)
+    deltas["b_cg_db"], gain_failures = runner.grade_known_answer(
+        readings, b_cg_db, cg_exp, TOL_CG_DB, "B-CG")
+    failures.extend(gain_failures)
+    gains = {}
+    floor = {}
+    for leg, windows in readings.items():
+        gains[leg], floor[leg] = {}, {}
+        for window, tones in windows.items():
+            gains[leg][window] = b_cg_db(tones["if"]["python_dft_v"])
+            floor[leg][window] = {name: tones.pop(name) for name in ("image", "lofeed")}
     post_s = time.monotonic() - t0
 
     record = {
-        "schema": 1,
+        "schema": 2,
         "bench": "ka1-ideal-multiplier",
         "check": "spec/target-spec.md 'Known-answer validation' case 1 "
                  "(ideal multiplier, conversion gain): IF amplitude = k*A/2 x RF",
@@ -142,6 +127,8 @@ def main(argv=None):
         "corner": "single corner, nominal (behavioural elements carry no PVT)",
         "toolchain": {"ngspice": version, "python": platform.python_version()},
         "protocol": {
+            "legs": {"s1": "12.5 ps", "s2": "6.25 ps"},
+            "windows": {"w1": "analysis", "w2": "following"},
             "step_s": runner.DT_S, "step_halved_s": runner.DT_S / 2,
             "window_points": runner.N_WINDOW,
             "window_s": runner.N_WINDOW * runner.DT_S,
@@ -159,24 +146,17 @@ def main(argv=None):
             "sideband": "SSB (image tone absent)",
         },
         "expected": {
-            "if_amplitude_v": a_if_exp,
-            "sum_amplitude_v": a_if_exp,
+            "if_amplitude_v": expected_if_amplitude(),
             "b_cg_db": cg_exp,
-            "formula": "IF amplitude = k*A/2 * V_rf; B-CG = (A_if^2/(2*1000)) / P_avail",
+            "formula": "B-CG = 10*log10((k*A/2)^2 * 4*R_source/R_load)",
         },
-        "measured": {
-            "step_12.5ps": {name: amps["s1"][name] for name in BINS},
-            "b_cg_db": cg_meas,
-            "step_6.25ps_if_amplitude_v": amps["s2"]["if"]["python_dft_w1_v"],
-            "image_and_feedthrough_note": "a_image (15872) and a_lofeed (15936) are "
-                                          "reported levels of the image bin and LO "
-                                          "feedthrough, expected at the numerical floor",
+        "measured": {"tone_amplitudes": readings, "b_cg_db": gains},
+        "numerical_floor_diagnostics": {
+            "note": "The ideal circuit has no image or LO feedthrough tone. Raw residual "
+                    "voltages are recorded separately from graded tone levels.",
+            "amplitudes": floor,
         },
-        "deltas": {"b_cg_db": cg_delta,
-                   "m1_deck_vs_python_db": max(amps["s1"][n]["m1_delta_db"]
-                                               for n in ("if", "sum")),
-                   "following_window_db": fig_if["following_window_db"],
-                   "step_halving_db": fig_if["step_halving_db"]},
+        "deltas": deltas,
         "tolerances_db": {"b_cg": TOL_CG_DB, "m1_deck_vs_python": TOL_M1_DB,
                           "following_window": 0.1, "step_halving": 0.1},
         "pass": not failures,
@@ -187,13 +167,9 @@ def main(argv=None):
         "command": "sim/ka1-ideal-multiplier/run.sh",
         "date": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d"),
     }
-    runner.write_record(args.record, record)
-    print(f"KA1 B-CG measured={cg_meas:.4f} dB expected={cg_exp:.4f} dB "
-          f"delta={cg_delta:.4f} dB (tol {TOL_CG_DB}), "
-          f"following-window={fig_if['following_window_db']:.4f} dB, "
-          f"step-halving={fig_if['step_halving_db']:.4f} dB, "
-          f"wall={runs['s1']['wall_s']:.1f}+{runs['s2']['wall_s']:.1f} s")
-    print(f"record: {args.record}  pass={not failures}")
+    path = runner.save_bench_record(HERE, args.record, record)
+    print(f"KA1 expected B-CG={cg_exp:.4f} dB, worst error={deltas['b_cg_db']:.4f} dB")
+    print(f"record: {path}  pass={not failures}")
     for line in failures:
         print("FAIL:", line, file=sys.stderr)
     return 1 if failures else 0

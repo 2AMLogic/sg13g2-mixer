@@ -46,3 +46,12 @@ Each bench README documents its cold-start command; results land
 append-only in `sim/<bench>/records/`. The benches are behavioural
 (no HBT models, no PDK), single corner per run, per the V3 row of the
 validation plan.
+
+Schema-2 records contain the measured peak voltages for both steps
+(`s1` at 12.5 ps and `s2` at 6.25 ps) and both windows (`w1` and
+the following `w2`). The top-level deltas are the largest errors over
+the applicable tones, methods, steps and windows. KA1's image and LO
+feedthrough bins have zero ideal amplitude. Their residual voltages are
+listed under `numerical_floor_diagnostics` because a relative dB error
+against zero is undefined. Use the schema-2 records for V3 signoff.
+The earlier schema-1 records predate the four-window checks.

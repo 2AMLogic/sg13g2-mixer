@@ -1,0 +1,147 @@
+{
+  "bench": "ka2-switch-mixer",
+  "check": "spec/target-spec.md 'Known-answer validation' case 2 (hard-switched ideal mixer): IF voltage = 2/pi x RF voltage",
+  "command": "sim/ka2-switch-mixer/run.sh",
+  "corner": "single corner, nominal (behavioural elements carry no PVT)",
+  "date": "2026-11-21",
+  "deltas": {
+    "following_window_db": 1.674133446774987e-05,
+    "if_voltage_db": 0.027163744068104734,
+    "m1_deck_vs_python_db": 2.9360525810364906e-06,
+    "step_halving_db": 0.01971251809517158
+  },
+  "elements": "behavioural (switch B-source, pulse source, resistors, capacitor; no semiconductor models, no PDK)",
+  "expected": {
+    "formula": "IF amplitude = (2/pi) * V_rf (square-wave fundamental 4/pi, mixed down by 1/2); -3.92 dB voltage conversion into a matched load",
+    "if_amplitude_v": 0.0040263369683589635,
+    "power_gain_diagnostic_db": -10.912097583963241
+  },
+  "failures": [],
+  "kind": "simulated",
+  "measured": {
+    "power_gain_diagnostic_db": {
+      "s1": {
+        "w1": -10.939248388906364,
+        "w2": -10.939261328031357
+      },
+      "s2": {
+        "w1": -10.91955457769962,
+        "w2": -10.919548809936186
+      }
+    },
+    "tone_amplitudes": {
+      "s1": {
+        "w1": {
+          "3lo_rf": {
+            "deck_fft_v": 0.001338118,
+            "python_dft_v": 0.001338118216660163
+          },
+          "if": {
+            "deck_fft_v": 0.004013771,
+            "python_dft_v": 0.004013770885239962
+          },
+          "sum": {
+            "deck_fft_v": 0.004014622,
+            "python_dft_v": 0.004014622267554919
+          }
+        },
+        "w2": {
+          "3lo_rf": {
+            "deck_fft_v": 0.001338117,
+            "python_dft_v": 0.0013381172893657386
+          },
+          "if": {
+            "deck_fft_v": 0.004013765,
+            "python_dft_v": 0.004013764906043051
+          },
+          "sum": {
+            "deck_fft_v": 0.004014624,
+            "python_dft_v": 0.004014624473502372
+          }
+        }
+      },
+      "s2": {
+        "w1": {
+          "3lo_rf": {
+            "deck_fft_v": 0.001340644,
+            "python_dft_v": 0.0013406435468281575
+          },
+          "if": {
+            "deck_fft_v": 0.004022882,
+            "python_dft_v": 0.0040228817684590315
+          },
+          "sum": {
+            "deck_fft_v": 0.004023593,
+            "python_dft_v": 0.0040235932996278735
+          }
+        },
+        "w2": {
+          "3lo_rf": {
+            "deck_fft_v": 0.001340646,
+            "python_dft_v": 0.0013406461308102923
+          },
+          "if": {
+            "deck_fft_v": 0.004022884,
+            "python_dft_v": 0.00402288443980751
+          },
+          "sum": {
+            "deck_fft_v": 0.004023591,
+            "python_dft_v": 0.004023590791629346
+          }
+        }
+      }
+    }
+  },
+  "pass": true,
+  "protocol": {
+    "bins": {
+      "3lo_rf": 31808,
+      "if": 64,
+      "sum": 31936
+    },
+    "legs": {
+      "s1": "12.5 ps",
+      "s2": "6.25 ps"
+    },
+    "lo_edges_note": "LO edges are not on the sample grid; edge-time quantisation is second-order on the fundamental amplitude and is what the step-halving leg bounds",
+    "ports": {
+      "lo_source": "ideal square wave +/-1, 1 ps edges",
+      "load": "R9: 1000 ohm || 2 pF",
+      "rf_source": "50 ohm single-ended, -40 dBm available (1e-7 W)"
+    },
+    "settle_discard_s": 3.2768e-06,
+    "sideband": "SSB (image tone absent)",
+    "step_halved_s": 6.25e-12,
+    "step_s": 1.25e-11,
+    "tones_hz": {
+      "3lo_minus_rf": 4853515625.0,
+      "if": 9765625.0,
+      "lo": 2431640625.0,
+      "rf": 2441406250.0,
+      "sum": 4873046875.0
+    },
+    "window": "rectangular (coherent tones); Hann cross-check is ka5's graded reading, M1 two-half agreement gated here",
+    "window_points": 524288,
+    "window_s": 6.5536e-06,
+    "windows": {
+      "w1": "analysis",
+      "w2": "following"
+    }
+  },
+  "schema": 2,
+  "tolerances_db": {
+    "following_window": 0.1,
+    "if_voltage": 0.1,
+    "m1_deck_vs_python": 0.05,
+    "step_halving": 0.1
+  },
+  "toolchain": {
+    "ngspice": "** ngspice-46 : Circuit level simulation program",
+    "python": "3.12.3"
+  },
+  "wall_clock_s": {
+    "ngspice_12.5ps": 25.412815401010448,
+    "ngspice_6.25ps": 38.13919132600131,
+    "post_processing": 1.1965372229897184
+  }
+}

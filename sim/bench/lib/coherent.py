@@ -49,23 +49,20 @@ set specwindow=none
 tran {tstep} {tstop} {tstart} {tstep}
 linearize np={n_full} v({node})
 wrdata {samples} v({node})
-linearize np={n_win} v({node})
-fft v({node})
-let am = mag(v({node}))
+set uniform = $curplot
 """
-"""The deck half of M1, as ngspice control-block lines.
+"""Prepare the shared uniform record used by the deck FFTs and Python DFTs."""
 
-Rendered with the transient step ``{tstep}``, the run's ``{tstart}`` /
-``{tstop}``, the record lengths ``{n_full}`` (settling discard plus both
-analysis windows) and ``{n_win}`` (one analysis window, a power of two),
-the output ``{node}`` and the sample-file path ``{samples}``. After these
-lines, ``am[k]`` is the peak amplitude of bin ``k`` of the analysis
-window, e.g. ``let a_if = am[64]`` followed by ``print a_if`` writes the
-deck-side figure to the log the driver parses. The two ``linearize``
-calls are chained on purpose: the second interpolates the first's uniform
-grid onto its exact sub-grid, so the window the deck transforms and the
-samples written for the Python half come from the same uniform record.
-"""
+
+def window_fft(node, bins, n_window, window, start_index):
+    """Read the named bins from one window of the saved uniform plot."""
+    lines = ["setplot $uniform", f"let lin-tstart = time[{start_index}]",
+             f"linearize np={n_window} v({node})", f"fft v({node})",
+             f"let am = mag(v({node}))"]
+    for name, index in bins.items():
+        label = f"a_{window}_{name}"
+        lines.extend((f"let {label} = am[{index}]", f"print {label}"))
+    return "\n".join(lines) + "\n"
 
 
 def dft_amplitude(samples, bin_index):
