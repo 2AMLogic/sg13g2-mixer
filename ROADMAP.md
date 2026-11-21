@@ -41,8 +41,12 @@ and their evidence under `sim/<bench>/records/`.
   percentile and confidence, set by a decision record; until then the
   isolation rows cannot be graded pass/fail.
 - **Layout, DRC, LVS, power structure, post-layout** (T1 items 2–4, 7, 11).
-  First question: does the LVS device-coverage probe
-  (`layout/lvs-device-coverage/`) show the chosen devices extract?
+  First question — answered 2026-11-20 (issue #98): yes on the runset engine, where
+  every probed class including the HBT both extracts and reaches `status: match`
+  (`layout/lvs-device-coverage/`); the curated deck still extracts no HBT (#1232,
+  declined). Next question: does `klt signoff` accept the runset citation for item 4
+  (measured refusal `runset_unrecognised_device`, blocked upstream on
+  `2AMLogic/klayout-tools#6902`)?
 - **R14 area re-baseline.** First question: what does the schematic imply?
 - **On-chip balun (R2 stretch) and zero-IF I/Q (R9 stretch, D5).** Not before
   the single-IF target closes; the balun also waits on D3.
