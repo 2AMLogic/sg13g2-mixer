@@ -136,6 +136,73 @@ class TestBenchGates(unittest.TestCase):
                 self.run_bench(KA1)
 
 
+class TestToolchainPinGate(unittest.TestCase):
+    """The expected ngspice major is read from sim/toolchain.json once, by
+    the shared runner (issue #104): bumping the pin moves every bench."""
+
+    def run_bench(self, bench, pin, stub_major):
+        """(exit_code_or_message, parsed_record_or_None, batch_mock)."""
+        if bench is KA5:
+            bins = bench.BINS
+            amplitude = bench.expected_amplitude()
+        else:
+            bins = {name: 3 + 5 * i for i, name in enumerate(bench.BINS)}
+            amplitude = bench.expected_if_amplitude()
+        runs = synthetic_runs(bins, amplitude, {}, {})
+        with tempfile.TemporaryDirectory() as tmp, contextlib.ExitStack() as stack:
+            manifest = Path(tmp, "toolchain.json")
+            manifest.write_text(json.dumps({"ngspice": {"major": pin}}))
+            path = Path(tmp, "result.json")
+            batch = mock.Mock(return_value=runs)
+            stack.enter_context(mock.patch.object(bench, "BINS", bins))
+            stack.enter_context(mock.patch.object(runner, "TOOLCHAIN_MANIFEST", manifest))
+            stack.enter_context(mock.patch.object(runner, "two_step_run", batch))
+            stack.enter_context(mock.patch.object(
+                runner, "ngspice_major",
+                return_value=(stub_major, f"ngspice-{stub_major} banner")))
+            stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
+            stack.enter_context(contextlib.redirect_stderr(io.StringIO()))
+            try:
+                code = bench.main(["--workdir", tmp, "--record", str(path)])
+            except SystemExit as exc:
+                code = exc.code
+            record = json.loads(path.read_text()) if path.exists() else None
+            return code, record, batch
+
+    def test_matching_pin_reaches_the_first_batch(self):
+        benches = [(KA1, "KA1"), (KA2, "KA2")]
+        if importlib.util.find_spec("numpy"):
+            benches.append((KA5, "KA5"))
+        for bench, name in benches:
+            with self.subTest(bench=name):
+                code, record, batch = self.run_bench(bench, pin=47, stub_major=47)
+                self.assertEqual(code, 0)
+                self.assertTrue(batch.called)
+                self.assertTrue(record["pass"])
+                self.assertEqual(record["toolchain"]["ngspice"], "ngspice-47 banner")
+
+    def test_mismatched_major_exits_nonzero_before_the_first_batch(self):
+        for bench, name in ((KA1, "KA1"), (KA2, "KA2"), (KA5, "KA5")):
+            with self.subTest(bench=name):
+                code, record, batch = self.run_bench(bench, pin=47, stub_major=46)
+                self.assertNotEqual(code, 0)
+                self.assertIn(name, code)
+                self.assertIn("46", code)
+                self.assertIn("47", code)
+                self.assertFalse(batch.called)
+                self.assertIsNone(record)
+
+    def test_dump_deck_stays_offline(self):
+        for bench, name in ((KA1, "KA1"), (KA2, "KA2"), (KA5, "KA5")):
+            with self.subTest(bench=name):
+                with mock.patch.object(
+                        runner, "ngspice_major",
+                        side_effect=AssertionError("no simulator expected")):
+                    with contextlib.redirect_stdout(io.StringIO()) as out:
+                        self.assertEqual(bench.main(["--dump-deck"]), 0)
+                self.assertIn("wrdata", out.getvalue())
+
+
 class TestTwoStepRun(unittest.TestCase):
     def test_wrdata_names_the_sample_basename_under_a_spaced_workdir(self):
         """ngspice cannot quote a wrdata path, so the deck must name the
