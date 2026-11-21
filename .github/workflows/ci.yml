@@ -27,8 +27,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Mechanic M3 (sim/bench/lib/psd.py, stamped per record 0002) needs
+      # numpy — the repo's only third-party Python dependency, declared in
+      # sim/bench/requirements.txt. CI installs it into a job-local venv
+      # (never a host-wide install) and shadows python3 with it for the
+      # check, so the psd unit tests run instead of skipping.
+      - name: Install bench Python deps into a venv
+        run: |
+          python3 -m venv .tools/bench-venv
+          .tools/bench-venv/bin/pip install -r sim/bench/requirements.txt
       - name: Byte-compile Python and run unit tests
-        run: scripts/check-all.sh python
+        run: PATH="$PWD/.tools/bench-venv/bin:$PATH" scripts/check-all.sh python
 
   tb-json:
     runs-on: ubuntu-latest

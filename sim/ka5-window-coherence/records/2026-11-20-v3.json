@@ -1,0 +1,79 @@
+{
+  "bench": "ka5-window-coherence",
+  "check": "spec/target-spec.md 'Known-answer validation' case 5 (window/coherence): one coherent tone, same power on rectangular FFT, Hann FFT and independent DFT",
+  "command": "sim/ka5-window-coherence/run.sh",
+  "corner": "single corner, nominal (behavioural elements carry no PVT)",
+  "date": "2026-11-20",
+  "deltas": {
+    "following_window_db": 2.4967788167158925e-10,
+    "m1_deck_vs_python_db": 1.2297239941989277e-06,
+    "reading_spread_db": 1.2297721174680611e-06,
+    "step_halving_db": 3.8592641712036866e-07
+  },
+  "elements": "behavioural (ideal source, resistors, capacitor; no semiconductor models, no PDK)",
+  "expected": {
+    "note": "closed-form divider reference, reported for context; the graded check is the agreement of the three readings",
+    "reference_amplitude_v": 0.0019047293824954795
+  },
+  "failures": [],
+  "kind": "simulated",
+  "measured": {
+    "auxiliary": {
+      "enbw_hz": 228881.8359375,
+      "expected_reference_v": 0.0019047293824954795,
+      "following_window_db": 2.4967788167158925e-10,
+      "hann_band_bins": 7,
+      "hann_band_hz": [
+        9253625.0,
+        10277625.0
+      ],
+      "parseval_ratio": 1.000000000014726,
+      "rectangular_fft_numpy_v": 0.001904729269662759,
+      "step_halving_db": 3.8592641712036866e-07
+    },
+    "readings_v": {
+      "hann_fft_v": 0.0019047292696767837,
+      "independent_dft_v": 0.0019047292696662307,
+      "rectangular_fft_deck_v": 0.001904729
+    },
+    "step_halved": {
+      "deck_fft_v": 0.001904729,
+      "independent_dft_v": 0.0019047293542960601
+    }
+  },
+  "pass": true,
+  "protocol": {
+    "bins": {
+      "tone": 64
+    },
+    "ports": {
+      "load": "R9: 1000 ohm || 2 pF",
+      "source": "50 ohm single-ended, 2 mV peak open circuit"
+    },
+    "settle_discard_s": 3.2768e-06,
+    "step_halved_s": 6.25e-12,
+    "step_s": 1.25e-11,
+    "tones_hz": {
+      "tone": 9765625.0
+    },
+    "window": "rectangular (coherent tones); Hann cross-check is the third reading of this check",
+    "window_points": 524288,
+    "window_s": 6.5536e-06
+  },
+  "schema": 1,
+  "tolerances_db": {
+    "following_window": 0.1,
+    "m1_deck_vs_python": 0.05,
+    "reading_spread": 0.05,
+    "step_halving": 0.1
+  },
+  "toolchain": {
+    "ngspice": "******",
+    "python": "3.12.3"
+  },
+  "wall_clock_s": {
+    "ngspice_12.5ps": 5.3017951310030185,
+    "ngspice_6.25ps": 10.44845439499477,
+    "post_processing": 0.22147260600468144
+  }
+}

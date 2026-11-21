@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 9,
+  "description": "T1 item 9 (Testbenches shipped), V3 scope: the three known-answer benches of validation step V3 (spec/target-spec.md 'Known-answer validation' checks 1, 2 and 5) on behavioural elements. Each cold start runs both protocol legs (12.5 ps, 6.25 ps) and gates the result (M1 two-half agreement, M2 pre-flight, M4 convergence) before writing its record; the committed records under sim/<bench>/records/ are the append-only evidence. The V4 benches (noise, IIP3) and the first PDK-consuming design bench (V5) extend this inventory.",
+  "testbenches": [
+    {
+      "path": "sim/ka1-ideal-multiplier/testbench/tb.json",
+      "cold_start": {
+        "argv": ["env", "NGSPICE=.tools/ngspice-46/bin/ngspice",
+                 "sim/ka1-ideal-multiplier/run.sh",
+                 "--record", ".tools/attest-ka1-record.json"],
+        "local_only": true
+      },
+      "depends_on": [
+        "sim/ka1-ideal-multiplier/bench.py",
+        "sim/ka1-ideal-multiplier/run.sh",
+        "sim/bench/runner.py",
+        "sim/bench/lib/coherent.py",
+        "sim/bench/lib/coherence.py",
+        "sim/bench/lib/convergence.py",
+        "sim/toolchain.json"
+      ]
+    },
+    {
+      "path": "sim/ka2-switch-mixer/testbench/tb.json",
+      "cold_start": {
+        "argv": ["env", "NGSPICE=.tools/ngspice-46/bin/ngspice",
+                 "sim/ka2-switch-mixer/run.sh",
+                 "--record", ".tools/attest-ka2-record.json"],
+        "local_only": true
+      },
+      "depends_on": [
+        "sim/ka2-switch-mixer/bench.py",
+        "sim/ka2-switch-mixer/run.sh",
+        "sim/bench/runner.py",
+        "sim/bench/lib/coherent.py",
+        "sim/bench/lib/coherence.py",
+        "sim/bench/lib/convergence.py",
+        "sim/toolchain.json"
+      ]
+    },
+    {
+      "path": "sim/ka5-window-coherence/testbench/tb.json",
+      "cold_start": {
+        "argv": ["env", "NGSPICE=.tools/ngspice-46/bin/ngspice",
+                 "sim/ka5-window-coherence/run.sh",
+                 "--record", ".tools/attest-ka5-record.json"],
+        "local_only": true
+      },
+      "depends_on": [
+        "sim/ka5-window-coherence/bench.py",
+        "sim/ka5-window-coherence/run.sh",
+        "sim/bench/runner.py",
+        "sim/bench/mkenv.sh",
+        "sim/bench/requirements.txt",
+        "sim/bench/lib/coherent.py",
+        "sim/bench/lib/coherence.py",
+        "sim/bench/lib/convergence.py",
+        "sim/bench/lib/psd.py",
+        "sim/bench/lib/nfcommon.py",
+        "sim/toolchain.json"
+      ]
+    }
+  ],
+  "pins": {
+    "pdk": {
+      "none": true,
+      "reason": "The V3 known-answer benches are behavioural (no semiconductor models): they consume no PDK. The first PDK-consuming bench lands with validation step V5."
+    },
+    "tools": {
+      "ngspice": {"from": "sim/toolchain.json", "key": "ngspice.version"},
+      "python": {"from": "sim/toolchain.json", "key": "python.min_version"}
+    }
+  }
+}
