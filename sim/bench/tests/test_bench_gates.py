@@ -136,6 +136,37 @@ class TestBenchGates(unittest.TestCase):
                 self.run_bench(KA1)
 
 
+class TestTwoStepRun(unittest.TestCase):
+    def test_wrdata_names_the_sample_basename_under_a_spaced_workdir(self):
+        """ngspice cannot quote a wrdata path, so the deck must name the
+        leg's sample file relative to the simulator working directory while
+        the Python reader keeps the joined path (issue #103)."""
+        body = "* stub body for the shared-runner regression\nrl if 0 1k\n"
+        written = {}
+
+        def standin(cmd, **kwargs):
+            self.assertEqual(cmd[1:3], ["-b", "-o"])
+            log, deck = cmd[3], cmd[4]
+            tag = Path(deck).name.removeprefix("deck-").removesuffix(".cir")
+            lines = [l for l in Path(deck).read_text().splitlines()
+                     if l.startswith("wrdata ")]
+            self.assertEqual(len(lines), 1, f"{deck}: one wrdata command")
+            self.assertEqual(lines[0].split(),
+                             ["wrdata", f"samples-{tag}.txt", "v(if)"])
+            samples = Path(kwargs["cwd"], lines[0].split()[1])
+            samples.write_text("".join(f"{i} {i}\n" for i in range(4)))
+            written[tag] = samples
+            Path(log).write_text("* stand-in ngspice log\n")
+            return subprocess.CompletedProcess(cmd, 0)
+
+        with tempfile.TemporaryDirectory(suffix=" work with spaces") as tmp:
+            with mock.patch.object(subprocess, "run", side_effect=standin):
+                runs = runner.two_step_run("ngspice", body, {"if": 3}, "if", tmp)
+            for tag in ("s1", "s2"):
+                self.assertTrue(written[tag].is_file())
+                self.assertEqual(runs[tag]["samples"], [0.0, 1.0, 2.0, 3.0])
+
+
 class TestEvidence(unittest.TestCase):
     def test_reject_nonfinite_simulator_data(self):
         with tempfile.TemporaryDirectory() as tmp:

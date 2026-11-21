@@ -60,7 +60,13 @@ def step_plan(dt_s):
 
 
 def render_deck(bins, body, node, dt_s, samples_path):
-    """Fill the M1 deck-half template around a bench ``body`` (netlist)."""
+    """Fill the M1 deck-half template around a bench ``body`` (netlist).
+
+    ``samples_path`` is interpolated verbatim into ``wrdata``, which cannot
+    quote a path: pass a name relative to the simulator working directory
+    (``run_ngspice`` runs there), never an absolute path that may contain
+    spaces.
+    """
     n_full, n_window, tstart, tstop = step_plan(dt_s)
     control = coherent.DECK_RECIPE.format(
         tstep=f"{dt_s:.6g}", tstop=f"{tstop:.9g}", tstart=f"{tstart:.6g}",
@@ -149,7 +155,7 @@ def two_step_run(ngspice, body, bins, node, workdir):
     for tag, dt in (("s1", DT_S), ("s2", DT_S / 2.0)):
         n_full, n_window, _, _ = step_plan(dt)
         samples = os.path.join(workdir, f"samples-{tag}.txt")
-        deck = render_deck(bins, body, node, dt, samples)
+        deck = render_deck(bins, body, node, dt, os.path.basename(samples))
         log, wall = run_ngspice(ngspice, deck, workdir, tag)
         out[tag] = {"dt_s": dt, "n_window": n_window,
                     "prints": parse_prints(log), "samples": parse_samples(samples),
