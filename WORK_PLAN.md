@@ -3,7 +3,7 @@
 Generated from GitHub label state by the Guide triage role. Everything between the markers is overwritten.
 
 <!-- guide:plan-body:start -->
-_Generated: 2026-11-19T18:21:00Z (snapshot; compare against live labels)_
+_Generated: 2026-11-21T00:16:00Z (snapshot; compare against live labels)_
 ## Operator Attention: Merge-Risk-Hold Pileup
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
@@ -33,13 +33,14 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-_None._
+- **#97**: V3: known-answer benches 1, 2 and 5 on behavioural elements, with tb.json and a cold-start command per bench (T1 item 9)
+- **#98**: Re-run the lvs-device-coverage probe at current klt: does npn13G2 reach status: match on the PDK-runset route?
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-_None._
+- **#99**: layout: npn13G2 reaches status: match on the PDK-runset engine at current klt
 
 ## Approved (Awaiting Merge)
 
@@ -54,6 +55,8 @@ Issues carrying `loom:curated`.
 
 - **#2**: Draft and ratify the target spec *(curated)*
 - **#47**: spec/target-spec.md still defers D4 to closed issue #3; record 0002 decided it *(curated)*
+- **#97**: V3: known-answer benches 1, 2 and 5 on behavioural elements, with tb.json and a cold-start command per bench (T1 item 9) *(curated)*
+- **#98**: Re-run the lvs-device-coverage probe at current klt: does npn13G2 reach status: match on the PDK-runset route? *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -71,10 +74,10 @@ _None._
 | Very important | 0 |
 | Important | 1 |
 | Ready (`loom:issue`, net of holds/building/merge-pending) | 0 |
-| In Progress (`loom:building`) | 0 |
-| PRs awaiting review | 0 |
+| In Progress (`loom:building`) | 2 |
+| PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 2 |
-| Curated | 2 |
+| Curated | 4 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
