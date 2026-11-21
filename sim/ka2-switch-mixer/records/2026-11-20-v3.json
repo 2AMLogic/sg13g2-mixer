@@ -1,0 +1,92 @@
+{
+  "bench": "ka2-switch-mixer",
+  "check": "spec/target-spec.md 'Known-answer validation' case 2 (hard-switched ideal mixer): IF voltage = 2/pi x RF voltage",
+  "command": "sim/ka2-switch-mixer/run.sh",
+  "corner": "single corner, nominal (behavioural elements carry no PVT)",
+  "date": "2026-11-20",
+  "deltas": {
+    "following_window_db": 1.2939124991747253e-05,
+    "if_voltage_db": 0.027150804943125356,
+    "m1_deck_vs_python_db": 1.4063678339323862e-06,
+    "step_halving_db": 0.019693811206744783
+  },
+  "elements": "behavioural (switch B-source, pulse source, resistors, capacitor; no semiconductor models, no PDK)",
+  "expected": {
+    "formula": "IF amplitude = (2/pi) * V_rf (square-wave fundamental 4/pi, mixed down by 1/2); -3.92 dB voltage conversion into a matched load",
+    "if_amplitude_v": 0.0040263369683589635,
+    "power_gain_diagnostic_db": -10.912097583963241
+  },
+  "failures": [],
+  "kind": "simulated",
+  "measured": {
+    "power_gain_diagnostic_db": -10.939248388906364,
+    "step_12.5ps": {
+      "3lo_rf": {
+        "deck_fft_v": 0.001338118,
+        "following_window_db": 6.019184048236532e-06,
+        "m1_delta_db": 1.4063678339323862e-06,
+        "python_dft_w1_v": 0.001338118216660163,
+        "python_dft_w2_v": 0.0013381172893657386
+      },
+      "if": {
+        "deck_fft_v": 0.004013771,
+        "following_window_db": 1.2939124991747253e-05,
+        "m1_delta_db": 2.483432759123742e-07,
+        "python_dft_w1_v": 0.004013770885239962,
+        "python_dft_w2_v": 0.004013764906043051
+      },
+      "sum": {
+        "deck_fft_v": 0.004014622,
+        "following_window_db": 4.7727057705577945e-06,
+        "m1_delta_db": 5.788720394014669e-07,
+        "python_dft_w1_v": 0.004014622267554919,
+        "python_dft_w2_v": 0.004014624473502372
+      }
+    },
+    "step_6.25ps_if_amplitude_v": 0.0040228817684590315
+  },
+  "pass": true,
+  "protocol": {
+    "bins": {
+      "3lo_rf": 31808,
+      "if": 64,
+      "sum": 31936
+    },
+    "lo_edges_note": "LO edges are not on the sample grid; edge-time quantisation is second-order on the fundamental amplitude and is what the step-halving leg bounds",
+    "ports": {
+      "lo_source": "ideal square wave +/-1, 1 ps edges",
+      "load": "R9: 1000 ohm || 2 pF",
+      "rf_source": "50 ohm single-ended, -40 dBm available (1e-7 W)"
+    },
+    "settle_discard_s": 3.2768e-06,
+    "sideband": "SSB (image tone absent)",
+    "step_halved_s": 6.25e-12,
+    "step_s": 1.25e-11,
+    "tones_hz": {
+      "3lo_minus_rf": 4853515625.0,
+      "if": 9765625.0,
+      "lo": 2431640625.0,
+      "rf": 2441406250.0,
+      "sum": 4873046875.0
+    },
+    "window": "rectangular (coherent tones); Hann cross-check is ka5's graded reading, M1 two-half agreement gated here",
+    "window_points": 524288,
+    "window_s": 6.5536e-06
+  },
+  "schema": 1,
+  "tolerances_db": {
+    "following_window": 0.1,
+    "if_voltage": 0.1,
+    "m1_deck_vs_python": 0.05,
+    "step_halving": 0.1
+  },
+  "toolchain": {
+    "ngspice": "******",
+    "python": "3.12.3"
+  },
+  "wall_clock_s": {
+    "ngspice_12.5ps": 9.29339783800242,
+    "ngspice_6.25ps": 14.011358274001395,
+    "post_processing": 0.4290082270017592
+  }
+}

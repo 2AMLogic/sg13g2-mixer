@@ -1,0 +1,48 @@
+{
+  "schema": 2,
+  "in_tree": [],
+  "copies": [
+    {
+      "sibling": "2AMLogic/sg13g2-sat-rx",
+      "commit": "6e5ebaf57ee8ec2288f5bd3048fbfee9b7d41947",
+      "src": "sim/lna-linearity/linearity.py",
+      "symbols": ["coherence_problems"],
+      "dest": "sim/bench/lib/coherence.py",
+      "src_sha256": "67097d9ec04e2eff5115fb2e81daba422e833c536764164f75068f4a7b68d048",
+      "extract_sha256": "aa51863244447a0d9f87cb46e57c0051df7dd4f6fbdc829e00876bf938efa327",
+      "dest_sha256": "31cba32bb32ff9d72b766290e50d7936e9b55fb4887dcd76f0d2701ea1a571bf",
+      "license": "Apache-2.0",
+      "local_edits": "none",
+      "divergence": "sha256(dest) == dest_sha256 (local tamper, offline); re-fetch src at commit and confirm sha256 == src_sha256, then re-extract symbols at the sibling's default-branch head and compare extract_sha256 (upstream drift, network)",
+      "notes": "M2 of spec/decision-records/0002. The more complete of the two upstream implementations (plain dict of frequencies, checks the settling discard lands on a sample, bounds density at >= 8 samples per period, zero transitive dependencies). Header adds only `from __future__ import annotations`; the body uses builtins alone. Its tol=1e-9 default and the 8-samples-per-period bound are policy set at the call site, not inside the copy."
+    },
+    {
+      "sibling": "2AMLogic/sg13g2-sat-rx",
+      "commit": "6e5ebaf57ee8ec2288f5bd3048fbfee9b7d41947",
+      "src": "sim/mixer-nf-method/nfmethod.py",
+      "symbols": ["K_B", "T0_K", "MethodError", "NormalizationError", "ImageAccountingError"],
+      "dest": "sim/bench/lib/nfcommon.py",
+      "src_sha256": "b52223ed42a5f1519c6014eafdcf6d16a4e87072a380166eb21ec1b3621a094a",
+      "extract_sha256": "cc41c099c18669abe35cf6dbbea714d00fa2ba12526fe18829873bbe03c0cd11",
+      "dest_sha256": "c6497e68481977d8c7a9a5df30795de957b40742338c6b6b2ade00c76a5a543b",
+      "license": "Apache-2.0",
+      "local_edits": "none",
+      "divergence": "sha256(dest) == dest_sha256 (local tamper, offline); re-fetch src at commit and confirm sha256 == src_sha256, then re-extract symbols at the sibling's default-branch head and compare extract_sha256 (upstream drift, network)",
+      "notes": "Shared preamble for M3 (and the V4 M6 noise-factor stamp), record 0002 'Closure of a symbols list' rule 3: the constants and exception classes shared upstream are owned here once so psd.py and the future noisefactor.py import one type, not two. No header imports; no numpy."
+    },
+    {
+      "sibling": "2AMLogic/sg13g2-sat-rx",
+      "commit": "6e5ebaf57ee8ec2288f5bd3048fbfee9b7d41947",
+      "src": "sim/mixer-nf-method/nfmethod.py",
+      "symbols": ["window", "enbw_bins", "one_sided_psd", "check_parseval", "band_power"],
+      "dest": "sim/bench/lib/psd.py",
+      "src_sha256": "b52223ed42a5f1519c6014eafdcf6d16a4e87072a380166eb21ec1b3621a094a",
+      "extract_sha256": "961a7f6a06889b969821b425b005314a9d14b503ba548afc67617a1d3a1ab710",
+      "dest_sha256": "4148a2455473363e645a3721b108e27296e9a674ea8f6d2ca2079a6445d59d87",
+      "license": "Apache-2.0",
+      "local_edits": "none",
+      "divergence": "sha256(dest) == dest_sha256 (local tamper, offline); re-fetch src at commit and confirm sha256 == src_sha256, then re-extract symbols at the sibling's default-branch head and compare extract_sha256 (upstream drift, network)",
+      "notes": "M3 of spec/decision-records/0002: window/PSD normalisation and cross-checks (rect/Hann windows, ENBW, one-sided periodogram with window-power correction, Parseval rejection, band integration gated at >= 4 x ENBW). Header imports math, numpy as np, Mapping/Sequence from typing and NormalizationError from .nfcommon; numpy>=1.26,<3 is declared in sim/bench/requirements.txt (record 0002, M3 consequence). The V4 entries (iip3.py, noisefactor.py from mixfeas.py / nfmethod.py) land with the V4 benches."
+    }
+  ]
+}

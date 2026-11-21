@@ -1,0 +1,100 @@
+{
+  "bench": "ka1-ideal-multiplier",
+  "check": "spec/target-spec.md 'Known-answer validation' case 1 (ideal multiplier, conversion gain): IF amplitude = k*A/2 x RF",
+  "command": "sim/ka1-ideal-multiplier/run.sh",
+  "corner": "single corner, nominal (behavioural elements carry no PVT)",
+  "date": "2026-11-20",
+  "deltas": {
+    "b_cg_db": 3.04205370582622e-06,
+    "following_window_db": 1.1124249799659706e-06,
+    "m1_deck_vs_python_db": 5.168740582434793e-07,
+    "step_halving_db": 2.835033405556091e-06
+  },
+  "elements": "behavioural (multiplier B-source, resistors, capacitor; no semiconductor models, no PDK)",
+  "expected": {
+    "b_cg_db": -26.0208639723521,
+    "formula": "IF amplitude = k*A/2 * V_rf; B-CG = (A_if^2/(2*1000)) / P_avail",
+    "if_amplitude_v": 0.0007070852848136496,
+    "sum_amplitude_v": 0.0007070852848136496
+  },
+  "failures": [],
+  "kind": "simulated",
+  "measured": {
+    "b_cg_db": -26.020867014405805,
+    "image_and_feedthrough_note": "a_image (15872) and a_lofeed (15936) are reported levels of the image bin and LO feedthrough, expected at the numerical floor",
+    "step_12.5ps": {
+      "if": {
+        "deck_fft_v": 0.000707085,
+        "following_window_db": 1.1124249799659706e-06,
+        "m1_delta_db": 4.566196190864301e-07,
+        "python_dft_w1_v": 0.0007070850371716548,
+        "python_dft_w2_v": 0.0007070851277299213
+      },
+      "image": {
+        "deck_fft_v": 1.086209e-10,
+        "following_window_db": 15.596664382690463,
+        "m1_delta_db": 8.314484053049671e-05,
+        "python_dft_w1_v": 1.0862193976806184e-10,
+        "python_dft_w2_v": 1.8033679002424265e-11
+      },
+      "lofeed": {
+        "deck_fft_v": 2.200446e-10,
+        "following_window_db": 3.019741013740914,
+        "m1_delta_db": 1.1814581962466778e-06,
+        "python_dft_w1_v": 2.2004462993055686e-10,
+        "python_dft_w2_v": 1.5542601909344702e-10
+      },
+      "sum": {
+        "deck_fft_v": 0.0006966955,
+        "following_window_db": 1.146964814293626e-06,
+        "m1_delta_db": 5.168740582434793e-07,
+        "python_dft_w1_v": 0.0006966954585415155,
+        "python_dft_w2_v": 0.0006966953665434408
+      }
+    },
+    "step_6.25ps_if_amplitude_v": 0.0007070852679609132
+  },
+  "pass": true,
+  "protocol": {
+    "bins": {
+      "if": 64,
+      "image": 15872,
+      "lofeed": 15936,
+      "sum": 31936
+    },
+    "ports": {
+      "lo_source": "ideal, sinusoidal, 0.2236 V peak (row-R3 per-side equivalent), 50 ohm convention",
+      "load": "R9: 1000 ohm || 2 pF",
+      "rf_source": "50 ohm single-ended, -40 dBm available (1e-7 W)"
+    },
+    "settle_discard_s": 3.2768e-06,
+    "sideband": "SSB (image tone absent)",
+    "step_halved_s": 6.25e-12,
+    "step_s": 1.25e-11,
+    "tones_hz": {
+      "if": 9765625.0,
+      "lo": 2431640625.0,
+      "rf": 2441406250.0,
+      "sum": 4873046875.0
+    },
+    "window": "rectangular (coherent tones); Hann cross-check is ka5's graded reading, M1 two-half agreement gated here",
+    "window_points": 524288,
+    "window_s": 6.5536e-06
+  },
+  "schema": 1,
+  "tolerances_db": {
+    "b_cg": 0.05,
+    "following_window": 0.1,
+    "m1_deck_vs_python": 0.05,
+    "step_halving": 0.1
+  },
+  "toolchain": {
+    "ngspice": "******",
+    "python": "3.12.3"
+  },
+  "wall_clock_s": {
+    "ngspice_12.5ps": 5.881709320005029,
+    "ngspice_6.25ps": 11.983168985985685,
+    "post_processing": 0.5462506440089783
+  }
+}
