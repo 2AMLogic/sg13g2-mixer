@@ -63,7 +63,7 @@
         "testbench": "sim/ka1-ideal-multiplier/testbench/tb.json",
         "path": "sim/bench/runner.py",
         "passed": true,
-        "content_hash": "sha256:203994cd1bf5485e512c9094ee5a9a71fbfa367b1ebba2f8cc61a6b0a1f026ed"
+        "content_hash": "sha256:9fd556ac27c1a37316b2aeefd49ac488d532e10af2d41cde4b6853967bedb39e"
       },
       {
         "check": "present",
@@ -119,7 +119,7 @@
         "testbench": "sim/ka2-switch-mixer/testbench/tb.json",
         "path": "sim/bench/runner.py",
         "passed": true,
-        "content_hash": "sha256:203994cd1bf5485e512c9094ee5a9a71fbfa367b1ebba2f8cc61a6b0a1f026ed"
+        "content_hash": "sha256:9fd556ac27c1a37316b2aeefd49ac488d532e10af2d41cde4b6853967bedb39e"
       },
       {
         "check": "present",
@@ -207,7 +207,7 @@
         "testbench": "sim/ka5-window-coherence/testbench/tb.json",
         "path": "sim/bench/runner.py",
         "passed": true,
-        "content_hash": "sha256:203994cd1bf5485e512c9094ee5a9a71fbfa367b1ebba2f8cc61a6b0a1f026ed"
+        "content_hash": "sha256:9fd556ac27c1a37316b2aeefd49ac488d532e10af2d41cde4b6853967bedb39e"
       },
       {
         "check": "present",
@@ -335,7 +335,7 @@
   },
   "provenance": {
     "klt_version": "0.9.3.dev2575+g6bd18bbc8637",
-    "klayout_version": "0.30.13",
+    "klayout_version": "0.30.12",
     "pdk": null,
     "deck": null,
     "input": {
