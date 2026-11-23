@@ -6,8 +6,11 @@ gate); this module is the plumbing that renders a deck, runs the pinned
 ngspice once per step size, reads back the two halves of M1 (the deck's
 ``fft`` magnitudes from the log, the Python oracle from the written
 samples), and slices the record into the analysis window and the
-following window. One ``ngspice -b`` per run, sequentially, per the host
-rules; the benches are single-corner behavioural decks.
+following window. It also owns the bench entry-point scaffold every V3
+bench shared until it was folded here: the common CLI, the M2 pre-flight
+gate, the protocol keys every record repeats, and the closing report.
+One ``ngspice -b`` per run, sequentially, per the host rules; the benches
+are single-corner behavioural decks.
 
 Protocol constants (spec/target-spec.md "Measurement protocol" common
 setup) are defined once here: 12.5 ps step, N = 2^19 analysis window,
@@ -18,6 +21,7 @@ gate reads.
 
 from __future__ import annotations
 
+import argparse
 import datetime
 import json
 import math
@@ -25,10 +29,12 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import sys
 import tempfile
 import time
 
 from sim.bench.lib import coherent
+from sim.bench.lib import coherence
 from sim.bench.lib import convergence
 
 # --- protocol constants (spec/target-spec.md, "Measurement protocol") ------
@@ -263,6 +269,75 @@ def save_bench_record(bench_dir, requested_path, record):
                    for p in (parent, *parent.parents))
     write_record(path, record, replace=not evidence)
     return path
+
+
+# --- shared entry-point scaffold (one master; benches keep only their own
+# deck, closed form, graded tones and bench-specific record keys) ----------
+
+
+def bench_args(workdir, argv=None):
+    """Parse the common V3 bench CLI.
+
+    ``--ngspice`` (default from ``$NGSPICE``), ``--record``, ``--workdir``
+    (default ``workdir``, the bench's scratch directory under the repo's
+    gitignored ``.tools/``) and ``--dump-deck``.
+    """
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--ngspice", type=ngspice_command,
+                    default=os.environ.get("NGSPICE", "ngspice"))
+    ap.add_argument("--record", help="output path (default: new UTC-stamped evidence record)")
+    ap.add_argument("--workdir", default=workdir)
+    ap.add_argument("--dump-deck", action="store_true")
+    return ap.parse_args(argv)
+
+
+def dump_deck(bins, body, node):
+    """``--dump-deck``: print the 12.5 ps deck, nothing runs."""
+    sys.stdout.write(render_deck(bins, body, node, DT_S, "samples-s1.txt"))
+    return 0
+
+
+def coherence_gate(bench, tones_hz):
+    """Return whether the tone plan is coherent and report any problems."""
+    problems = coherence.coherence_problems(
+        tones_hz, N_WINDOW * DT_S, DT_S, settle_discard_s=DISCARD_S)
+    if problems:
+        print(f"{bench}: coherence pre-flight FAILED:", *problems,
+              sep="\n  ", file=sys.stderr)
+    return not problems
+
+
+def protocol_common():
+    """The protocol keys every V3 evidence record repeats, verbatim."""
+    return {
+        "legs": {"s1": "12.5 ps", "s2": "6.25 ps"},
+        "windows": {"w1": "analysis", "w2": "following"},
+        "step_s": DT_S, "step_halved_s": DT_S / 2,
+        "window_points": N_WINDOW,
+        "window_s": N_WINDOW * DT_S,
+        "settle_discard_s": DISCARD_S,
+    }
+
+
+def wall_clock(runs, post_s):
+    """The wall-clock block shared by every record."""
+    return {"ngspice_12.5ps": runs["s1"]["wall_s"],
+            "ngspice_6.25ps": runs["s2"]["wall_s"],
+            "post_processing": post_s}
+
+
+def record_date():
+    """The UTC date stamp of a record."""
+    return datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
+
+
+def bench_report(summary, path, failures):
+    """Closing printout shared by the benches; returns the exit code."""
+    print(summary)
+    print(f"record: {path}  pass={not failures}")
+    for line in failures:
+        print("FAIL:", line, file=sys.stderr)
+    return 1 if failures else 0
 
 
 def ngspice_command(command):

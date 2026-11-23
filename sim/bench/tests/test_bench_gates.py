@@ -4,6 +4,7 @@ import importlib.util
 import io
 import json
 import math
+import os
 import subprocess
 import sys
 import tempfile
@@ -134,6 +135,70 @@ class TestBenchGates(unittest.TestCase):
         with mock.patch.object(runner.coherent, "dft_amplitude", return_value=math.nan):
             with self.assertRaisesRegex(ValueError, "non-finite"):
                 self.run_bench(KA1)
+
+
+class TestSharedScaffold(unittest.TestCase):
+    """The CLI / record scaffold folded into the shared runner (issue #108)."""
+
+    def test_bench_args_defaults_and_flags(self):
+        with mock.patch.dict(os.environ, {}, clear=True):
+            args = runner.bench_args(os.path.join("x", ".tools", "kaX-work"), [])
+        self.assertEqual(args.workdir, os.path.join("x", ".tools", "kaX-work"))
+        self.assertIsNone(args.record)
+        self.assertFalse(args.dump_deck)
+        self.assertEqual(args.ngspice, "ngspice")
+        with mock.patch.dict(os.environ, {"NGSPICE": "./.tools/ngspice-46/bin/ngspice"}):
+            self.assertEqual(runner.bench_args("w", []).ngspice,
+                             str(Path.cwd() / ".tools/ngspice-46/bin/ngspice"))
+            picked = runner.bench_args("w", ["--dump-deck", "--ngspice", "bin/ngspice",
+                                             "--record", "out.json", "--workdir", "scratch"])
+        self.assertTrue(picked.dump_deck)
+        self.assertEqual(picked.record, "out.json")
+        self.assertEqual(picked.workdir, "scratch")
+        self.assertEqual(picked.ngspice, str(Path.cwd() / "bin/ngspice"))
+
+    def test_protocol_common_is_the_shared_record_block(self):
+        self.assertEqual(runner.protocol_common(), {
+            "legs": {"s1": "12.5 ps", "s2": "6.25 ps"},
+            "windows": {"w1": "analysis", "w2": "following"},
+            "step_s": runner.DT_S,
+            "step_halved_s": runner.DT_S / 2,
+            "window_points": runner.N_WINDOW,
+            "window_s": runner.N_WINDOW * runner.DT_S,
+            "settle_discard_s": runner.DISCARD_S,
+        })
+
+    def test_incoherent_benches_return_failure_before_running_ngspice(self):
+        with (
+            mock.patch.object(runner, "F_IF", runner.F_IF + runner.BIN_HZ / 2),
+            mock.patch.object(subprocess, "run", side_effect=AssertionError("ngspice invoked")),
+        ):
+            for bench, name in ((KA1, "KA1"), (KA2, "KA2"), (KA5, "KA5")):
+                with self.subTest(bench=name), contextlib.redirect_stderr(io.StringIO()) as err:
+                    self.assertEqual(bench.main([]), 1)
+                    self.assertTrue(err.getvalue().startswith(f"{name}: coherence pre-flight FAILED:\n"))
+                    self.assertIn("not coherent", err.getvalue())
+
+    def test_coherent_gate_passes_silently(self):
+        with contextlib.redirect_stderr(io.StringIO()) as err:
+            self.assertTrue(runner.coherence_gate("KAX", {"if": runner.F_IF}))
+        self.assertEqual(err.getvalue(), "")
+
+    def test_bench_report_prints_and_returns_the_status(self):
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            self.assertEqual(runner.bench_report("KAX ok", Path("r.json"), []), 0)
+            self.assertEqual(runner.bench_report("KAX bad", Path("r.json"), ["boom"]), 1)
+        self.assertEqual(out.getvalue(), "KAX ok\nrecord: r.json  pass=True\n"
+                                         "KAX bad\nrecord: r.json  pass=False\n")
+        self.assertEqual(err.getvalue(), "FAIL: boom\n")
+
+    def test_wall_clock_and_date_shapes(self):
+        runs = {"s1": {"wall_s": 1.5}, "s2": {"wall_s": 3.25}}
+        self.assertEqual(runner.wall_clock(runs, 0.5), {"ngspice_12.5ps": 1.5,
+                                                        "ngspice_6.25ps": 3.25,
+                                                        "post_processing": 0.5})
+        self.assertRegex(runner.record_date(), r"^\d{4}-\d{2}-\d{2}$")
 
 
 class TestToolchainPinGate(unittest.TestCase):
