@@ -2,6 +2,24 @@
 
 Chronological record of merged PRs and closed issues. Maintained by the Guide triage role.
 
+### 2026-11-23
+
+- **PR #109**: refactor(sim): fold the shared V3 bench scaffold into runner.py
+- **PR #107**: refactor(sim): read the ngspice major pin from sim/toolchain.json in the shared runner
+- **PR #23**: docs(spec): record operator ratification of target spec, mark provisional rows
+- **Issue #108** (closed): Fold the repeated V3 bench main() scaffold into runner.py
+- **Issue #104** (closed): Read the ngspice major from the toolchain pin in all three V3 benches
+- **Issue #2** (closed): Draft and ratify the target spec
+
+### 2026-11-21
+
+- **PR #105**: fix(sim): write bench samples by basename so spaced scratch paths work
+- **PR #100**: feat(sim): add V3 known-answer benches with stamped bench mechanics
+- **PR #99**: layout: npn13G2 reaches status: match on the PDK-runset engine at current klt
+- **Issue #103** (closed): Allow V3 bench scratch directories with spaces
+- **Issue #98** (closed): Re-run the lvs-device-coverage probe at current klt: does npn13G2 reach status: match on the PDK-runset route?
+- **Issue #97** (closed): V3: known-answer benches 1, 2 and 5 on behavioural elements, with tb.json and a cold-start command per bench (T1 item 9)
+
 ### 2026-11-19
 
 - **PR #95**: docs: gate the tracker refresh on a final read before its PATCH
