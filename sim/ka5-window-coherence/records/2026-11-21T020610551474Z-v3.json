@@ -1,0 +1,99 @@
+{
+  "bench": "ka5-window-coherence",
+  "check": "spec/target-spec.md 'Known-answer validation' case 5 (window/coherence): one coherent tone, same power on rectangular FFT, Hann FFT and independent DFT",
+  "command": "sim/ka5-window-coherence/run.sh",
+  "corner": "single corner, nominal (behavioural elements carry no PVT)",
+  "date": "2026-11-21",
+  "deltas": {
+    "following_window_db": 5.098707900306877e-10,
+    "m1_deck_vs_python_db": 1.6156504109910099e-06,
+    "reading_spread_db": 1.6156504113362639e-06,
+    "step_halving_db": 3.8609667492811994e-07
+  },
+  "elements": "behavioural (ideal source, resistors, capacitor; no semiconductor models, no PDK)",
+  "expected": {
+    "note": "closed-form divider reference, reported for context; the graded check is the agreement of the three readings",
+    "reference_amplitude_v": 0.0019047293824954795
+  },
+  "failures": [],
+  "kind": "simulated",
+  "measured": {
+    "tone_amplitudes": {
+      "s1": {
+        "w1": {
+          "tone": {
+            "deck_fft_v": 0.001904729,
+            "hann_fft_v": 0.0019047292696767837,
+            "python_dft_v": 0.0019047292696662307
+          }
+        },
+        "w2": {
+          "tone": {
+            "deck_fft_v": 0.001904729,
+            "hann_fft_v": 0.001904729269564974,
+            "python_dft_v": 0.0019047292696114787
+          }
+        }
+      },
+      "s2": {
+        "w1": {
+          "tone": {
+            "deck_fft_v": 0.001904729,
+            "hann_fft_v": 0.0019047293542474937,
+            "python_dft_v": 0.0019047293542960601
+          }
+        },
+        "w2": {
+          "tone": {
+            "deck_fft_v": 0.001904729,
+            "hann_fft_v": 0.0019047293542321395,
+            "python_dft_v": 0.0019047293542605538
+          }
+        }
+      }
+    }
+  },
+  "pass": true,
+  "protocol": {
+    "bins": {
+      "tone": 64
+    },
+    "legs": {
+      "s1": "12.5 ps",
+      "s2": "6.25 ps"
+    },
+    "ports": {
+      "load": "R9: 1000 ohm || 2 pF",
+      "source": "50 ohm single-ended, 2 mV peak open circuit"
+    },
+    "settle_discard_s": 3.2768e-06,
+    "step_halved_s": 6.25e-12,
+    "step_s": 1.25e-11,
+    "tones_hz": {
+      "tone": 9765625.0
+    },
+    "window": "rectangular (coherent tones); Hann cross-check is the third reading of this check",
+    "window_points": 524288,
+    "window_s": 6.5536e-06,
+    "windows": {
+      "w1": "analysis",
+      "w2": "following"
+    }
+  },
+  "schema": 2,
+  "tolerances_db": {
+    "following_window": 0.1,
+    "m1_deck_vs_python": 0.05,
+    "reading_spread": 0.05,
+    "step_halving": 0.1
+  },
+  "toolchain": {
+    "ngspice": "** ngspice-46 : Circuit level simulation program",
+    "python": "3.12.3"
+  },
+  "wall_clock_s": {
+    "ngspice_12.5ps": 13.89886262100481,
+    "ngspice_6.25ps": 25.430036863006535,
+    "post_processing": 2.4040747420076514
+  }
+}

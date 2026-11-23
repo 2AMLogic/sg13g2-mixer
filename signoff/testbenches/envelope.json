@@ -1,0 +1,349 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 9,
+  "summary": "T1 item 9 (Testbenches shipped): 36/36 attestation checks passed (klt signoff --attest)",
+  "source": "signoff/testbenches/inventory.json",
+  "attestation": {
+    "producer": "klt signoff --attest",
+    "inventory_schema_version": 1,
+    "hash_algorithm": "sha256-raw-bytes",
+    "check_count": 36,
+    "passed_count": 36,
+    "checks": [
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/ka1-ideal-multiplier/testbench/tb.json",
+        "passed": true,
+        "content_hash": "sha256:889b84d446aa75628a57038bd9f8ef997e519a75099f6f7be7f46feb6ca95bea"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/ka2-switch-mixer/testbench/tb.json",
+        "passed": true,
+        "content_hash": "sha256:2571c2184ee5800ce81ed86d347c444eaa6b0cfd7e933789f9904e1737f3413e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/ka5-window-coherence/testbench/tb.json",
+        "passed": true,
+        "content_hash": "sha256:6467e4e21948c85a235468acee3e3d3e4541baae3e1daa780626d1ee86244a14"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka1-ideal-multiplier/testbench/tb.json",
+        "path": "sim/bench/lib/coherence.py",
+        "passed": true,
+        "content_hash": "sha256:31cba32bb32ff9d72b766290e50d7936e9b55fb4887dcd76f0d2701ea1a571bf"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka1-ideal-multiplier/testbench/tb.json",
+        "path": "sim/bench/lib/coherent.py",
+        "passed": true,
+        "content_hash": "sha256:7f997a96e76357630c4b76c8f070b88c43f3d10c0353e268a9750a432935e704"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka1-ideal-multiplier/testbench/tb.json",
+        "path": "sim/bench/lib/convergence.py",
+        "passed": true,
+        "content_hash": "sha256:16383b442f8f245313ebf4da9a703ea76e179e739669954d27d333951abd9ed1"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka1-ideal-multiplier/testbench/tb.json",
+        "path": "sim/bench/runner.py",
+        "passed": true,
+        "content_hash": "sha256:be3178057cf44f7548bb76bca273c94a2a7ab5311546b0114be21d6efd33a6c5"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka1-ideal-multiplier/testbench/tb.json",
+        "path": "sim/ka1-ideal-multiplier/bench.py",
+        "passed": true,
+        "content_hash": "sha256:2b07ce4f888499938b6d403d22a24704356dc94665765b60630902dd043d6288"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka1-ideal-multiplier/testbench/tb.json",
+        "path": "sim/ka1-ideal-multiplier/run.sh",
+        "passed": true,
+        "content_hash": "sha256:f92ac671513c6351cc45f802d81c1bfca86233182e7529134c6766d92e384fde"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka1-ideal-multiplier/testbench/tb.json",
+        "path": "sim/toolchain.json",
+        "passed": true,
+        "content_hash": "sha256:a608563cef4a694e34c0bfe4e5dd5a1d407c4841ca5269123a1956ac3f3a6194"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka2-switch-mixer/testbench/tb.json",
+        "path": "sim/bench/lib/coherence.py",
+        "passed": true,
+        "content_hash": "sha256:31cba32bb32ff9d72b766290e50d7936e9b55fb4887dcd76f0d2701ea1a571bf"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka2-switch-mixer/testbench/tb.json",
+        "path": "sim/bench/lib/coherent.py",
+        "passed": true,
+        "content_hash": "sha256:7f997a96e76357630c4b76c8f070b88c43f3d10c0353e268a9750a432935e704"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka2-switch-mixer/testbench/tb.json",
+        "path": "sim/bench/lib/convergence.py",
+        "passed": true,
+        "content_hash": "sha256:16383b442f8f245313ebf4da9a703ea76e179e739669954d27d333951abd9ed1"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka2-switch-mixer/testbench/tb.json",
+        "path": "sim/bench/runner.py",
+        "passed": true,
+        "content_hash": "sha256:be3178057cf44f7548bb76bca273c94a2a7ab5311546b0114be21d6efd33a6c5"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka2-switch-mixer/testbench/tb.json",
+        "path": "sim/ka2-switch-mixer/bench.py",
+        "passed": true,
+        "content_hash": "sha256:f5a93de75ddb92e86113fd9596d714f2221a8ba8246cb5db8c071194bcaf9355"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka2-switch-mixer/testbench/tb.json",
+        "path": "sim/ka2-switch-mixer/run.sh",
+        "passed": true,
+        "content_hash": "sha256:1426a81503541d0d81032c47e4e7f976ccb14ffb34867e4b7dbc719371ac3567"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka2-switch-mixer/testbench/tb.json",
+        "path": "sim/toolchain.json",
+        "passed": true,
+        "content_hash": "sha256:a608563cef4a694e34c0bfe4e5dd5a1d407c4841ca5269123a1956ac3f3a6194"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka5-window-coherence/testbench/tb.json",
+        "path": "sim/bench/lib/coherence.py",
+        "passed": true,
+        "content_hash": "sha256:31cba32bb32ff9d72b766290e50d7936e9b55fb4887dcd76f0d2701ea1a571bf"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka5-window-coherence/testbench/tb.json",
+        "path": "sim/bench/lib/coherent.py",
+        "passed": true,
+        "content_hash": "sha256:7f997a96e76357630c4b76c8f070b88c43f3d10c0353e268a9750a432935e704"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka5-window-coherence/testbench/tb.json",
+        "path": "sim/bench/lib/convergence.py",
+        "passed": true,
+        "content_hash": "sha256:16383b442f8f245313ebf4da9a703ea76e179e739669954d27d333951abd9ed1"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka5-window-coherence/testbench/tb.json",
+        "path": "sim/bench/lib/nfcommon.py",
+        "passed": true,
+        "content_hash": "sha256:c6497e68481977d8c7a9a5df30795de957b40742338c6b6b2ade00c76a5a543b"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka5-window-coherence/testbench/tb.json",
+        "path": "sim/bench/lib/psd.py",
+        "passed": true,
+        "content_hash": "sha256:4148a2455473363e645a3721b108e27296e9a674ea8f6d2ca2079a6445d59d87"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka5-window-coherence/testbench/tb.json",
+        "path": "sim/bench/mkenv.sh",
+        "passed": true,
+        "content_hash": "sha256:4f3a3c7dcb4a5d6edd55003ead949d5247c744abc46ba6ae8a0f3b1dc0136f26"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka5-window-coherence/testbench/tb.json",
+        "path": "sim/bench/requirements.txt",
+        "passed": true,
+        "content_hash": "sha256:99f43573522565d7c480efd1f954892948033915df6a4e685327e995d3396eb6"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka5-window-coherence/testbench/tb.json",
+        "path": "sim/bench/runner.py",
+        "passed": true,
+        "content_hash": "sha256:be3178057cf44f7548bb76bca273c94a2a7ab5311546b0114be21d6efd33a6c5"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka5-window-coherence/testbench/tb.json",
+        "path": "sim/ka5-window-coherence/bench.py",
+        "passed": true,
+        "content_hash": "sha256:03d45e09a70fcb3aec50220502c45699aea789dd3783e3930d354340b1edff09"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka5-window-coherence/testbench/tb.json",
+        "path": "sim/ka5-window-coherence/run.sh",
+        "passed": true,
+        "content_hash": "sha256:da5632c9d6387f738a80bcdfaa98eb294062df00c9ed46718e4c296903a7b6db"
+      },
+      {
+        "check": "present",
+        "role": "testbench_dependency",
+        "testbench": "sim/ka5-window-coherence/testbench/tb.json",
+        "path": "sim/toolchain.json",
+        "passed": true,
+        "content_hash": "sha256:a608563cef4a694e34c0bfe4e5dd5a1d407c4841ca5269123a1956ac3f3a6194"
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/ka1-ideal-multiplier/testbench/tb.json",
+        "argv": [
+          "env",
+          "NGSPICE=.tools/ngspice-46/bin/ngspice",
+          "sim/ka1-ideal-multiplier/run.sh",
+          "--record",
+          ".tools/attest-ka1-record.json"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/ka2-switch-mixer/testbench/tb.json",
+        "argv": [
+          "env",
+          "NGSPICE=.tools/ngspice-46/bin/ngspice",
+          "sim/ka2-switch-mixer/run.sh",
+          "--record",
+          ".tools/attest-ka2-record.json"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "testbench": "sim/ka5-window-coherence/testbench/tb.json",
+        "argv": [
+          "env",
+          "NGSPICE=.tools/ngspice-46/bin/ngspice",
+          "sim/ka5-window-coherence/run.sh",
+          "--record",
+          ".tools/attest-ka5-record.json"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "dependency_binding",
+        "role": "testbench",
+        "testbench": "sim/ka1-ideal-multiplier/testbench/tb.json",
+        "declared": 7,
+        "passed": true
+      },
+      {
+        "check": "dependency_binding",
+        "role": "testbench",
+        "testbench": "sim/ka2-switch-mixer/testbench/tb.json",
+        "declared": 7,
+        "passed": true
+      },
+      {
+        "check": "dependency_binding",
+        "role": "testbench",
+        "testbench": "sim/ka5-window-coherence/testbench/tb.json",
+        "declared": 11,
+        "passed": true
+      },
+      {
+        "check": "pin",
+        "role": "pdk",
+        "passed": true,
+        "value": {
+          "none": true,
+          "reason": "The V3 known-answer benches are behavioural (no semiconductor models): they consume no PDK. The first PDK-consuming bench lands with validation step V5."
+        }
+      },
+      {
+        "check": "pin",
+        "role": "tools",
+        "passed": true,
+        "value": {
+          "ngspice": "46",
+          "python": "3.10"
+        },
+        "resolved_from": {
+          "ngspice": {
+            "from": "sim/toolchain.json",
+            "key": "ngspice.version"
+          },
+          "python": {
+            "from": "sim/toolchain.json",
+            "key": "python.min_version"
+          }
+        }
+      }
+    ],
+    "description": "T1 item 9 (Testbenches shipped), V3 scope: the three known-answer benches of validation step V3 (spec/target-spec.md 'Known-answer validation' checks 1, 2 and 5) on behavioural elements. Each cold start runs both protocol legs (12.5 ps, 6.25 ps) and gates the result (M1 two-half agreement, M2 pre-flight, M4 convergence) before writing its record; the committed records under sim/<bench>/records/ are the append-only evidence. The V4 benches (noise, IIP3) and the first PDK-consuming design bench (V5) extend this inventory."
+  },
+  "provenance": {
+    "klt_version": "0.9.3.dev2575+g6bd18bbc8637",
+    "klayout_version": "0.30.14",
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "path": {
+        "path": "signoff/testbenches/inventory.json",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:7bcd3b2993e487a11e34a8551e7e9f61861863e62f46489b74061179f8a37908"
+    }
+  }
+}

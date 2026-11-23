@@ -11,24 +11,26 @@ and tracker item [#5](https://github.com/2AMLogic/sg13g2-mixer/issues/5).
 
 Unblocked once #23 merges (the spec's validation plan, in its own order).
 
-1. **V3: known-answer benches on behavioural elements.** Checks 1, 2 and 5 of
-   the spec (ideal multiplier CG within 0.05 dB, hard-switched 2/π, window
-   coherence within 0.05 dB), with a cold-start command and a
-   `testbench/tb.json` per bench. The shared-mechanics contract is
-   [record 0002](spec/decision-records/0002-shared-bench-mechanics.md).
-2. **V4: noise and IIP3 known-answer checks.** Check 3 (SSB NF 3.01 dB, DSB
+V3 is done (#97): the known-answer benches on behavioural elements shipped —
+`sim/ka1-ideal-multiplier/` (check 1), `sim/ka2-switch-mixer/` (check 2),
+`sim/ka5-window-coherence/` (check 5), with the shared mechanics in
+`sim/bench/` per [record 0002](spec/decision-records/0002-shared-bench-mechanics.md)
+and their evidence under `sim/<bench>/records/`.
+
+1. **V4: noise and IIP3 known-answer checks.** Check 3 (SSB NF 3.01 dB, DSB
    0 dB within stated statistical error) and check 4 (polynomial IIP3 within
    0.5 dB, slope 3 ± 0.3). *Done when:* both pass, or a decision record states
    the B-NF shortfall and stops that bench, as the spec requires. The measured
-   runtime per cell is recorded either way.
-3. **Topology selection and first schematic.** A decision record choosing the
+   runtime per cell is recorded either way. Mechanics M5–M7 (record 0002:
+   `iip3.py`, `noisefactor.py` stamps and their lock entries) land here.
+2. **Topology selection and first schematic.** A decision record choosing the
    core and the active single-to-differential input stage (R2 target, no
    inductors), then `design/` sources and a derived netlist (T1 item 1). The
    LVS device-coverage probe it depends on is done
    (`layout/lvs-device-coverage/`); the benches are item 1. If the topology
    uses MOS devices, pinning the OSDI build in `sim/toolchain.json` comes
    first.
-4. **V5: first design cell.** B-CG at the typ corner with the per-HBT peak
+3. **V5: first design cell.** B-CG at the typ corner with the per-HBT peak
    `vce`, `vbe`, `ic/Nx` report the spec's model-validity rule demands.
 
 ## Later
@@ -39,8 +41,12 @@ Unblocked once #23 merges (the spec's validation plan, in its own order).
   percentile and confidence, set by a decision record; until then the
   isolation rows cannot be graded pass/fail.
 - **Layout, DRC, LVS, power structure, post-layout** (T1 items 2–4, 7, 11).
-  First question: does the LVS device-coverage probe
-  (`layout/lvs-device-coverage/`) show the chosen devices extract?
+  First question — answered 2026-11-20 (issue #98): yes on the runset engine, where
+  every probed class including the HBT both extracts and reaches `status: match`
+  (`layout/lvs-device-coverage/`); the curated deck still extracts no HBT (#1232,
+  declined). Next question: does `klt signoff` accept the runset citation for item 4
+  (measured refusal `runset_unrecognised_device`, blocked upstream on
+  `2AMLogic/klayout-tools#6902`)?
 - **R14 area re-baseline.** First question: what does the schematic imply?
 - **On-chip balun (R2 stretch) and zero-IF I/Q (R9 stretch, D5).** Not before
   the single-IF target closes; the balun also waits on D3.

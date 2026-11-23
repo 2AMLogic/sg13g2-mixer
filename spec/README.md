@@ -4,8 +4,9 @@
   the `sg13g2-lna` interface at a pinned commit, the cascade arithmetic, the requirements
   trace, validation plan, PVT corner box, and the measurement protocol with
   its known-answer validation.
-  Status: PROPOSED, not ratified; under requirements review. Approving the PR
-  is not ratification.
+  Status: RATIFIED by operator on issue #2 (2026-11-10), ratifying PR #7, as
+  targets; R4, R9 load, R14 and the LNA-IIP3-dependent cascade values are
+  provisional.
 - [`lna-interface-recheck.md`](lna-interface-recheck.md) — re-check of the pinned
   `sg13g2-lna` interface rows against a later LNA `main` commit, with the git
   object evidence, the "no interface row changed" result, and the answer to
