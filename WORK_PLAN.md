@@ -3,12 +3,11 @@
 Generated from GitHub label state by the Guide triage role. Everything between the markers is overwritten.
 
 <!-- guide:plan-body:start -->
-_Generated: 2026-11-19T18:21:00Z (snapshot; compare against live labels)_
+_Generated: 2026-11-23T12:39:03Z (snapshot; compare against live labels)_
 ## Operator Attention: Merge-Risk-Hold Pileup
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
 
-- **#23**: docs(spec): record operator ratification of target spec, mark provisional rows
 - **#56**: spec: repair two stale citations in target-spec.md under record 0003
 
 ## Very Important
@@ -21,7 +20,7 @@ _None._
 
 `loom:important`; taken before unlabelled work.
 
-- **#2**: Draft and ratify the target spec
+_None._
 
 ## Ready
 
@@ -33,26 +32,24 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-_None._
+- **#102**: Use one checked temporary directory for gate self-test fixtures
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-_None._
+- **#106**: fix: check the gate self-test fixture root before any fixture git command
 
 ## Approved (Awaiting Merge)
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-- **#23**: docs(spec): record operator ratification of target spec, mark provisional rows — closes #2
 - **#56**: spec: repair two stale citations in target-spec.md under record 0003 — closes #47
 
 ## Proposed
 
 Issues carrying `loom:curated`.
 
-- **#2**: Draft and ratify the target spec *(curated)*
 - **#47**: spec/target-spec.md still defers D4 to closed issue #3; record 0002 decided it *(curated)*
 
 ## Proposed (Architect / Hermit)
@@ -67,14 +64,14 @@ _None._
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 2 |
+| Operator merge-risk holds | 1 |
 | Very important | 0 |
-| Important | 1 |
+| Important | 0 |
 | Ready (`loom:issue`, net of holds/building/merge-pending) | 0 |
-| In Progress (`loom:building`) | 0 |
-| PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 2 |
-| Curated | 2 |
+| In Progress (`loom:building`) | 1 |
+| PRs awaiting review | 1 |
+| Approved PRs awaiting merge | 1 |
+| Curated | 1 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
