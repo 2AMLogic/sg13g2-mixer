@@ -43,8 +43,11 @@ moved, because this record is that history.
   ownerless state this record ends.
 - **The PDK-pin row's bare filename was ambiguous.** The ratified PDK-pin
   row cites `sim/pdk.json` "there" — the LNA repo at the pinned commit,
-  where that file does carry the pin (verified by blob SHA in
+  where that file carries the release tag `v0.3.0` (its blob is unchanged
+  between the two LNA commits, per
   [`lna-interface-recheck.md`](../lna-interface-recheck.md), §"Evidence").
+  The commit SHA is not in that file; it is recorded in
+  `lna-interface-recheck.md` and this repo's `sim/pdk-artifact.json`.
   [#40](https://github.com/2AMLogic/sg13g2-mixer/issues/40) read the bare
   filename as a path in this repo, where — after
   [#33](https://github.com/2AMLogic/sg13g2-mixer/issues/33) — `sim/pdk.json`
@@ -66,13 +69,15 @@ Both applied to `../target-spec.md` in the PR carrying this record.
    bare filenames in that column are LNA-repo-relative; the
    disambiguation makes that explicit and stays consistent with
    [`lna-interface-recheck.md`](../lna-interface-recheck.md) ("recorded in
-   `sim/pdk.json` (LNA repo)"). The LNA file carries the pin (`v0.3.0`,
-   `5cccb161…`); this repo's `sim/pdk-artifact.json` `upstream.tag` /
-   `upstream.commit` equal those values — one fact, three copies, now
-   unambiguous which citation names which.
+   `sim/pdk.json` (LNA repo)"). The LNA file carries the tag (`v0.3.0`)
+   only, not the commit SHA (`5cccb161…`, the `v0.3.0` tag commit), which
+   `lna-interface-recheck.md` records; this repo's
+   `sim/pdk-artifact.json` `upstream.tag` / `upstream.commit` equal those
+   values — one fact, several copies; each citation now names the file
+   that holds the part it points at.
 
    - Before: `` (`sim/pdk.json` there) ``
-   - After: `` (`sim/pdk.json` in the LNA repo at the pinned commit) ``
+   - After: `` (tag `v0.3.0` recorded in `sim/pdk.json` in the LNA repo at the pinned commit; tag commit SHA recorded in `lna-interface-recheck.md` and this repo's `sim/pdk-artifact.json`) ``
 
 2. **D4 sentence, §"Measurement protocol"** — the paragraph's preceding
    three sentences (one master; stamped copy tracked in `reuse.lock.json`;
@@ -80,7 +85,7 @@ Both applied to `../target-spec.md` in the PR carrying this record.
 
    - Before: "Which of its mechanics are band-independent is decided when
      #3 builds the bench (decision record, Deferred D4)."
-   - After: "Which of its mechanics are band-independent is decided by
+   - After: "Which of its mechanics are band-independent is decided in
      decision record [0002](0002-shared-bench-mechanics.md) (was Deferred
      D4)."
 
