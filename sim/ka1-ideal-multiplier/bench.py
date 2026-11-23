@@ -91,11 +91,7 @@ def main(argv=None):
         print("KA1: coherence pre-flight FAILED:", *problems, sep="\n  ", file=sys.stderr)
         return 1
 
-    major, version = runner.ngspice_major(args.ngspice)
-    if major != 46:
-        print(f"KA1: ngspice major {major} != 46 pinned by sim/toolchain.json",
-              file=sys.stderr)
-        return 1
+    version = runner.require_pinned_ngspice(args.ngspice, "KA1")
 
     os.makedirs(args.workdir, exist_ok=True)
     runs = runner.two_step_run(args.ngspice, DECK_BODY, BINS, "if", args.workdir)

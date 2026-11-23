@@ -270,6 +270,33 @@ def ngspice_command(command):
     return os.path.abspath(command) if os.sep in command else command
 
 
+TOOLCHAIN_MANIFEST = Path(__file__).resolve().parents[1] / "toolchain.json"
+
+
+def pinned_ngspice_major():
+    """The required ngspice major, from sim/toolchain.json."""
+    with open(TOOLCHAIN_MANIFEST, encoding="utf-8") as fh:
+        return int(json.load(fh)["ngspice"]["major"])
+
+
+def require_pinned_ngspice(ngspice, bench):
+    """The detected banner, after checking the major against the pin.
+
+    One gate shared by every bench entry point: the expected major is read
+    from sim/toolchain.json (resolved next to this runner), never repeated
+    per bench, so bumping the pin alone moves every bench with it. Raises
+    SystemExit (nonzero exit) naming the bench and both majors before any
+    simulator batch starts; on match the detected banner is returned for
+    the evidence record.
+    """
+    major, banner = ngspice_major(ngspice)
+    pinned = pinned_ngspice_major()
+    if major != pinned:
+        raise SystemExit(
+            f"{bench}: ngspice major {major} != {pinned} pinned by sim/toolchain.json")
+    return banner
+
+
 def ngspice_major(ngspice):
     """(major, version-bearing banner line) of an ngspice binary, or raises."""
     try:

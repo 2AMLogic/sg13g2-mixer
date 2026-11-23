@@ -63,7 +63,7 @@
         "testbench": "sim/ka1-ideal-multiplier/testbench/tb.json",
         "path": "sim/bench/runner.py",
         "passed": true,
-        "content_hash": "sha256:9fd556ac27c1a37316b2aeefd49ac488d532e10af2d41cde4b6853967bedb39e"
+        "content_hash": "sha256:a5b965247cdbde7b6c5974eba01204cbccc913d64432d62791e79be76315c026"
       },
       {
         "check": "present",
@@ -71,7 +71,7 @@
         "testbench": "sim/ka1-ideal-multiplier/testbench/tb.json",
         "path": "sim/ka1-ideal-multiplier/bench.py",
         "passed": true,
-        "content_hash": "sha256:fda4dae53f9cc01839efdfe45c433160f68e207a9a2ade692cb177b79182c09b"
+        "content_hash": "sha256:bd587957577df4864cb28621f2af519f3255c99fb991dcee92cb6f2d59c6b789"
       },
       {
         "check": "present",
@@ -119,7 +119,7 @@
         "testbench": "sim/ka2-switch-mixer/testbench/tb.json",
         "path": "sim/bench/runner.py",
         "passed": true,
-        "content_hash": "sha256:9fd556ac27c1a37316b2aeefd49ac488d532e10af2d41cde4b6853967bedb39e"
+        "content_hash": "sha256:a5b965247cdbde7b6c5974eba01204cbccc913d64432d62791e79be76315c026"
       },
       {
         "check": "present",
@@ -127,7 +127,7 @@
         "testbench": "sim/ka2-switch-mixer/testbench/tb.json",
         "path": "sim/ka2-switch-mixer/bench.py",
         "passed": true,
-        "content_hash": "sha256:db62bb48a74ee4766c5131de81934e6cea823e3cbd157a4914e3b9ae20e3def0"
+        "content_hash": "sha256:5b893b3d0d733fc6eac1a89e3c05fae993c6a54251cbf6043957f75a14886ad3"
       },
       {
         "check": "present",
@@ -207,7 +207,7 @@
         "testbench": "sim/ka5-window-coherence/testbench/tb.json",
         "path": "sim/bench/runner.py",
         "passed": true,
-        "content_hash": "sha256:9fd556ac27c1a37316b2aeefd49ac488d532e10af2d41cde4b6853967bedb39e"
+        "content_hash": "sha256:a5b965247cdbde7b6c5974eba01204cbccc913d64432d62791e79be76315c026"
       },
       {
         "check": "present",
@@ -215,7 +215,7 @@
         "testbench": "sim/ka5-window-coherence/testbench/tb.json",
         "path": "sim/ka5-window-coherence/bench.py",
         "passed": true,
-        "content_hash": "sha256:f2a93104d1dce214c68cd6a1f6227eb4f65b2cb911068ea77deb4b8856d15e27"
+        "content_hash": "sha256:3f6af14eb728002ff589ec98d022c1285fca7910ed790ea8f52fd8282e946b52"
       },
       {
         "check": "present",
@@ -335,7 +335,7 @@
   },
   "provenance": {
     "klt_version": "0.9.3.dev2575+g6bd18bbc8637",
-    "klayout_version": "0.30.12",
+    "klayout_version": "0.30.13",
     "pdk": null,
     "deck": null,
     "input": {
