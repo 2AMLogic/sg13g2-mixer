@@ -22,8 +22,6 @@ Usage: bench.py [--ngspice PATH] [--record PATH] [--workdir DIR]
 
 from __future__ import annotations
 
-import argparse
-import datetime
 import math
 import os
 import platform
@@ -35,7 +33,6 @@ ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, ROOT)
 
 from sim.bench import runner                      # noqa: E402
-from sim.bench.lib import coherence               # noqa: E402
 
 TONE_V_OC = 2.0e-3          # tone source, peak, open circuit
 BAND_HALF_HZ = 512e3        # Hann integration band half-width around f_IF
@@ -72,26 +69,12 @@ def hann_amplitude(samples, dt_s):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--ngspice", type=runner.ngspice_command,
-                    default=os.environ.get("NGSPICE", "ngspice"))
-    ap.add_argument("--record", help="output path (default: new UTC-stamped evidence record)")
-    ap.add_argument("--workdir", default=os.path.join(ROOT, ".tools", "ka5-work"))
-    ap.add_argument("--dump-deck", action="store_true")
-    args = ap.parse_args(argv)
+    args = runner.bench_args(os.path.join(ROOT, ".tools", "ka5-work"), argv)
 
     if args.dump_deck:
-        sys.stdout.write(runner.render_deck(
-            BINS, DECK_BODY, "out", runner.DT_S, "samples-s1.txt"))
-        return 0
+        return runner.dump_deck(BINS, DECK_BODY, "out")
 
-    # M2 pre-flight: the tone plan must be coherent with the window.
-    problems = coherence.coherence_problems(
-        {"tone": runner.F_IF}, runner.N_WINDOW * runner.DT_S, runner.DT_S,
-        settle_discard_s=runner.DISCARD_S)
-    if problems:
-        print("KA5: coherence pre-flight FAILED:", *problems, sep="\n  ", file=sys.stderr)
-        return 1
+    runner.coherence_gate("KA5", {"tone": runner.F_IF})
 
     version = runner.require_pinned_ngspice(args.ngspice, "KA5")
 
@@ -116,12 +99,7 @@ def main(argv=None):
         "corner": "single corner, nominal (behavioural elements carry no PVT)",
         "toolchain": {"ngspice": version, "python": platform.python_version()},
         "protocol": {
-            "legs": {"s1": "12.5 ps", "s2": "6.25 ps"},
-            "windows": {"w1": "analysis", "w2": "following"},
-            "step_s": runner.DT_S, "step_halved_s": runner.DT_S / 2,
-            "window_points": runner.N_WINDOW,
-            "window_s": runner.N_WINDOW * runner.DT_S,
-            "settle_discard_s": runner.DISCARD_S,
+            **runner.protocol_common(),
             "window": "rectangular (coherent tones); Hann cross-check is the "
                       "third reading of this check",
             "bins": {"tone": runner.BIN_IF},
@@ -140,18 +118,14 @@ def main(argv=None):
                           "following_window": 0.1, "step_halving": 0.1},
         "pass": not failures,
         "failures": failures,
-        "wall_clock_s": {"ngspice_12.5ps": runs["s1"]["wall_s"],
-                         "ngspice_6.25ps": runs["s2"]["wall_s"],
-                         "post_processing": post_s},
+        "wall_clock_s": runner.wall_clock(runs, post_s),
         "command": "sim/ka5-window-coherence/run.sh",
-        "date": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d"),
+        "date": runner.record_date(),
     }
     path = runner.save_bench_record(HERE, args.record, record)
-    print(f"KA5 worst three-reading spread={deltas['reading_spread_db']:.5f} dB")
-    print(f"record: {path}  pass={not failures}")
-    for line in failures:
-        print("FAIL:", line, file=sys.stderr)
-    return 1 if failures else 0
+    return runner.bench_report(
+        f"KA5 worst three-reading spread={deltas['reading_spread_db']:.5f} dB",
+        path, failures)
 
 
 if __name__ == "__main__":
