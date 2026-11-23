@@ -298,13 +298,13 @@ def dump_deck(bins, body, node):
 
 
 def coherence_gate(bench, tones_hz):
-    """M2 pre-flight gate: SystemExit(1) naming the bench on problems."""
+    """Return whether the tone plan is coherent and report any problems."""
     problems = coherence.coherence_problems(
         tones_hz, N_WINDOW * DT_S, DT_S, settle_discard_s=DISCARD_S)
     if problems:
         print(f"{bench}: coherence pre-flight FAILED:", *problems,
               sep="\n  ", file=sys.stderr)
-        raise SystemExit(1)
+    return not problems
 
 
 def protocol_common():

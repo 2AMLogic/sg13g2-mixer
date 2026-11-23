@@ -74,7 +74,8 @@ def main(argv=None):
     if args.dump_deck:
         return runner.dump_deck(BINS, DECK_BODY, "out")
 
-    runner.coherence_gate("KA5", {"tone": runner.F_IF})
+    if not runner.coherence_gate("KA5", {"tone": runner.F_IF}):
+        return 1
 
     version = runner.require_pinned_ngspice(args.ngspice, "KA5")
 

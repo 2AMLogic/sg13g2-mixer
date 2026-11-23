@@ -141,13 +141,17 @@ class TestSharedScaffold(unittest.TestCase):
     """The CLI / record scaffold folded into the shared runner (issue #108)."""
 
     def test_bench_args_defaults_and_flags(self):
-        args = runner.bench_args(os.path.join("x", ".tools", "kaX-work"), [])
+        with mock.patch.dict(os.environ, {}, clear=True):
+            args = runner.bench_args(os.path.join("x", ".tools", "kaX-work"), [])
         self.assertEqual(args.workdir, os.path.join("x", ".tools", "kaX-work"))
         self.assertIsNone(args.record)
         self.assertFalse(args.dump_deck)
-        self.assertEqual(args.ngspice, os.environ.get("NGSPICE", "ngspice"))
-        picked = runner.bench_args("w", ["--dump-deck", "--ngspice", "bin/ngspice",
-                                         "--record", "out.json", "--workdir", "scratch"])
+        self.assertEqual(args.ngspice, "ngspice")
+        with mock.patch.dict(os.environ, {"NGSPICE": "./.tools/ngspice-46/bin/ngspice"}):
+            self.assertEqual(runner.bench_args("w", []).ngspice,
+                             str(Path.cwd() / ".tools/ngspice-46/bin/ngspice"))
+            picked = runner.bench_args("w", ["--dump-deck", "--ngspice", "bin/ngspice",
+                                             "--record", "out.json", "--workdir", "scratch"])
         self.assertTrue(picked.dump_deck)
         self.assertEqual(picked.record, "out.json")
         self.assertEqual(picked.workdir, "scratch")
@@ -164,14 +168,20 @@ class TestSharedScaffold(unittest.TestCase):
             "settle_discard_s": runner.DISCARD_S,
         })
 
-    def test_coherence_gate_names_the_bench_and_exits(self):
+    def test_incoherent_benches_return_failure_before_running_ngspice(self):
+        with (
+            mock.patch.object(runner, "F_IF", runner.F_IF + runner.BIN_HZ / 2),
+            mock.patch.object(subprocess, "run", side_effect=AssertionError("ngspice invoked")),
+        ):
+            for bench, name in ((KA1, "KA1"), (KA2, "KA2"), (KA5, "KA5")):
+                with self.subTest(bench=name), contextlib.redirect_stderr(io.StringIO()) as err:
+                    self.assertEqual(bench.main([]), 1)
+                    self.assertTrue(err.getvalue().startswith(f"{name}: coherence pre-flight FAILED:\n"))
+                    self.assertIn("not coherent", err.getvalue())
+
+    def test_coherent_gate_passes_silently(self):
         with contextlib.redirect_stderr(io.StringIO()) as err:
-            with self.assertRaises(SystemExit) as caught:
-                runner.coherence_gate("KAX", {"rf": 123.456e6})
-        self.assertEqual(caught.exception.code, 1)
-        self.assertIn("KAX: coherence pre-flight FAILED:", err.getvalue())
-        with contextlib.redirect_stderr(io.StringIO()) as err:
-            runner.coherence_gate("KAX", {"if": runner.F_IF})
+            self.assertTrue(runner.coherence_gate("KAX", {"if": runner.F_IF}))
         self.assertEqual(err.getvalue(), "")
 
     def test_bench_report_prints_and_returns_the_status(self):

@@ -77,8 +77,9 @@ def main(argv=None):
     if args.dump_deck:
         return runner.dump_deck(BINS, DECK_BODY, "if")
 
-    runner.coherence_gate(
-        "KA2", {"rf": runner.F_RF, "lo": runner.F_LO, "if": runner.F_IF})
+    tones_hz = {"rf": runner.F_RF, "lo": runner.F_LO, "if": runner.F_IF}
+    if not runner.coherence_gate("KA2", tones_hz):
+        return 1
 
     version = runner.require_pinned_ngspice(args.ngspice, "KA2")
 
