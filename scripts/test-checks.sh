@@ -19,8 +19,17 @@ expect 0 "tb-json accepts a good file"        -- python3 -I "$S/check-tb-json.py
 expect 1 "tb-json rejects truncated JSON"     -- python3 -I "$S/check-tb-json.py" "$S/fixtures/tb-bad-truncated.json"
 expect 1 "tb-json rejects a duplicate key"    -- python3 -I "$S/check-tb-json.py" "$S/fixtures/tb-bad-duplicate-key.json"
 
+# One checked fixture root holds every fixture in its own subdirectory and
+# one exit trap removes the lot. A failed allocation would leave the path
+# empty and git -C "" would act on the invoking checkout (#102), so both
+# the root and its fixture directories are checked before any fixture git
+# command runs or fixture data is written.
+F="$(mktemp -d)" || { echo "FAIL cannot allocate the fixture root" >&2; exit 1; }
+trap 'rm -rf "$F"' EXIT
+T="$F/append-only" E="$F/empty" G="$F/dispatch"
+mkdir -p "$T" "$E" "$G" || { echo "FAIL cannot create the fixture directories" >&2; exit 1; }
+
 # append-only, against a throwaway git repo
-T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 g() { git -C "$T" -c user.email=t@example.com -c user.name=t -c commit.gpgsign=false "$@"; }
 g init -q -b main
 mkdir -p "$T/sim/b1/records"
@@ -49,14 +58,6 @@ expect 2 "append-only fails closed on an unknown base" -- "$S/check-sim-append-o
 expect 2 "append-only fails closed on an empty base" -- "$S/check-sim-append-only" --root "$T" --base ""
 
 # empty tree: every gate passes trivially
-E="$(mktemp -d)"
-cleanup() {
-  local d
-  for d in "$T" "$E" "${G:-}"; do
-    [ -n "$d" ] && rm -rf "$d"
-  done
-}
-trap cleanup EXIT
 git -C "$E" init -q
 expect 0 "check-python passes with nothing to check" -- "$S/check-python.sh" --root "$E"
 expect 0 "reuse-lock passes when absent"             -- "$S/check-reuse-lock.sh" "$E"
@@ -70,7 +71,7 @@ expect 1 "reuse-lock rejects a non-object"           -- "$S/check-reuse-lock.sh"
 # append-only group must respect BASE, and an unknown group must fail. The
 # script is copied into a fixture tree of stub gates that append their name to
 # $CALL_LOG, so what actually ran is observed, not assumed.
-G="$(mktemp -d)"
+# $G was created with the fixture root above.
 mkdir -p "$G/scripts"
 cp "$S/check-all.sh" "$G/scripts/check-all.sh"
 CALL_LOG="$G/called.log"; export CALL_LOG
