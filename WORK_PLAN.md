@@ -3,7 +3,7 @@
 Generated from GitHub label state by the Guide triage role. Everything between the markers is overwritten.
 
 <!-- guide:plan-body:start -->
-_Generated: 2026-11-23T12:39:03Z (snapshot; compare against live labels)_
+_Generated: 2026-11-24T17:10:00Z (snapshot; compare against live labels)_
 ## Operator Attention: Merge-Risk-Hold Pileup
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
@@ -32,13 +32,13 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#102**: Use one checked temporary directory for gate self-test fixtures
+_None._
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#106**: fix: check the gate self-test fixture root before any fixture git command
+_None._
 
 ## Approved (Awaiting Merge)
 
@@ -68,8 +68,8 @@ _None._
 | Very important | 0 |
 | Important | 0 |
 | Ready (`loom:issue`, net of holds/building/merge-pending) | 0 |
-| In Progress (`loom:building`) | 1 |
-| PRs awaiting review | 1 |
+| In Progress (`loom:building`) | 0 |
+| PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 1 |
 | Curated | 1 |
 | Architect / Hermit proposals | 1 |

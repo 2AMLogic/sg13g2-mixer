@@ -2,6 +2,11 @@
 
 Chronological record of merged PRs and closed issues. Maintained by the Guide triage role.
 
+### 2026-11-24
+
+- **PR #106**: fix: check the gate self-test fixture root before any fixture git command
+- **Issue #102** (closed): Use one checked temporary directory for gate self-test fixtures
+
 ### 2026-11-23
 
 - **PR #109**: refactor(sim): fold the shared V3 bench scaffold into runner.py
