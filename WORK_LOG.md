@@ -4,6 +4,12 @@ Chronological record of merged PRs and closed issues. Maintained by the Guide tr
 
 ### 2026-11-26
 
+- **Issue #120** (closed): Trim unchecked toolchain, protocol and mechanics duplicates from sim/*/testbench/tb.json
+- **PR #126**: refactor(sim): trim the V3 tb.json to identity and entry points
+- **Issue #130** (closed): CI does not assert item 9's manifest binding (signoff-item9 is drift-only)
+- **PR #133**: ci: assert item 9's manifest binding in signoff-item9
+- **Issue #127** (closed): Derive V3 stimulus frequencies and FFT bins from one tone plan
+- **PR #132**: refactor(sim): derive V3 deck tones and FFT bins from one runner plan
 - **PR #129**: ci: gate the item-9 signoff envelope for drift
 - **PR #123**: refactor(sim): read V3 deck source and load values from the shared runner constants
 - **Issue #125** (closed): CI has no drift check for the item 9 envelope: a stale signoff/testbenches/envelope.json stays green
