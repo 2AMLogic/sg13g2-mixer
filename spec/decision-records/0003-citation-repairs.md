@@ -15,18 +15,16 @@
   replacements under "The repairs" below. It does not edit record
   [`0001`](0001-target-spec-ratification.md) (a decision record is a dated
   artifact; supersession is recorded here) and does not change record
-  [`0002`](0002-shared-bench-mechanics.md) (it applies what 0002 already
-  decided).
+  [`0002`](0002-shared-bench-mechanics.md), the proposed record for D4.
 
 ## The rule
 
-A correction that changes **only a pointer** — where a decision or a value
-already lives — and no row value, no protocol number, no tolerance and no
-PVT corner is recorded here and applied. It is not a relaxation of a
-ratified row: `CLAUDE.md`'s rule that "agents do not relax the ratified
-spec to make results pass" is about values and tolerances, not about which
-file a citation names. The spec's history still shows why the citation
-moved, because this record is that history.
+A citation repair corrects how a reader locates the same decision or
+artifact. It must preserve the row value, row status, protocol number,
+tolerance, PVT corner and identity of the supporting evidence. Changing
+a row's status or substituting a different evidence record requires a
+fresh operator ruling, even when two `sim/` runs report the same result
+at the same corner.
 
 ## Why now
 
@@ -34,14 +32,14 @@ moved, because this record is that history.
   protocol" said the band-independence question "is decided when #3 builds
   the bench". [#3](https://github.com/2AMLogic/sg13g2-mixer/issues/3)
   closed on 2026-10-17T21:59:22Z having pinned the PDK and committed a
-  smoke simulation — it built no bench. Meanwhile record
+  smoke simulation — it built no bench. Proposed record
   [`0002`](0002-shared-bench-mechanics.md) (PR #35, merged 2026-11-14)
-  decided D4 ahead of the bench issue, enumerating mechanics M1–M8 with an
-  owner each. Its §Consequences flagged the sentence as "slightly stale"
+  documents the D4 decisions on mechanics M1–M8 and names an owner for
+  each. Its §Consequences flagged the sentence as "slightly stale"
   and left the correction "to be folded into the next record that touches
   the measurement protocol". No such record is pending; waiting was the
   ownerless state this record ends.
-- **The PDK-pin row's bare filename was ambiguous.** The ratified PDK-pin
+- **The PDK-pin row's bare filename was ambiguous.** The PDK-pin interface
   row cites `sim/pdk.json` "there" — the LNA repo at the pinned commit,
   where that file carries the release tag `v0.3.0` (its blob is unchanged
   between the two LNA commits, per
@@ -85,15 +83,16 @@ Both applied to `../target-spec.md` in the PR carrying this record.
 
    - Before: "Which of its mechanics are band-independent is decided when
      #3 builds the bench (decision record, Deferred D4)."
-   - After: "Which of its mechanics are band-independent is decided in
-     decision record [0002](0002-shared-bench-mechanics.md) (was Deferred
-     D4)."
+   - After: "Proposed decision record [0002](0002-shared-bench-mechanics.md)
+     documents the M1–M8 decisions on band-independent bench mechanics
+     (formerly deferred as D4)."
 
 ## Consequences
 
-- **A rule exists for the next stale citation.** A future value-preserving
-  pointer repair applies it under the next numbered record; it does not
-  need a fresh ruling on whether the repair is allowed.
+- If the operator adopts this rule, the next numbered decision record for
+  a citation repair must show how the corrected pointer identifies the
+  same decision or artifact. A change in row status or substitution of
+  supporting evidence requires a fresh operator ruling.
 - **The four past-tense `#3` provenance references stay.** References that
   record what #3 already did (it committed the pin; its working document;
   its closed status) are accurate history, not deferrals, and are not

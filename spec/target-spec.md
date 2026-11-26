@@ -419,8 +419,8 @@ The shared, band-independent parts of this bench (tone placement, coherent
 DFT, convergence and slope checks) have one master. If `sg13g2-sat-rx`'s
 bench code is taken, it comes by a stamped copy tracked in `reuse.lock.json`,
 not a second implementation; reading its methodology is not copying its code.
-Which of its mechanics are band-independent is decided in decision record
-[0002](decision-records/0002-shared-bench-mechanics.md) (was Deferred D4).
+Proposed decision record [0002](decision-records/0002-shared-bench-mechanics.md)
+documents the M1–M8 decisions on band-independent bench mechanics (formerly deferred as D4).
 
 ## What this specification does not do
 
