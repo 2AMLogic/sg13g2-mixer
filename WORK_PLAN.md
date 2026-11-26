@@ -3,7 +3,7 @@
 Generated from GitHub label state by the Guide triage role. Everything between the markers is overwritten.
 
 <!-- guide:plan-body:start -->
-_Generated: 2026-11-26T10:20:00Z (snapshot; compare against live labels)_
+_Generated: 2026-11-26T12:06:07Z (snapshot; compare against live labels)_
 ## Operator Attention: Merge-Risk-Hold Pileup
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
@@ -54,7 +54,7 @@ Issues carrying `loom:curated`.
 
 ## Proposed (Architect / Hermit)
 
-- **#37**: Remove the duplicated R1–R15 spec table and status prose from README.md: a second, ungated copy of the ratified spec *(hermit)* *(held)*
+- **#37**: Remove the duplicated R1–R15 spec table and status prose from README.md: a second, ungated copy of the ratified spec *(hermit)*
 
 ## Epics
 
