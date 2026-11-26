@@ -10,9 +10,9 @@ name: ci
 # The signoff jobs (signoff-item9, signoff-item10) are the plain multi-step
 # jobs left. Both need the network plus a pinned external klt, so their steps
 # stay in the workflow, and neither belongs in the item-10 inventory's
-# `checks` (signoff/README.md). signoff-item9 is only a drift gate for the
-# item-9 envelope; signoff-item10 also attests the attestation itself (a
-# checker testing itself) and checks the manifest binding.
+# `checks` (signoff/README.md). Each signoff job drift-gates its envelope and
+# checks its manifest binding; signoff-item10 also attests the attestation
+# itself (a checker testing itself).
 
 on:
   push:
@@ -97,6 +97,13 @@ jobs:
   # with the committed report: exit 0 is `match`, exit 3 is `drifted` and the
   # report names each changed path. The cold starts are `local_only` and are
   # skipped in --check mode, so the job needs neither ngspice nor a PDK.
+  # Manifest binding (#130): the drift step cannot see a stale
+  # signoff/manifest.json. Its `evidence."9".content_hash` is klt's binding
+  # anchor and must equal the item-9 inventory's raw-byte sha256 (the
+  # envelope's provenance.input.content_hash), not the hash of the envelope
+  # file named beside it. An inventory edit that is re-attested reproduces, so
+  # drift stays green while the pin reads `stale_evidence` (or
+  # `unanchored_evidence` if it was deleted); only the binding step catches it.
   # The pin is the producer recorded in that envelope and is newer than
   # signoff-item10's on purpose: the item-10 build rejects this inventory's
   # object-form `testbenches` entries.
@@ -107,6 +114,66 @@ jobs:
       - uses: astral-sh/setup-uv@v5
       - name: Item 9 envelope still reproduces (no drift)
         run: uvx --from "git+https://github.com/2AMLogic/klayout-tools@6bd18bbc8637f6d767b3c24e77bd5db7a39e4bbe" klt signoff --attest 9 --inventory signoff/testbenches/inventory.json --check signoff/testbenches/envelope.json
+      - name: Item 9 manifest binding is anchored and fresh (with controls)
+        run: |
+          set -u
+          KLT=(uvx --from "git+https://github.com/2AMLogic/klayout-tools@6bd18bbc8637f6d767b3c24e77bd5db7a39e4bbe" klt)
+          T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
+          fail=0
+          # Grade one item-9 record against the expected manifest outcome.
+          verdict() {
+            jq -e --arg want "$1" '
+              if .status == "met" and .citation.artifact_binding.input_verified == true
+              then $want == "pass"
+              else $want != "pass" and .status == "unmet" and .reason == $want
+              end' >/dev/null
+          }
+          expect() { # expect <pass|unmet reason> <label> <manifest-path>
+            local want="$1" label="$2" mf="$3" out item rc=0
+            # klt exits 3 for an unmet overall signoff. Capture it under bash -e
+            # so we can still grade item 9. Other nonzero exits are tool errors.
+            out=$("${KLT[@]}" signoff --manifest "$mf" --repo-root . --format json) || rc=$?
+            if [ "$rc" -ne 0 ] && [ "$rc" -ne 3 ]; then
+              echo "FAIL $label: no usable klt report (klt signoff exited $rc)"
+              fail=1; return
+            fi
+            if ! item=$(jq -cse 'select(length == 1) | .[0].items | arrays
+                | map(select(.id == 9)) | select(length == 1) | .[0]' <<<"$out"); then
+              echo "FAIL $label: no usable klt report (expected one report with exactly one item 9)"
+              fail=1; return
+            fi
+            # At pin 6bd18bbc8637, met and input_verified are equivalent for
+            # item 9. Surface a pin change that separates the predicates (#65).
+            if ! jq -e '(.status == "met") == (.citation.artifact_binding.input_verified == true)' \
+                <<<"$item" >/dev/null; then
+              echo "FAIL $label: item-9 status and input verification disagree (#65): $item"
+              fail=1
+            fi
+            if verdict "$want" <<<"$item"; then
+              echo "ok   $label"
+            else
+              echo "FAIL $label: expected '$want', got $item"; fail=1
+            fi
+          }
+          cp signoff/manifest.json "$T/ok.json"
+          jq 'del(.evidence."9".content_hash)' signoff/manifest.json > "$T/unanchored.json"
+          jq --arg h "sha256:$(sha256sum signoff/testbenches/envelope.json | cut -d' ' -f1)" \
+             '.evidence."9".content_hash = $h' signoff/manifest.json > "$T/stale.json"
+          expect pass "committed manifest anchors item 9 (the gate itself)" signoff/manifest.json
+          expect pass "scratch copy through the harness passes" "$T/ok.json"
+          expect unanchored_evidence "deleted content_hash fails: unanchored_evidence" "$T/unanchored.json"
+          expect stale_evidence "envelope's own hash fails: stale_evidence" "$T/stale.json"
+          # Regression cases for malformed or unexpected negative-control records.
+          if verdict unanchored_evidence <<< '{"id":9,"reason":"unanchored_evidence"}'; then
+            echo "FAIL deleted-anchor control accepted a missing status"; fail=1
+          fi
+          if verdict stale_evidence <<< '{"id":9,"status":"unmet","reason":"stale_evidence_fallback"}'; then
+            echo "FAIL stale-anchor control accepted a different reason"; fail=1
+          fi
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "FAIL the step wrote into the checkout:"; git status --porcelain; fail=1
+          fi
+          exit $fail
 
   signoff-item10:
     runs-on: ubuntu-latest
