@@ -15,8 +15,8 @@ are single-corner behavioural decks.
 Protocol constants (spec/target-spec.md "Measurement protocol" common
 setup) are defined once here: 12.5 ps step, N = 2^19 analysis window,
 rectangular window with coherent tones, >= 2 us of settling discarded
-before the window, and the following-window / step-halving legs the M4
-gate reads.
+before the window, the tone bins with the frequencies derived from them,
+and the following-window / step-halving legs the M4 gate reads.
 """
 
 from __future__ import annotations
@@ -42,10 +42,11 @@ DT_S = 12.5e-12            # transient step (6.25 ps for the halved leg)
 N_WINDOW = 2 ** 19         # analysis window, points = 6.5536 us at DT_S
 DISCARD_S = 3.2768e-6      # settling discard (>= 2 us, 2^18 samples, on-grid)
 BIN_HZ = 1.0 / (N_WINDOW * DT_S)   # 152.587890625 kHz bin width
-F_IF = 64 * BIN_HZ         # 9.765625 MHz
-F_LO = 15936 * BIN_HZ      # 2.431640625 GHz (low-side)
-F_RF = 16000 * BIN_HZ      # 2.44140625 GHz (the LNA protocol's f1)
-BIN_IF, BIN_LO, BIN_RF = 64, 15936, 16000
+BIN_IF, BIN_RF = 64, 16000   # protocol tone bins ("Tone placement")
+BIN_LO = BIN_RF - BIN_IF     # low-side LO: f_LO = f_RF - f_IF
+F_IF = BIN_IF * BIN_HZ      # 9.765625 MHz
+F_LO = BIN_LO * BIN_HZ      # 2.431640625 GHz (low-side)
+F_RF = BIN_RF * BIN_HZ      # 2.44140625 GHz (the LNA protocol's f1)
 N_WINDOWS = 2              # analysis window + the following window
 
 RS_RF = 50.0               # RF source impedance (stated on every figure)
@@ -63,6 +64,19 @@ def step_plan(dt_s):
     n_window = N_WINDOW * ratio
     n_full = n_window * N_WINDOWS
     return n_full, n_window, DISCARD_S, DISCARD_S + n_full * dt_s
+
+
+def source_frequency(hz, scale):
+    """The mantissa of an ngspice frequency token; append ``g`` or ``meg``.
+
+    ``scale`` is that suffix's value (``1e9``, ``1e6``). The M2 pre-flight
+    approves the Python plan and never reads the deck, so nothing else ties
+    a driven source to its bin: the mantissa is the shortest decimal that
+    reads back as ``hz / scale``, which keeps the simulator's tone on the
+    plan frequency to full double precision, where a rounding to fewer
+    digits would move it off the bin centre unnoticed.
+    """
+    return repr(hz / scale)
 
 
 def render_deck(bins, body, node, dt_s, samples_path):

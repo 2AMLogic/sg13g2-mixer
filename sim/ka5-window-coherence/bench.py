@@ -40,11 +40,13 @@ BAND_HALF_HZ = 512e3        # Hann integration band half-width around f_IF
 TOL_SPREAD_DB = 0.05        # spec check 5 tolerance (three readings)
 TOL_M1_DB = 0.05            # protocol: deck fft vs independent DFT
 
+_IF_MHZ = runner.source_frequency(runner.F_IF, 1e6)
+
 DECK_BODY = f"""* KA5: window/coherence known answer -- spec check 5 (V3, behavioural).
-* One coherent tone at f_IF = 9.765625 MHz (bin 64): {TONE_V_OC * 1e3:g} mV peak
+* One coherent tone at f_IF = {_IF_MHZ} MHz (bin {runner.BIN_IF}): {TONE_V_OC * 1e3:g} mV peak
 * ideal single-ended source through {runner.RS_RF:g} ohm into the R9 load ({runner.R_LOAD / 1e3:g} kohm || {runner.C_LOAD * 1e12:g} pF).
 * No PDK, no HBT models; image-free single tone. Record node: out.
-vin in 0 SIN(0 2m 9.765625meg)
+vin in 0 SIN(0 2m {_IF_MHZ}meg)
 rs in out {runner.RS_RF:g}
 rl out 0 {runner.R_LOAD / 1e3:g}k
 cl out 0 {runner.C_LOAD * 1e12:g}p
