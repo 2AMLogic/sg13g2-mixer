@@ -32,6 +32,7 @@ ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, ROOT)
 
 from sim.bench import runner                      # noqa: E402
+from sim.bench.lib import convergence             # noqa: E402
 
 K_MULT = 1.0                # multiplier constant k (stated on every figure)
 A_LO = 0.2236               # LO peak amplitude (row-R3 per-side equivalent)
@@ -134,7 +135,8 @@ def main(argv=None):
         },
         "deltas": deltas,
         "tolerances_db": {"b_cg": TOL_CG_DB, "m1_deck_vs_python": TOL_M1_DB,
-                          "following_window": 0.1, "step_halving": 0.1},
+                          "following_window": convergence.FOLLOWING_WINDOW_MAX_DB,
+                          "step_halving": convergence.STEP_HALVING_MAX_DB},
         "pass": not failures,
         "failures": failures,
         "wall_clock_s": runner.wall_clock(runs, post_s),
