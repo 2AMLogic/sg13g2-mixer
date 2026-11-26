@@ -71,7 +71,7 @@
         "testbench": "sim/ka1-ideal-multiplier/testbench/tb.json",
         "path": "sim/ka1-ideal-multiplier/bench.py",
         "passed": true,
-        "content_hash": "sha256:e772f6c3c327d8cac4a93b608aefcafeb9bcc56204e3cf870a06d8037073624f"
+        "content_hash": "sha256:c23fcf23009acbdaae59eaeb89a3853e319a25ac0db6355d49cec454a0ec73c0"
       },
       {
         "check": "present",
@@ -127,7 +127,7 @@
         "testbench": "sim/ka2-switch-mixer/testbench/tb.json",
         "path": "sim/ka2-switch-mixer/bench.py",
         "passed": true,
-        "content_hash": "sha256:e9ec37770651774d6c7b25f30ea1513904979faf5227af43f721cca71df28dec"
+        "content_hash": "sha256:eba0e0a636f6343e69714233b684560f6cd7808338a9f9edf18c7bc640b539bd"
       },
       {
         "check": "present",

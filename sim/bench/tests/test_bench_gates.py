@@ -347,6 +347,15 @@ class TestDeckPorts(unittest.TestCase):
     """The source and load elements of each deck are the shared runner
     constants, read when the bench module is loaded (issue #122)."""
 
+    def test_mixer_rf_source_amplitude(self):
+        for name in ("ka1-ideal-multiplier", "ka2-switch-mixer"):
+            with self.subTest(bench=name):
+                deck = dump_deck(load_bench(name))
+                self.assertEqual(element_line(deck, "vrf")[-2], "6.3245553m")
+                with mock.patch.object(runner, "V_RF_OC", 0.008):
+                    deck = dump_deck(load_bench(name))
+                self.assertEqual(element_line(deck, "vrf")[-2], "8m")
+
     def test_default_decks_keep_the_signed_off_port_elements(self):
         """At the default constants each deck carries the elements the
         committed records were produced from: names, nodes, values and units."""

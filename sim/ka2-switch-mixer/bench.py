@@ -52,7 +52,7 @@ DECK_BODY = f"""* KA2: double-balanced ideal-switch mixer known answer -- spec c
 * No PDK, no HBT models. Voltage-ratio check; the power-gain diagnostic in
 * the record uses the stated {runner.RS_RF:g} ohm source and {runner.R_LOAD / 1e3:g} kohm load before any
 * comparison with row R5.
-vrf srcrf 0 SIN(0 6.3245553m {_RF_GHZ}g)
+vrf srcrf 0 SIN(0 {runner.V_RF_OC * 1e3:.8g}m {_RF_GHZ}g)
 rsrf srcrf rf {runner.RS_RF:g}
 vlo lo 0 PULSE(-1 1 0 1p 1p {_PW * 1e12:.11f}p {_T_LO * 1e12:.11f}p)
 bif if 0 V = V(lo) * V(rf)

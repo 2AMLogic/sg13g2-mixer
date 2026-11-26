@@ -48,7 +48,7 @@ DECK_BODY = f"""* KA1: ideal-multiplier conversion-gain known answer -- spec che
 * f_LO = {_LO_GHZ} GHz (bin {runner.BIN_LO}), ideal source. DUT: behavioural multiplier
 * v(if) = k * V(rf) * V(lo), k = {K_MULT}; ideal source into the R9 load
 * ({runner.R_LOAD / 1e3:g} kohm || {runner.C_LOAD * 1e12:g} pF), single-ended. No image tone (SSB). No PDK, no HBT models.
-vrf srcrf 0 SIN(0 6.3245553m {_RF_GHZ}g)
+vrf srcrf 0 SIN(0 {runner.V_RF_OC * 1e3:.8g}m {_RF_GHZ}g)
 rsrf srcrf rf {runner.RS_RF:g}
 vlo lo 0 SIN(0 {A_LO} {_LO_GHZ}g)
 bif if 0 V = {K_MULT} * V(rf) * V(lo)
