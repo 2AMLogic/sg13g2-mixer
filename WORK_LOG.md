@@ -2,6 +2,11 @@
 
 Chronological record of merged PRs and closed issues. Maintained by the Guide triage role.
 
+### 2026-11-26
+
+- **PR #115**: test: share the synthetic bench fixture and isolate its ngspice pin
+- **Issue #114** (closed): Share the V3 bench test fixture so measurement tests survive an ngspice pin bump
+
 ### 2026-11-24
 
 - **PR #106**: fix: check the gate self-test fixture root before any fixture git command

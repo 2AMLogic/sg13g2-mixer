@@ -3,7 +3,7 @@
 Generated from GitHub label state by the Guide triage role. Everything between the markers is overwritten.
 
 <!-- guide:plan-body:start -->
-_Generated: 2026-11-24T17:10:00Z (snapshot; compare against live labels)_
+_Generated: 2026-11-26T10:20:00Z (snapshot; compare against live labels)_
 ## Operator Attention: Merge-Risk-Hold Pileup
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
@@ -26,13 +26,13 @@ _None._
 
 Human-approved issues (`loom:issue`) ready for implementation — excluding held (`loom:blocked`/`loom:operator`/`loom:frozen`), `loom:building`, and issues closed by an open `loom:pr` PR (listed under Approved).
 
-_None._
+- **#112**: Read V3 record tolerances from the M4 convergence grader
 
 ## In Progress
 
 Issues currently being built (`loom:building`).
 
-- **#112**: Read V3 record tolerances from the M4 convergence grader
+_None._
 
 ## PRs Awaiting Review
 
@@ -67,8 +67,8 @@ _None._
 | Operator merge-risk holds | 1 |
 | Very important | 0 |
 | Important | 0 |
-| Ready (`loom:issue`, net of holds/building/merge-pending) | 0 |
-| In Progress (`loom:building`) | 1 |
+| Ready (`loom:issue`, net of holds/building/merge-pending) | 1 |
+| In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 1 |
 | Curated | 1 |
