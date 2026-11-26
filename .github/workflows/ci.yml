@@ -120,79 +120,39 @@ jobs:
           KLT=(uvx --from "git+https://github.com/2AMLogic/klayout-tools@6bd18bbc8637f6d767b3c24e77bd5db7a39e4bbe" klt)
           T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
           fail=0
-          # The ONE copy of the item-9 assertion: rc 0 = exactly one item 9,
-          # anchored and fresh; on failure prints the reason. Every case
-          # below, positive and negative, goes through this function, so a
-          # weakened assertion turns a control red instead of passing silently.
-          verdict() { # verdict <manifest-path>; echoes "pass" or the reason line
-            local out n rc=0
-            # `|| rc=$?` is REQUIRED, not defensive: klt signoff exits 3
-            # whenever the overall T1 signoff is unmet (the normal state, 1
-            # of 11 met), and Actions runs this block as bash -e, so dropping
-            # it aborts the step before jq runs.
-            out=$("${KLT[@]}" signoff --manifest "$1" --repo-root . --format json) || rc=$?
-            # 0 (all met) and 3 (unmet) are report exits and are graded below.
-            # Any other rc is a tool error (1: application error, 2: usage)
-            # that prints its error envelope on stderr and no report on
-            # stdout: a failure, never a verdict.
-            if [ "$rc" -ne 0 ] && [ "$rc" -ne 3 ]; then
-              echo "item 9: no usable klt report (klt signoff exited $rc, not 0 or 3)"
-              return 1
-            fi
-            # Exactly one item-9 record before its status, binding or reason is
-            # read: a report with none, or with two, is not evidence either way.
-            n=$(printf '%s' "$out" | jq -r '[.items[]|select(.id==9)]|length' 2>/dev/null) || n=ERR
-            case "$n" in
-              1) ;;
-              *) echo "item 9: no usable klt report (want exactly one item 9, got ${n:-nothing})"; return 1 ;;
-            esac
-            # Issue #65 pin-bump tripwire. Measured 2026-11-26 against klt
-            # 6bd18bbc8637: item 9's two conjuncts are *equivalent* under this
-            # pin, as item 10's are under its own -- item 9 can only grade
-            # `met` from a "generic" citation, which carries an artifact
-            # binding only once its input is verified, and an `unmet` item
-            # carries no citation at all -- so NO manifest state separates
-            # them and neither conjunct can be controlled on its own. This
-            # probe asserts the equivalence itself for every manifest state
-            # exercised below: silent today, red on a pin bump that decouples
-            # the two predicates. Two shapes here are load-bearing, not style:
-            #  - the sentinel is a FILE, not `fail=1`: verdict() runs in a
-            #    subshell (expect() calls it via command substitution), so an
-            #    assignment to `fail` here is discarded, and anything echoed
-            #    here is captured into expect()'s $got instead of the log.
-            #  - `[0]|tostring`, never `// "ERR"`: jq's `//` treats `false`
-            #    as empty, which would report a legitimate `false` as "ERR".
-            #    ERR is a failure, not agreement.
-            _q() { printf '%s' "$out" | jq -r "[.items[]|select(.id==9)|$1][0]|tostring" 2>/dev/null || echo ERR; }
-            _met=$(_q '.status=="met"')
-            _ver=$(_q '.citation.artifact_binding.input_verified==true')
-            if [ "$_met" != "$_ver" ] || [ "$_met" = ERR ]; then
-              printf 'manifest %s: status==met:%s input_verified==true:%s\n' \
-                "$1" "$_met" "$_ver" >> "$T/conjunct-disagreement"
-            fi
-            if printf '%s' "$out" | jq -e '.items[]|select(.id==9)
-                | select(.status=="met" and .citation.artifact_binding.input_verified==true)' >/dev/null; then
-              echo pass; return 0
-            fi
-            printf '%s' "$out" | jq -re '.items[]|select(.id==9)
-                | "item 9 is \(.status): \(.reason)"' 2>/dev/null \
-              || echo "item 9: no usable klt report (klt or jq failed)"
-            return 1
+          # Grade one item-9 record against the expected manifest outcome.
+          verdict() {
+            jq -e --arg want "$1" '
+              if .status == "met" and .citation.artifact_binding.input_verified == true
+              then $want == "pass"
+              else $want != "pass" and .status == "unmet" and .reason == $want
+              end' >/dev/null
           }
-          expect() { # expect <pass|FAIL-substring> <label> <manifest-path>
-            local want="$1" label="$2" mf="$3" got rc=0
-            # `|| rc=$?` not `; rc=$?`: verdict returns non-zero by design on
-            # the negative controls, and Actions runs this block as bash -e, so
-            # a bare failing assignment would abort the step before the
-            # expectation is compared — the step would die silently after the
-            # two positive controls instead of failing the case.
-            got="$(verdict "$mf")" || rc=$?
-            if { [ "$want" = pass ] && [ "$rc" -eq 0 ]; } || \
-               { [ "$want" != pass ] && [ "$rc" -ne 0 ] \
-                 && printf '%s' "$got" | grep -qF -- "$want"; }; then
+          expect() { # expect <pass|unmet reason> <label> <manifest-path>
+            local want="$1" label="$2" mf="$3" out item rc=0
+            # klt exits 3 for an unmet overall signoff. Capture it under bash -e
+            # so we can still grade item 9. Other nonzero exits are tool errors.
+            out=$("${KLT[@]}" signoff --manifest "$mf" --repo-root . --format json) || rc=$?
+            if [ "$rc" -ne 0 ] && [ "$rc" -ne 3 ]; then
+              echo "FAIL $label: no usable klt report (klt signoff exited $rc)"
+              fail=1; return
+            fi
+            if ! item=$(jq -cse 'select(length == 1) | .[0].items | arrays
+                | map(select(.id == 9)) | select(length == 1) | .[0]' <<<"$out"); then
+              echo "FAIL $label: no usable klt report (expected one report with exactly one item 9)"
+              fail=1; return
+            fi
+            # At pin 6bd18bbc8637, met and input_verified are equivalent for
+            # item 9. Surface a pin change that separates the predicates (#65).
+            if ! jq -e '(.status == "met") == (.citation.artifact_binding.input_verified == true)' \
+                <<<"$item" >/dev/null; then
+              echo "FAIL $label: item-9 status and input verification disagree (#65): $item"
+              fail=1
+            fi
+            if verdict "$want" <<<"$item"; then
               echo "ok   $label"
             else
-              echo "FAIL $label: want '$want', got (rc=$rc): $got"; fail=1
+              echo "FAIL $label: expected '$want', got $item"; fail=1
             fi
           }
           cp signoff/manifest.json "$T/ok.json"
@@ -203,11 +163,12 @@ jobs:
           expect pass "scratch copy through the harness passes" "$T/ok.json"
           expect unanchored_evidence "deleted content_hash fails: unanchored_evidence" "$T/unanchored.json"
           expect stale_evidence "envelope's own hash fails: stale_evidence" "$T/stale.json"
-          # Drain the tripwire's subshell sentinel into the parent shell's
-          # `fail` where `exit $fail` can see it (see the tripwire comment in
-          # verdict(); $T is the mktemp -d above, outside the checkout).
-          if [ -s "$T/conjunct-disagreement" ]; then
-            echo "FAIL item-9 conjunct equivalence broke (#65):"; cat "$T/conjunct-disagreement"; fail=1
+          # Regression cases for malformed or unexpected negative-control records.
+          if verdict unanchored_evidence <<< '{"id":9,"reason":"unanchored_evidence"}'; then
+            echo "FAIL deleted-anchor control accepted a missing status"; fail=1
+          fi
+          if verdict stale_evidence <<< '{"id":9,"status":"unmet","reason":"stale_evidence_fallback"}'; then
+            echo "FAIL stale-anchor control accepted a different reason"; fail=1
           fi
           if [ -n "$(git status --porcelain)" ]; then
             echo "FAIL the step wrote into the checkout:"; git status --porcelain; fail=1
