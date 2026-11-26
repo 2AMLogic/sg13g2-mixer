@@ -54,15 +54,34 @@ def element_line(deck, name):
     return lines[0]
 
 
+def sine_frequency(line):
+    """The frequency token of a ``SIN(0 amp freq)`` element ``line``."""
+    return line[-1].rstrip(")")
+
+
+def fft_reads(deck, window):
+    """{tone: bin} that a deck's control block reads in ``window``."""
+    return {tone: int(index) for tone, index in
+            re.findall(rf"let a_{window}_(\w+) = am\[(\d+)\]", deck)}
+
+
 SI_SCALE = {"": 1.0, "f": 1e-15, "p": 1e-12, "n": 1e-9, "u": 1e-6, "m": 1e-3,
             "k": 1e3, "meg": 1e6, "g": 1e9, "t": 1e12}
 
 
 def si(token):
-    """An ngspice value with its scale suffix, in ohms or farads."""
+    """An ngspice value with its scale suffix, in base units (ohm, farad, hertz)."""
     mantissa, suffix = re.fullmatch(
         r"(\d+(?:\.\d*)?(?:e[+-]?\d+)?)([a-z]*)", token).groups()
     return float(mantissa) * SI_SCALE[suffix]
+
+
+def ngspice_number(token):
+    """The value ngspice computes for a number token: INPevaluate gathers
+    the mantissa digits into an integer and multiplies by a power of ten."""
+    mantissa, suffix = re.fullmatch(r"(\d+(?:\.\d*)?)([a-z]+)", token).groups()
+    whole, _, fraction = mantissa.partition(".")
+    return int(whole + fraction) * 10.0 ** (math.log10(SI_SCALE[suffix]) - len(fraction))
 
 
 def synthetic_runs(bins, amplitude, tone_errors, deck_errors):
@@ -356,6 +375,116 @@ class TestDeckPorts(unittest.TestCase):
                         f"{constant}: deck has {emitted[-1]}, not {ports[constant]}")
                 for stale in ("50 ohm", "1 kohm", "2 pF"):
                     self.assertNotIn(stale, deck)
+
+
+KA2_PULSE = "vlo lo 0 PULSE(-1 1 0 1p 1p 204.62248995984p 411.24497991968p)"
+DEFAULT_TONES = {
+    "ka1-ideal-multiplier": {
+        "sine": {"vrf": "2.44140625g", "vlo": "2.431640625g"},
+        "bins": {"if": 64, "sum": 31936, "lofeed": 15936, "image": 15872},
+    },
+    "ka2-switch-mixer": {
+        "sine": {"vrf": "2.44140625g"}, "pulse": KA2_PULSE,
+        "comments": ("2.431640625 GHz (bin 15936)",),
+        "bins": {"if": 64, "sum": 31936, "3lo_rf": 31808},
+    },
+    "ka5-window-coherence": {
+        "sine": {"vin": "9.765625meg"},
+        "bins": {"tone": 64},
+    },
+}
+# Issue #127's one-bin move: RF and IF go up one bin, the LO stays at 15936,
+# and both moved frequencies are recomputed from the unchanged bin width.
+ONE_BIN = {"BIN_RF": 16001, "BIN_IF": 65,
+           "F_RF": 16001 * runner.BIN_HZ, "F_IF": 65 * runner.BIN_HZ}
+MOVED_TONES = {
+    "ka1-ideal-multiplier": {
+        "sine": {"vrf": "2.441558837890625g", "vlo": "2.431640625g"},
+        "bins": {"if": 65, "sum": 31937, "lofeed": 15936, "image": 15871},
+    },
+    "ka2-switch-mixer": {
+        "sine": {"vrf": "2.441558837890625g"}, "pulse": KA2_PULSE,
+        "comments": ("2.431640625 GHz (bin 15936)",),
+        "bins": {"if": 65, "sum": 31937, "3lo_rf": 31807},
+    },
+    "ka5-window-coherence": {
+        "sine": {"vin": "9.918212890625meg"},
+        "bins": {"tone": 65},
+    },
+}
+# The R1 sweep keeps f_IF fixed and retunes RF and LO to bins: RF 64 bins up
+# moves the LO = RF - IF with it, and KA2's square-wave period after that.
+RETUNED = {"BIN_RF": 16064, "BIN_LO": 16000,
+           "F_RF": 16064 * runner.BIN_HZ, "F_LO": 16000 * runner.BIN_HZ}
+RETUNED_TONES = {
+    "ka1-ideal-multiplier": {
+        "sine": {"vrf": "2.451171875g", "vlo": "2.44140625g"},
+        "bins": {"if": 64, "sum": 32064, "lofeed": 16000, "image": 15936},
+    },
+    "ka2-switch-mixer": {
+        "sine": {"vrf": "2.451171875g"},
+        "pulse": "vlo lo 0 PULSE(-1 1 0 1p 1p 203.80000000000p 409.60000000000p)",
+        "comments": ("2.44140625 GHz (bin 16000)",),
+        "bins": {"if": 64, "sum": 32064, "3lo_rf": 31936},
+    },
+    "ka5-window-coherence": DEFAULT_TONES["ka5-window-coherence"],
+}
+TONE_OF = {"vrf": ("F_RF", "BIN_RF", "g", "GHz"),
+           "vlo": ("F_LO", "BIN_LO", "g", "GHz"),
+           "vin": ("F_IF", "BIN_IF", "meg", "MHz")}
+
+
+class TestDeckTonePlan(unittest.TestCase):
+    """The stimulus frequencies and the FFT bins of each deck are the
+    runner's tone plan, read when the bench module is loaded (issue #127)."""
+
+    def check_decks(self, plan, tones_by_bench):
+        """Each deck, loaded under ``plan``, drives and reads its tones."""
+        for name, tones in tones_by_bench.items():
+            patched = mock.patch.multiple(runner, **plan) if plan else contextlib.nullcontext()
+            with self.subTest(bench=name), patched:
+                bench = load_bench(name)
+                deck = dump_deck(bench)
+                for source, token in tones["sine"].items():
+                    frequency_of, bin_of, suffix, unit = TONE_OF[source]
+                    frequency, index = getattr(runner, frequency_of), getattr(runner, bin_of)
+                    with self.subTest(source=source):
+                        self.assertEqual(sine_frequency(element_line(deck, source)), token)
+                        self.assertEqual(si(token), frequency)
+                        self.assertLessEqual(abs(ngspice_number(token) - frequency),
+                                             math.ulp(frequency))
+                        self.assertIn(f"{token[:-len(suffix)]} {unit} (bin {index})", deck)
+                if "pulse" in tones:
+                    self.assertEqual(element_line(deck, "vlo"), tones["pulse"].split())
+                for phrase in tones.get("comments", ()):
+                    self.assertIn(phrase, deck)
+                self.assertEqual(bench.BINS, tones["bins"])
+                for window in ("w1", "w2"):
+                    self.assertEqual(fft_reads(deck, window), tones["bins"])
+
+    def test_default_decks_keep_the_signed_off_tones(self):
+        """At the default plan each deck drives the sources and reads the
+        bins the committed records were produced from."""
+        self.check_decks({}, DEFAULT_TONES)
+
+    def test_decks_follow_a_moved_tone_plan(self):
+        """RF and IF one bin up: KA5 drives 9.918212890625 MHz and reads
+        bin 65, both mixers drive the moved RF and read the moved products."""
+        self.check_decks(ONE_BIN, MOVED_TONES)
+
+    def test_decks_follow_a_retuned_rf_and_lo(self):
+        """f_IF fixed, RF and LO retuned: the LO source, KA2's square-wave
+        period and every product bin follow the plan."""
+        self.check_decks(RETUNED, RETUNED_TONES)
+
+    def test_source_frequency_retains_every_bin_frequency(self):
+        """Any bin frequency, in either unit, reads back exactly from the
+        mantissa the decks are driven with."""
+        for scale in (1e9, 1e6):
+            for k in (*range(1 << 16), 31807, 31808, 31936, 31937):
+                hz = k * runner.BIN_HZ
+                self.assertEqual(float(runner.source_frequency(hz, scale)) * scale, hz,
+                                 f"bin {k} at {scale:g}")
 
 
 class TestTwoStepRun(unittest.TestCase):

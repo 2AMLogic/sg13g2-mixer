@@ -39,21 +39,25 @@ A_LO = 0.2236               # LO peak amplitude (row-R3 per-side equivalent)
 TOL_CG_DB = 0.05            # spec check 1 tolerance on B-CG
 TOL_M1_DB = 0.05            # protocol: deck fft vs independent DFT
 
+_RF_GHZ = runner.source_frequency(runner.F_RF, 1e9)
+_LO_GHZ = runner.source_frequency(runner.F_LO, 1e9)
+
 DECK_BODY = f"""* KA1: ideal-multiplier conversion-gain known answer -- spec check 1 (V3, behavioural).
 * RF: -40 dBm available from {runner.RS_RF:g} ohm ({runner.V_RF_OC * 1e3:.7g} mV peak, open circuit)
-*     at f_RF = 2.44140625 GHz (bin 16000). LO: sinusoid, {A_LO} V peak at
-* f_LO = 2.431640625 GHz (bin 15936), ideal source. DUT: behavioural multiplier
+*     at f_RF = {_RF_GHZ} GHz (bin {runner.BIN_RF}). LO: sinusoid, {A_LO} V peak at
+* f_LO = {_LO_GHZ} GHz (bin {runner.BIN_LO}), ideal source. DUT: behavioural multiplier
 * v(if) = k * V(rf) * V(lo), k = {K_MULT}; ideal source into the R9 load
 * ({runner.R_LOAD / 1e3:g} kohm || {runner.C_LOAD * 1e12:g} pF), single-ended. No image tone (SSB). No PDK, no HBT models.
-vrf srcrf 0 SIN(0 6.3245553m 2.44140625g)
+vrf srcrf 0 SIN(0 6.3245553m {_RF_GHZ}g)
 rsrf srcrf rf {runner.RS_RF:g}
-vlo lo 0 SIN(0 {A_LO} 2.431640625g)
+vlo lo 0 SIN(0 {A_LO} {_LO_GHZ}g)
 bif if 0 V = {K_MULT} * V(rf) * V(lo)
 rl if 0 {runner.R_LOAD / 1e3:g}k
 cl if 0 {runner.C_LOAD * 1e12:g}p
 """
 
-BINS = {"if": 64, "sum": 31936, "lofeed": 15936, "image": 15872}
+BINS = {"if": runner.BIN_IF, "sum": runner.BIN_RF + runner.BIN_LO,
+        "lofeed": runner.BIN_LO, "image": runner.BIN_LO - runner.BIN_IF}
 
 
 def expected_if_amplitude():
