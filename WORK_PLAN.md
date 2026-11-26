@@ -3,7 +3,7 @@
 Generated from GitHub label state by the Guide triage role. Everything between the markers is overwritten.
 
 <!-- guide:plan-body:start -->
-_Generated: 2026-11-26T16:25:00Z (snapshot; compare against live labels)_
+_Generated: 2026-11-26T18:09:09Z (snapshot; compare against live labels)_
 ## Operator Attention: Merge-Risk-Hold Pileup
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
@@ -26,13 +26,14 @@ _None._
 
 Human-approved issues (`loom:issue`) ready for implementation — excluding held (`loom:blocked`/`loom:operator`/`loom:frozen`), `loom:building`, and issues closed by an open `loom:pr` PR (listed under Approved).
 
-- **#120**: Trim unchecked toolchain, protocol and mechanics duplicates from sim/*/testbench/tb.json
+- **#130**: CI does not assert item 9's manifest binding (signoff-item9 is drift-only)
 
 ## In Progress
 
 Issues currently being built (`loom:building`).
 
-- **#122**: Use shared source and load values in the V3 ngspice decks
+- **#120**: Trim unchecked toolchain, protocol and mechanics duplicates from sim/*/testbench/tb.json
+- **#127**: Derive V3 stimulus frequencies and FFT bins from one tone plan
 
 ## PRs Awaiting Review
 
@@ -45,13 +46,14 @@ _None._
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 - **#56**: spec: repair two stale citations in target-spec.md under record 0003 — closes #47
-- **#123**: refactor(sim): read V3 deck source and load values from the shared runner constants — closes #122
+- **#126**: refactor(sim): trim the V3 tb.json to identity and entry points — closes #120
 
 ## Proposed
 
 Issues carrying `loom:curated`.
 
 - **#47**: spec/target-spec.md still defers D4 to closed issue #3; record 0002 decided it *(curated)*
+- **#130**: CI does not assert item 9's manifest binding (signoff-item9 is drift-only) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -69,10 +71,10 @@ _None._
 | Very important | 0 |
 | Important | 0 |
 | Ready (`loom:issue`, net of holds/building/merge-pending) | 1 |
-| In Progress (`loom:building`) | 1 |
+| In Progress (`loom:building`) | 2 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 2 |
-| Curated | 1 |
+| Curated | 2 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->

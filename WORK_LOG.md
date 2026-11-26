@@ -4,6 +4,10 @@ Chronological record of merged PRs and closed issues. Maintained by the Guide tr
 
 ### 2026-11-26
 
+- **PR #129**: ci: gate the item-9 signoff envelope for drift
+- **PR #123**: refactor(sim): read V3 deck source and load values from the shared runner constants
+- **Issue #125** (closed): CI has no drift check for the item 9 envelope: a stale signoff/testbenches/envelope.json stays green
+- **Issue #122** (closed): Use shared source and load values in the V3 ngspice decks
 - **PR #121**: refactor(sim): read V3 record M4 limits from the convergence grader
 - **PR #119**: docs(sim): single ngspice build recipe, pin read from toolchain.json
 - **Issue #112** (closed): Read V3 record tolerances from the M4 convergence grader
