@@ -50,7 +50,8 @@ at the same corner.
   filename as a path in this repo, where — after
   [#33](https://github.com/2AMLogic/sg13g2-mixer/issues/33) — `sim/pdk.json`
   indeed carries no pin fields at all (the enforced local pin lives in
-  `sim/pdk-artifact.json`, the only file `sim/tools/verify_pdk.py` reads,
+  `sim/pdk-artifact.json`, the verifier's default manifest for model-file
+  hashes (`sim/tools/verify_pdk.py`),
   whose `upstream.tag` / `upstream.commit` equal the values the row
   quotes). The defect is the terseness of "there", not a stale pointer;
   the repair is a disambiguation, not a file swap. Filed as #40 and
