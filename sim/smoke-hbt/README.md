@@ -24,13 +24,18 @@ echo 0.3.0 > .tools/pdk/ihp-sg13g2/.fetched-version   # provenance only
 
 # 2. ngspice (sim/toolchain.json: version, source_url, source_sha256), built
 #    locally, no X. Stands alone: PDK-free benches run this step without step 1.
-mkdir -p .tools/dl .tools/src
-read -r NGSPICE_VERSION NGSPICE_URL NGSPICE_SHA256 < <(python3 -c "import json;t=json.load(open('sim/toolchain.json'))['ngspice'];print(t['version'],t['source_url'],t['source_sha256'])")
-curl -L -o ".tools/dl/ngspice-$NGSPICE_VERSION.tar.gz" "$NGSPICE_URL"
-echo "$NGSPICE_SHA256  .tools/dl/ngspice-$NGSPICE_VERSION.tar.gz" | sha256sum -c
-tar -xzf ".tools/dl/ngspice-$NGSPICE_VERSION.tar.gz" -C .tools/src
-(cd ".tools/src/ngspice-$NGSPICE_VERSION" && ./configure --prefix="$PWD/../../ngspice-$NGSPICE_VERSION" --with-x=no --with-ngshared=no \
-   && make -j2 && make install)
+mkdir -p .tools/dl .tools/src &&
+read -r NGSPICE_VERSION NGSPICE_URL NGSPICE_SHA256 < <(python3 -c "
+import json
+pin = json.load(open('sim/toolchain.json'))['ngspice']
+print(pin['version'], pin['source_url'], pin['source_sha256'])") &&
+archive=".tools/dl/ngspice-$NGSPICE_VERSION.tar.gz" &&
+curl -fL -o "$archive" "$NGSPICE_URL" &&
+printf '%s  %s\n' "$NGSPICE_SHA256" "$archive" | sha256sum -c &&
+tar -xzf "$archive" -C .tools/src &&
+(cd ".tools/src/ngspice-$NGSPICE_VERSION" &&
+  ./configure --prefix="$PWD/../../ngspice-$NGSPICE_VERSION" --with-x=no --with-ngshared=no &&
+  make -j2 && make install)
 
 # 3. Verify + run (the gate runs first; a mismatch exits non-zero, ngspice never starts)
 export PDK_ROOT="$PWD/.tools/pdk" NGSPICE="$PWD/.tools/ngspice-46/bin/ngspice"
