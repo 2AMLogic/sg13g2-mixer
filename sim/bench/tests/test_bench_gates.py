@@ -50,26 +50,49 @@ def synthetic_runs(bins, amplitude, tone_errors, deck_errors):
     return runs
 
 
+def invoke_bench(bench, *, tone_errors=None, deck_errors=None, pin=46, stub_major=None):
+    """Run a synthetic bench and return its exit status, optional record and batch mock."""
+    if bench is KA5:
+        bins = bench.BINS
+        amplitude = bench.expected_amplitude()
+    else:
+        bins = {name: 3 + 5 * i for i, name in enumerate(bench.BINS)}
+        amplitude = bench.expected_if_amplitude()
+    runs = synthetic_runs(bins, amplitude, tone_errors or {}, deck_errors or {})
+    if stub_major is None:
+        stub_major = pin
+    with tempfile.TemporaryDirectory() as tmp:
+        manifest = Path(tmp, "toolchain.json")
+        manifest.write_text(json.dumps({"ngspice": {"major": pin}}))
+        path = Path(tmp, "result.json")
+        with (
+            mock.patch.object(bench, "BINS", bins),
+            mock.patch.object(runner, "TOOLCHAIN_MANIFEST", manifest),
+            mock.patch.object(runner, "two_step_run", return_value=runs) as batch,
+            mock.patch.object(
+                runner,
+                "ngspice_major",
+                return_value=(stub_major, f"ngspice-{stub_major} banner"),
+            ),
+            contextlib.redirect_stdout(io.StringIO()),
+            contextlib.redirect_stderr(io.StringIO()),
+        ):
+            try:
+                status = bench.main(["--workdir", tmp, "--record", str(path)])
+            except SystemExit as exc:
+                status = exc.code
+        record = json.loads(path.read_text()) if path.exists() else None
+        return status, record, batch
+
+
 class TestBenchGates(unittest.TestCase):
     def run_bench(self, bench, tone_errors=None, deck_errors=None):
-        if bench is KA5:
-            bins = bench.BINS
-            amplitude = bench.expected_amplitude()
-        else:
-            bins = {name: 3 + 5 * i for i, name in enumerate(bench.BINS)}
-            amplitude = bench.expected_if_amplitude()
-        runs = synthetic_runs(bins, amplitude, tone_errors or {}, deck_errors or {})
-        with tempfile.TemporaryDirectory() as tmp, contextlib.ExitStack() as stack:
-            path = Path(tmp, "result.json")
-            stack.enter_context(mock.patch.object(bench, "BINS", bins))
-            stack.enter_context(mock.patch.object(runner, "two_step_run", return_value=runs))
-            stack.enter_context(mock.patch.object(runner, "ngspice_major", return_value=(46, "ngspice-46")))
-            stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
-            stack.enter_context(contextlib.redirect_stderr(io.StringIO()))
-            status = bench.main(["--workdir", tmp, "--record", str(path)])
-            data = json.loads(path.read_text())
-            self.assertEqual(data["pass"], status == 0)
-            return data
+        status, record, _ = invoke_bench(
+            bench, tone_errors=tone_errors, deck_errors=deck_errors
+        )
+        self.assertIsNotNone(record, msg=status)
+        self.assertEqual(record["pass"], status == 0)
+        return record
 
     def test_ideal_mixer_controls_pass(self):
         for bench in (KA1, KA2):
@@ -205,42 +228,13 @@ class TestToolchainPinGate(unittest.TestCase):
     """The expected ngspice major is read from sim/toolchain.json once, by
     the shared runner (issue #104): bumping the pin moves every bench."""
 
-    def run_bench(self, bench, pin, stub_major):
-        """(exit_code_or_message, parsed_record_or_None, batch_mock)."""
-        if bench is KA5:
-            bins = bench.BINS
-            amplitude = bench.expected_amplitude()
-        else:
-            bins = {name: 3 + 5 * i for i, name in enumerate(bench.BINS)}
-            amplitude = bench.expected_if_amplitude()
-        runs = synthetic_runs(bins, amplitude, {}, {})
-        with tempfile.TemporaryDirectory() as tmp, contextlib.ExitStack() as stack:
-            manifest = Path(tmp, "toolchain.json")
-            manifest.write_text(json.dumps({"ngspice": {"major": pin}}))
-            path = Path(tmp, "result.json")
-            batch = mock.Mock(return_value=runs)
-            stack.enter_context(mock.patch.object(bench, "BINS", bins))
-            stack.enter_context(mock.patch.object(runner, "TOOLCHAIN_MANIFEST", manifest))
-            stack.enter_context(mock.patch.object(runner, "two_step_run", batch))
-            stack.enter_context(mock.patch.object(
-                runner, "ngspice_major",
-                return_value=(stub_major, f"ngspice-{stub_major} banner")))
-            stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
-            stack.enter_context(contextlib.redirect_stderr(io.StringIO()))
-            try:
-                code = bench.main(["--workdir", tmp, "--record", str(path)])
-            except SystemExit as exc:
-                code = exc.code
-            record = json.loads(path.read_text()) if path.exists() else None
-            return code, record, batch
-
     def test_matching_pin_reaches_the_first_batch(self):
         benches = [(KA1, "KA1"), (KA2, "KA2")]
         if importlib.util.find_spec("numpy"):
             benches.append((KA5, "KA5"))
         for bench, name in benches:
             with self.subTest(bench=name):
-                code, record, batch = self.run_bench(bench, pin=47, stub_major=47)
+                code, record, batch = invoke_bench(bench, pin=47, stub_major=47)
                 self.assertEqual(code, 0)
                 self.assertTrue(batch.called)
                 self.assertTrue(record["pass"])
@@ -249,7 +243,7 @@ class TestToolchainPinGate(unittest.TestCase):
     def test_mismatched_major_exits_nonzero_before_the_first_batch(self):
         for bench, name in ((KA1, "KA1"), (KA2, "KA2"), (KA5, "KA5")):
             with self.subTest(bench=name):
-                code, record, batch = self.run_bench(bench, pin=47, stub_major=46)
+                code, record, batch = invoke_bench(bench, pin=47, stub_major=46)
                 self.assertNotEqual(code, 0)
                 self.assertIn(name, code)
                 self.assertIn("46", code)
