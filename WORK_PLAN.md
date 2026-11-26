@@ -3,7 +3,7 @@
 Generated from GitHub label state by the Guide triage role. Everything between the markers is overwritten.
 
 <!-- guide:plan-body:start -->
-_Generated: 2026-11-26T12:06:07Z (snapshot; compare against live labels)_
+_Generated: 2026-11-26T16:25:00Z (snapshot; compare against live labels)_
 ## Operator Attention: Merge-Risk-Hold Pileup
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
@@ -26,13 +26,13 @@ _None._
 
 Human-approved issues (`loom:issue`) ready for implementation — excluding held (`loom:blocked`/`loom:operator`/`loom:frozen`), `loom:building`, and issues closed by an open `loom:pr` PR (listed under Approved).
 
-- **#112**: Read V3 record tolerances from the M4 convergence grader
+- **#120**: Trim unchecked toolchain, protocol and mechanics duplicates from sim/*/testbench/tb.json
 
 ## In Progress
 
 Issues currently being built (`loom:building`).
 
-_None._
+- **#122**: Use shared source and load values in the V3 ngspice decks
 
 ## PRs Awaiting Review
 
@@ -45,6 +45,7 @@ _None._
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 - **#56**: spec: repair two stale citations in target-spec.md under record 0003 — closes #47
+- **#123**: refactor(sim): read V3 deck source and load values from the shared runner constants — closes #122
 
 ## Proposed
 
@@ -68,9 +69,9 @@ _None._
 | Very important | 0 |
 | Important | 0 |
 | Ready (`loom:issue`, net of holds/building/merge-pending) | 1 |
-| In Progress (`loom:building`) | 0 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 1 |
+| Approved PRs awaiting merge | 2 |
 | Curated | 1 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 0 |

@@ -4,6 +4,10 @@ Chronological record of merged PRs and closed issues. Maintained by the Guide tr
 
 ### 2026-11-26
 
+- **PR #121**: refactor(sim): read V3 record M4 limits from the convergence grader
+- **PR #119**: docs(sim): single ngspice build recipe, pin read from toolchain.json
+- **Issue #112** (closed): Read V3 record tolerances from the M4 convergence grader
+- **Issue #118** (closed): Deduplicate the ngspice build recipe and hardcoded SHA-256 across the sim READMEs
 - **PR #115**: test: share the synthetic bench fixture and isolate its ngspice pin
 - **Issue #114** (closed): Share the V3 bench test fixture so measurement tests survive an ngspice pin bump
 
