@@ -40,17 +40,17 @@ TOL_CG_DB = 0.05            # spec check 1 tolerance on B-CG
 TOL_M1_DB = 0.05            # protocol: deck fft vs independent DFT
 
 DECK_BODY = f"""* KA1: ideal-multiplier conversion-gain known answer -- spec check 1 (V3, behavioural).
-* RF: -40 dBm available from 50 ohm ({runner.V_RF_OC * 1e3:.7g} mV peak, open circuit)
+* RF: -40 dBm available from {runner.RS_RF:g} ohm ({runner.V_RF_OC * 1e3:.7g} mV peak, open circuit)
 *     at f_RF = 2.44140625 GHz (bin 16000). LO: sinusoid, {A_LO} V peak at
 * f_LO = 2.431640625 GHz (bin 15936), ideal source. DUT: behavioural multiplier
 * v(if) = k * V(rf) * V(lo), k = {K_MULT}; ideal source into the R9 load
-* (1 kohm || 2 pF), single-ended. No image tone (SSB). No PDK, no HBT models.
+* ({runner.R_LOAD / 1e3:g} kohm || {runner.C_LOAD * 1e12:g} pF), single-ended. No image tone (SSB). No PDK, no HBT models.
 vrf srcrf 0 SIN(0 6.3245553m 2.44140625g)
-rsrf srcrf rf 50
+rsrf srcrf rf {runner.RS_RF:g}
 vlo lo 0 SIN(0 {A_LO} 2.431640625g)
 bif if 0 V = {K_MULT} * V(rf) * V(lo)
-rl if 0 1k
-cl if 0 2p
+rl if 0 {runner.R_LOAD / 1e3:g}k
+cl if 0 {runner.C_LOAD * 1e12:g}p
 """
 
 BINS = {"if": 64, "sum": 31936, "lofeed": 15936, "image": 15872}

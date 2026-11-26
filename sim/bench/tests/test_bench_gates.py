@@ -5,6 +5,7 @@ import io
 import json
 import math
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -27,6 +28,41 @@ def load_bench(directory):
 KA1 = load_bench("ka1-ideal-multiplier")
 KA2 = load_bench("ka2-switch-mixer")
 KA5 = load_bench("ka5-window-coherence")
+
+DECK_PORTS = {
+    "ka1-ideal-multiplier": ("rsrf srcrf rf 50", "rl if 0 1k", "cl if 0 2p"),
+    "ka2-switch-mixer": ("rsrf srcrf rf 50", "rl if 0 1k", "cl if 0 2p"),
+    "ka5-window-coherence": ("rs in out 50", "rl out 0 1k", "cl out 0 2p"),
+}
+PORT_CONSTANTS = ("RS_RF", "R_LOAD", "C_LOAD")
+
+
+def dump_deck(bench):
+    """A bench's 12.5 ps deck as ``--dump-deck`` prints it."""
+    with contextlib.redirect_stdout(io.StringIO()) as out:
+        status = bench.main(["--dump-deck"])
+    if status != 0:
+        raise AssertionError(f"--dump-deck exited {status}")
+    return out.getvalue()
+
+
+def element_line(deck, name):
+    """The words of the deck's ``name`` element line."""
+    lines = [line.split() for line in deck.splitlines() if line.split()[:1] == [name]]
+    if len(lines) != 1:
+        raise AssertionError(f"{name}: {len(lines)} element lines, expected one")
+    return lines[0]
+
+
+SI_SCALE = {"": 1.0, "f": 1e-15, "p": 1e-12, "n": 1e-9, "u": 1e-6, "m": 1e-3,
+            "k": 1e3, "meg": 1e6, "g": 1e9, "t": 1e12}
+
+
+def si(token):
+    """An ngspice value with its scale suffix, in ohms or farads."""
+    mantissa, suffix = re.fullmatch(
+        r"(\d+(?:\.\d*)?(?:e[+-]?\d+)?)([a-z]*)", token).groups()
+    return float(mantissa) * SI_SCALE[suffix]
 
 
 def synthetic_runs(bins, amplitude, tone_errors, deck_errors):
@@ -286,6 +322,40 @@ class TestToolchainPinGate(unittest.TestCase):
                     with contextlib.redirect_stdout(io.StringIO()) as out:
                         self.assertEqual(bench.main(["--dump-deck"]), 0)
                 self.assertIn("wrdata", out.getvalue())
+
+
+class TestDeckPorts(unittest.TestCase):
+    """The source and load elements of each deck are the shared runner
+    constants, read when the bench module is loaded (issue #122)."""
+
+    def test_default_decks_keep_the_signed_off_port_elements(self):
+        """At the default constants each deck carries the elements the
+        committed records were produced from: names, nodes, values and units."""
+        for name, lines in DECK_PORTS.items():
+            with self.subTest(bench=name):
+                deck = dump_deck(load_bench(name))
+                for constant, line in zip(PORT_CONSTANTS, lines):
+                    signed_off = line.split()
+                    self.assertEqual(element_line(deck, signed_off[0]), signed_off)
+                    self.assertEqual(si(signed_off[-1]), getattr(runner, constant))
+
+    def test_port_elements_follow_the_constants(self):
+        """Constants set to non-default values before the bench is loaded
+        reach that deck's source resistor, load resistor and load capacitor."""
+        ports = {"RS_RF": 75.0, "R_LOAD": 2200.0, "C_LOAD": 1.5e-12}
+        for name, lines in DECK_PORTS.items():
+            with self.subTest(bench=name):
+                with mock.patch.multiple(runner, **ports):
+                    deck = dump_deck(load_bench(name))
+                for constant, line in zip(PORT_CONSTANTS, lines):
+                    signed_off = line.split()
+                    emitted = element_line(deck, signed_off[0])
+                    self.assertEqual(emitted[:-1], signed_off[:-1])
+                    self.assertTrue(
+                        math.isclose(si(emitted[-1]), ports[constant], rel_tol=1e-12),
+                        f"{constant}: deck has {emitted[-1]}, not {ports[constant]}")
+                for stale in ("50 ohm", "1 kohm", "2 pF"):
+                    self.assertNotIn(stale, deck)
 
 
 class TestTwoStepRun(unittest.TestCase):

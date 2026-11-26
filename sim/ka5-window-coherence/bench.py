@@ -42,12 +42,12 @@ TOL_M1_DB = 0.05            # protocol: deck fft vs independent DFT
 
 DECK_BODY = f"""* KA5: window/coherence known answer -- spec check 5 (V3, behavioural).
 * One coherent tone at f_IF = 9.765625 MHz (bin 64): {TONE_V_OC * 1e3:g} mV peak
-* ideal single-ended source through 50 ohm into the R9 load (1 kohm || 2 pF).
+* ideal single-ended source through {runner.RS_RF:g} ohm into the R9 load ({runner.R_LOAD / 1e3:g} kohm || {runner.C_LOAD * 1e12:g} pF).
 * No PDK, no HBT models; image-free single tone. Record node: out.
 vin in 0 SIN(0 2m 9.765625meg)
-rs in out 50
-rl out 0 1k
-cl out 0 2p
+rs in out {runner.RS_RF:g}
+rl out 0 {runner.R_LOAD / 1e3:g}k
+cl out 0 {runner.C_LOAD * 1e12:g}p
 """
 
 BINS = {"tone": runner.BIN_IF}

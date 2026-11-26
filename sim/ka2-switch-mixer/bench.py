@@ -42,20 +42,20 @@ _T_LO = 1.0 / runner.F_LO
 _PW = _T_LO / 2.0 - EDGE_S
 
 DECK_BODY = f"""* KA2: double-balanced ideal-switch mixer known answer -- spec check 2 (V3, behavioural).
-* RF: -40 dBm available from 50 ohm ({runner.V_RF_OC * 1e3:.7g} mV peak, open circuit)
+* RF: -40 dBm available from {runner.RS_RF:g} ohm ({runner.V_RF_OC * 1e3:.7g} mV peak, open circuit)
 *     at f_RF = 2.44140625 GHz (bin 16000). LO: square wave +/-1 at f_LO =
 * 2.431640625 GHz (bin 15936), {EDGE_S * 1e12:g} ps edges (switch resistance -> 0).
 * DUT: behavioural switch mixer v(if) = s(t) * V(rf); ideal source into the
-* R9 load (1 kohm || 2 pF), single-ended. IF voltage = 2/pi x RF voltage.
+* R9 load ({runner.R_LOAD / 1e3:g} kohm || {runner.C_LOAD * 1e12:g} pF), single-ended. IF voltage = 2/pi x RF voltage.
 * No PDK, no HBT models. Voltage-ratio check; the power-gain diagnostic in
-* the record uses the stated 50 ohm source and 1 kohm load before any
+* the record uses the stated {runner.RS_RF:g} ohm source and {runner.R_LOAD / 1e3:g} kohm load before any
 * comparison with row R5.
 vrf srcrf 0 SIN(0 6.3245553m 2.44140625g)
-rsrf srcrf rf 50
+rsrf srcrf rf {runner.RS_RF:g}
 vlo lo 0 PULSE(-1 1 0 1p 1p {_PW * 1e12:.11f}p {_T_LO * 1e12:.11f}p)
 bif if 0 V = V(lo) * V(rf)
-rl if 0 1k
-cl if 0 2p
+rl if 0 {runner.R_LOAD / 1e3:g}k
+cl if 0 {runner.C_LOAD * 1e12:g}p
 """
 
 BINS = {"if": 64, "sum": 31936, "3lo_rf": 31808}
