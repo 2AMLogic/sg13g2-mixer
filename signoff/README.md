@@ -28,8 +28,12 @@ pin" below.
   `file` named beside it — klt gates `manifest.content_hash ==
   envelope.provenance.input.content_hash`, so editing or deleting the pin
   renders item 10 UNMET (`stale_evidence` / `unanchored_evidence`).
-  `evidence."9".content_hash` anchors item 9 the same way, to the item-9
-  inventory's hash.
+  `evidence."9".content_hash` anchors item 9 the same way: it must equal the
+  raw-byte sha256 of `testbenches/inventory.json`
+  (`sha256sum signoff/testbenches/inventory.json`), which is the item-9
+  envelope's `provenance.input.content_hash` — again **not** the hash of the
+  `testbenches/envelope.json` file named beside it — and editing or deleting
+  it renders item 9 UNMET (`stale_evidence` / `unanchored_evidence`).
 
 ## Which checks `repo-hygiene/inventory.json` lists
 
@@ -79,8 +83,9 @@ the same change, or CI's drift gate fails.
 
 ## Item 9: a separate producer pin
 
-`testbenches/envelope.json` has its own CI drift gate, `signoff-item9`, and its
-own klt pin — the build that produced it, not item 10's:
+`testbenches/envelope.json` has its own CI gate, `signoff-item9` — a drift
+step and a manifest-binding step — and its own klt pin, used by both steps: the
+build that produced it, not item 10's.
 
 ```
 uvx --from "git+https://github.com/2AMLogic/klayout-tools@6bd18bbc8637f6d767b3c24e77bd5db7a39e4bbe" \
@@ -97,13 +102,28 @@ envelope is produced with the item-9 pin: the same command with `--check …`
 replaced by `-o signoff/testbenches/envelope.json`, which, unlike `--check`,
 runs the three cold starts and needs the pinned ngspice.
 
+When the item-9 inventory itself is edited, finish in the same change or the
+binding step fails: re-attest the envelope with the item-9 pin (the `-o` form
+of the command above), then update `manifest.json`'s
+`evidence."9".content_hash` to the new inventory's raw-byte sha256. The drift
+step alone cannot catch a pin left behind, because a re-attested envelope
+reproduces; the stale pin then reads `stale_evidence`.
+
 ## What CI gates
 
 - `klt signoff --attest 9 --inventory testbenches/inventory.json --check
-  testbenches/envelope.json` (job `signoff-item9`) — the committed item-9
-  envelope still reproduces: every file the item-9 inventory names still hashes
-  to the `content_hash` recorded for it. Drift only; the item-9 manifest
-  binding is not asserted in CI.
+  testbenches/envelope.json` (job `signoff-item9`, drift step) — the committed
+  item-9 envelope still reproduces: every file the item-9 inventory names still
+  hashes to the `content_hash` recorded for it. Drift only: a re-attested
+  envelope reproduces, so this step cannot see a stale manifest pin.
+- The item-9 manifest-binding step (same job, same pin) asserts item 9 renders
+  `met` with `input_verified: true` under `klt signoff --manifest` (manifest
+  pin vs the envelope's `provenance.input`). One assertion grades the
+  committed manifest and three scratch copies of it: the unmodified copy
+  passes, a deleted `content_hash` fails with `unanchored_evidence`, and the
+  envelope file's own hash fails with `stale_evidence`. Anything else fails
+  the step instead of grading: a `klt` exit other than 0 (all met) or 3 (unmet
+  overall), or a report without exactly one item 9.
 - `klt signoff --attest 10 --inventory … --check repo-hygiene/envelope.json` —
   the committed envelope still reproduces against the inventory (envelope pin
   vs actual inventory bytes).
