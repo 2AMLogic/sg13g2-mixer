@@ -2,8 +2,10 @@
 
 Block-level attestation evidence for the T1 checklist
 (`docs/design-evidence-tiers.md`), produced and graded by `klt signoff` at the
-klt commit pinned in `.github/workflows/ci.yml` (`--attest` is newer than the
-newest release wheel, so the pin is a commit, not a release).
+klt commit pinned for its job in `.github/workflows/ci.yml` (`--attest` is newer
+than the newest release wheel, so each pin is a commit, not a release). Items
+9 and 10 are pinned to different commits; see "Item 9: a separate producer
+pin" below.
 
 ## Files and what binds to what
 
@@ -12,6 +14,13 @@ newest release wheel, so the pin is a commit, not a release).
 - `repo-hygiene/envelope.json` — the item-10 evidence envelope produced from
   that inventory. Its `provenance.input.content_hash` pins the inventory's
   raw-byte sha256.
+- `testbenches/inventory.json` — the item-9 attestation inventory: the three
+  `sim/*/testbench/tb.json` manifests, each bench's `depends_on` closure and
+  the pins.
+- `testbenches/envelope.json` — the item-9 evidence envelope produced from
+  that inventory. It binds each manifest and each dependency by raw-byte
+  sha256, and its `provenance.input.content_hash` pins the inventory's raw-byte
+  sha256.
 - `manifest.json` — the block-level evidence index. Its
   `evidence."10".content_hash` is klt's **binding anchor**: it must equal the
   envelope's `provenance.input.content_hash` (i.e. the *inventory's* hash,
@@ -19,13 +28,15 @@ newest release wheel, so the pin is a commit, not a release).
   `file` named beside it — klt gates `manifest.content_hash ==
   envelope.provenance.input.content_hash`, so editing or deleting the pin
   renders item 10 UNMET (`stale_evidence` / `unanchored_evidence`).
+  `evidence."9".content_hash` anchors item 9 the same way, to the item-9
+  inventory's hash.
 
 ## Which checks `repo-hygiene/inventory.json` lists
 
 `checks` is a deliberate subset of the headless CI job set, not a second copy
 of it: it lists exactly the gates that are reproducible and context-free —
 the identical command passes locally and in CI, with no PR-specific argument
-and no network. Two CI jobs are deliberately excluded:
+and no network. Three CI jobs are deliberately excluded:
 
 - `records-append-only` — it requires `--base REF` (it exits 2 without one),
   and any base ref baked into the inventory would be PR-context dependent,
@@ -33,6 +44,9 @@ and no network. Two CI jobs are deliberately excluded:
   claims to be.
 - `signoff-item10` — it attests the attestation itself (circular) and needs
   the network plus the pinned external `klt` tool.
+- `signoff-item9` — it needs the network plus the pinned external `klt` tool
+  as well (it is not circular: item 9 attests the testbenches, not this
+  inventory).
 
 A new gate joins `checks` only once it is in `scripts/check-all.sh` — the
 single command list that the `ci.yml` jobs call with their group name and that
@@ -63,8 +77,33 @@ The same order applies when a file the envelope attests changes (currently
 `README.md`, `LICENSE`, `.github/workflows/ci.yml`): re-attest the envelope in
 the same change, or CI's drift gate fails.
 
+## Item 9: a separate producer pin
+
+`testbenches/envelope.json` has its own CI drift gate, `signoff-item9`, and its
+own klt pin — the build that produced it, not item 10's:
+
+```
+uvx --from "git+https://github.com/2AMLogic/klayout-tools@6bd18bbc8637f6d767b3c24e77bd5db7a39e4bbe" \
+  klt signoff --attest 9 --inventory signoff/testbenches/inventory.json \
+  --check signoff/testbenches/envelope.json
+```
+
+That commit reports `0.9.3.dev2575+g6bd18bbc8637`, the `provenance.klt_version`
+recorded in the envelope. Item 10's pin cannot check this envelope: that older
+build rejects the item-9 inventory outright (`'testbenches' entries must be
+non-empty path strings`) because its `testbenches` entries are objects, not
+paths. So the two signoff jobs stay on separate pins, and a re-attested item-9
+envelope is produced with the item-9 pin: the same command with `--check …`
+replaced by `-o signoff/testbenches/envelope.json`, which, unlike `--check`,
+runs the three cold starts and needs the pinned ngspice.
+
 ## What CI gates
 
+- `klt signoff --attest 9 --inventory testbenches/inventory.json --check
+  testbenches/envelope.json` (job `signoff-item9`) — the committed item-9
+  envelope still reproduces: every file the item-9 inventory names still hashes
+  to the `content_hash` recorded for it. Drift only; the item-9 manifest
+  binding is not asserted in CI.
 - `klt signoff --attest 10 --inventory … --check repo-hygiene/envelope.json` —
   the committed envelope still reproduces against the inventory (envelope pin
   vs actual inventory bytes).

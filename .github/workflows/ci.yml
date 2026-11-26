@@ -7,9 +7,12 @@ name: ci
 # scripts/check-all.sh — the same script package.json runs locally — and each
 # job passes its group name, so a job log shows one step; the script prints an
 # `== <command>` header per gate, which names the check that failed.
-# signoff-item10 is the one plain multi-step job left: it attests the
-# attestation itself (a checker testing itself) and needs the network plus the
-# pinned klt, so its steps stay in the workflow.
+# The signoff jobs (signoff-item9, signoff-item10) are the plain multi-step
+# jobs left. Both need the network plus a pinned external klt, so their steps
+# stay in the workflow, and neither belongs in the item-10 inventory's
+# `checks` (signoff/README.md). signoff-item9 is only a drift gate for the
+# item-9 envelope; signoff-item10 also attests the attestation itself (a
+# checker testing itself) and checks the manifest binding.
 
 on:
   push:
@@ -86,6 +89,24 @@ jobs:
             BASE="$MG_BASE"
           fi
           RECORDS_BASE_REQUIRED=1 BASE="$BASE" scripts/check-all.sh records-append-only
+
+  # Item 9 drift gate: signoff/testbenches/envelope.json binds, by raw-byte
+  # sha256, every file signoff/testbenches/inventory.json names, and no other
+  # job re-derives it, so a PR that edits a bound file without re-attesting
+  # would merge green on a stale envelope. --check re-attests and compares
+  # with the committed report: exit 0 is `match`, exit 3 is `drifted` and the
+  # report names each changed path. The cold starts are `local_only` and are
+  # skipped in --check mode, so the job needs neither ngspice nor a PDK.
+  # The pin is the producer recorded in that envelope and is newer than
+  # signoff-item10's on purpose: the item-10 build rejects this inventory's
+  # object-form `testbenches` entries.
+  signoff-item9:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Item 9 envelope still reproduces (no drift)
+        run: uvx --from "git+https://github.com/2AMLogic/klayout-tools@6bd18bbc8637f6d767b3c24e77bd5db7a39e4bbe" klt signoff --attest 9 --inventory signoff/testbenches/inventory.json --check signoff/testbenches/envelope.json
 
   signoff-item10:
     runs-on: ubuntu-latest
