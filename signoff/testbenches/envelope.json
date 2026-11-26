@@ -17,21 +17,21 @@
         "role": "testbench",
         "path": "sim/ka1-ideal-multiplier/testbench/tb.json",
         "passed": true,
-        "content_hash": "sha256:889b84d446aa75628a57038bd9f8ef997e519a75099f6f7be7f46feb6ca95bea"
+        "content_hash": "sha256:df986d8698d628a8a1043758aa431582be415f4f4c7f9afa84984deab2d18b7c"
       },
       {
         "check": "present",
         "role": "testbench",
         "path": "sim/ka2-switch-mixer/testbench/tb.json",
         "passed": true,
-        "content_hash": "sha256:2571c2184ee5800ce81ed86d347c444eaa6b0cfd7e933789f9904e1737f3413e"
+        "content_hash": "sha256:f28075e7c121e4d995e121abc3d679b807c90759cf012bcb4733de23be61a521"
       },
       {
         "check": "present",
         "role": "testbench",
         "path": "sim/ka5-window-coherence/testbench/tb.json",
         "passed": true,
-        "content_hash": "sha256:6467e4e21948c85a235468acee3e3d3e4541baae3e1daa780626d1ee86244a14"
+        "content_hash": "sha256:86c265d78e479b18ea09eb1d28b4831fd4d3bebb1254f9aa86e18cfe7ceca750"
       },
       {
         "check": "present",

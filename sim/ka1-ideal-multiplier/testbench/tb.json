@@ -5,26 +5,8 @@
   "validation_step": "V3",
   "dut": "behavioural multiplier B-source (v(if) = k*V(rf)*V(lo), k = 1.0), sinusoidal LO 0.2236 V peak; no semiconductor models, no PDK",
   "corner": "single corner, nominal (behavioural elements carry no PVT)",
-  "toolchain": {
-    "ngspice_major": 46,
-    "python_min": "3.10",
-    "numpy": false
-  },
-  "mechanics": {
-    "M1_coherent_dft": "sim/bench/lib/coherent.py",
-    "M2_coherence_preflight": "sim/bench/lib/coherence.py",
-    "M4_convergence_gate": "sim/bench/lib/convergence.py"
-  },
-  "cold_start": "NGSPICE=<ngspice-46 binary> sim/ka1-ideal-multiplier/run.sh",
+  "cold_start": "NGSPICE=<pinned-ngspice> sim/ka1-ideal-multiplier/run.sh",
   "entrypoint": "sim/ka1-ideal-multiplier/bench.py",
   "deck_dump": "python3 sim/ka1-ideal-multiplier/bench.py --dump-deck",
-  "records_dir": "sim/ka1-ideal-multiplier/records",
-  "protocol": {
-    "step_s": 1.25e-11,
-    "step_halved_s": 6.25e-12,
-    "window_points": 524288,
-    "settle_discard_s": 3.2768e-06,
-    "window": "rectangular, coherent tones",
-    "bins_if_sum_lofeed_image": [64, 31936, 15936, 15872]
-  }
+  "records_dir": "sim/ka1-ideal-multiplier/records"
 }
