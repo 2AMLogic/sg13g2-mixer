@@ -1,0 +1,31 @@
+{
+  "name": "ka5-window-coherence",
+  "kind": "known-answer",
+  "check": "spec/target-spec.md 'Known-answer validation' case 5 (window/coherence): one coherent tone reads the same power on the rectangular FFT, the Hann FFT and the independent DFT within 0.05 dB",
+  "validation_step": "V3",
+  "dut": "ideal single-ended source through 50 ohm into the R9 load (1 kohm || 2 pF), single coherent tone at bin 64; no semiconductor models, no PDK",
+  "corner": "single corner, nominal (behavioural elements carry no PVT)",
+  "toolchain": {
+    "ngspice_major": 46,
+    "python_min": "3.10",
+    "numpy": ">=1.26,<3 (sim/bench/requirements.txt; sim/bench/mkenv.sh)"
+  },
+  "mechanics": {
+    "M1_coherent_dft": "sim/bench/lib/coherent.py",
+    "M2_coherence_preflight": "sim/bench/lib/coherence.py",
+    "M3_psd_stack": "sim/bench/lib/psd.py",
+    "M4_convergence_gate": "sim/bench/lib/convergence.py"
+  },
+  "cold_start": "NGSPICE=<ngspice-46 binary> sim/ka5-window-coherence/run.sh",
+  "entrypoint": "sim/ka5-window-coherence/bench.py",
+  "deck_dump": "python3 sim/ka5-window-coherence/bench.py --dump-deck",
+  "records_dir": "sim/ka5-window-coherence/records",
+  "protocol": {
+    "step_s": 1.25e-11,
+    "step_halved_s": 6.25e-12,
+    "window_points": 524288,
+    "settle_discard_s": 3.2768e-06,
+    "window": "rectangular (deck FFT + independent DFT) cross-checked against Hann (stamped PSD stack)",
+    "bin_tone": 64
+  }
+}

@@ -2,8 +2,73 @@
 
 Chronological record of merged PRs and closed issues. Maintained by the Guide triage role.
 
+### 2026-11-24
+
+- **PR #106**: fix: check the gate self-test fixture root before any fixture git command
+- **Issue #102** (closed): Use one checked temporary directory for gate self-test fixtures
+
+### 2026-11-23
+
+- **PR #109**: refactor(sim): fold the shared V3 bench scaffold into runner.py
+- **PR #107**: refactor(sim): read the ngspice major pin from sim/toolchain.json in the shared runner
+- **PR #23**: docs(spec): record operator ratification of target spec, mark provisional rows
+- **Issue #108** (closed): Fold the repeated V3 bench main() scaffold into runner.py
+- **Issue #104** (closed): Read the ngspice major from the toolchain pin in all three V3 benches
+- **Issue #2** (closed): Draft and ratify the target spec
+
+### 2026-11-21
+
+- **PR #105**: fix(sim): write bench samples by basename so spaced scratch paths work
+- **PR #100**: feat(sim): add V3 known-answer benches with stamped bench mechanics
+- **PR #99**: layout: npn13G2 reaches status: match on the PDK-runset engine at current klt
+- **Issue #103** (closed): Allow V3 bench scratch directories with spaces
+- **Issue #98** (closed): Re-run the lvs-device-coverage probe at current klt: does npn13G2 reach status: match on the PDK-runset route?
+- **Issue #97** (closed): V3: known-answer benches 1, 2 and 5 on behavioural elements, with tb.json and a cold-start command per bench (T1 item 9)
+
+### 2026-11-19
+
+- **PR #95**: docs: gate the tracker refresh on a final read before its PATCH
+- **Issue #94** (closed): Tracker #5 refresh has no cross-host mutual exclusion (duplicate audit comment)
+- **PR #93**: docs: give Guide a standing procedure for keeping tracker #5 current
+- **Issue #91** (closed): Assign Guide responsibility for keeping T1 tracker #5 current
+- **Issue #54** (closed): Refresh tracker #5's body: its T1 checklist predates PRs #6/#8 and now reads false
+
+### 2026-11-18
+
+- **PR #89**: ci: run the required checks on merge_group and fail the records gate closed without a base
+- **Issue #87** (closed): Merge queue: add the merge_group trigger and adapt the PR-metadata gates
+- **PR #85**: test: assert gate failure propagates through check-all.sh; fix the CI-job-order wording
+- **Issue #83** (closed): check-all.sh: add a control that a failing gate exits nonzero, and fix the "CI job order" wording
+- **PR #82**: ci: single-source the gate list in check-all.sh, drop the wiring-drift test
+- **Issue #81** (closed): Single-source the CI gate: ci.yml jobs call scripts/check-all.sh, drop the wiring-drift assertion
+
+### 2026-11-17
+
+- **PR #77**: chore(loom): resync installed Loom to v0.19.1306
+- **Issue #46** (closed): File record 0002's three sg13g2-sat-rx findings on that repo
+
+### 2026-11-16
+
+- **PR #73**: chore(loom): resync installed Loom to v0.19.1302
+
 ### 2026-11-15
 
+- **PR #69**: docs: drop duplicated derived-artefacts tables from lvs-device-coverage PROVENANCE.md
+- **Issue #67** (closed): Trim the five duplicated 'Derived artefacts' tables from lvs-device-coverage PROVENANCE.md files
+- **PR #68**: ci: item-10 conjunct-equivalence tripwire for klt pin bumps
+- **Issue #65** (closed): item-10 control harness does not pin which conjunct of the assertion does the rejecting
+- **PR #66**: fix: select assert_invoked wiring needles by path form, not basename prefix
+- **Issue #63** (closed): assert_invoked matches a basename, so a nested scripts/ gate can pass on a sibling's wiring
+- **PR #62**: ci: negative and positive controls for the item-10 manifest-binding gate
+- **Issue #59** (closed): The new item-10 manifest-binding CI gate has no re-runnable negative control
+- **PR #61**: test: assert check-all.sh covers every derived scripts/ entry point
+- **Issue #55** (closed): Two unchecked copies of the gate list remain after #42: check-all.sh and signoff inventory.json
+- **PR #58**: test: close the three mutation gaps in the verify_pdk fixture control
+- **Issue #50** (closed): verify_pdk CI control cannot catch a hash-algorithm swap or two _target() parser branches
+- **PR #57**: ci: gate the item-10 manifest hash binding, label the pin, document signoff regeneration
+- **Issue #39** (closed): Gate the item-10 manifest hash binding in CI, and label what it anchors
+- **PR #48**: test: derive ci.yml wiring assertion from tracked entry points
+- **Issue #42** (closed): Derive the ci.yml wiring assertion in scripts/test-checks.sh instead of hardcoding a five-name list
 - **PR #52**: docs(roadmap): drop hand-synced status sections duplicated by WORK_PLAN.md and tracker #5
 - **Issue #51** (closed): Trim ROADMAP.md: drop stale hand-synced status sections that WORK_PLAN.md and #5 already own
 - **PR #45**: test: add PDK-independent fixture control for the verify_pdk gate

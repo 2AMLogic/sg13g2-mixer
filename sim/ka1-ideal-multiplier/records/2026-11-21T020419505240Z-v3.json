@@ -1,0 +1,179 @@
+{
+  "bench": "ka1-ideal-multiplier",
+  "check": "spec/target-spec.md 'Known-answer validation' case 1 (ideal multiplier, conversion gain): IF amplitude = k*A/2 x RF",
+  "command": "sim/ka1-ideal-multiplier/run.sh",
+  "corner": "single corner, nominal (behavioural elements carry no PVT)",
+  "date": "2026-11-21",
+  "deltas": {
+    "b_cg_db": 3.4986733261632708e-06,
+    "following_window_db": 1.2467269070673626e-06,
+    "m1_deck_vs_python_db": 5.168740582434793e-07,
+    "step_halving_db": 0.09649477363985413
+  },
+  "elements": "behavioural (multiplier B-source, resistors, capacitor; no semiconductor models, no PDK)",
+  "expected": {
+    "b_cg_db": -26.0208639723521,
+    "formula": "B-CG = 10*log10((k*A/2)^2 * 4*R_source/R_load)",
+    "if_amplitude_v": 0.0007070852848136496
+  },
+  "failures": [],
+  "kind": "simulated",
+  "measured": {
+    "b_cg_db": {
+      "s1": {
+        "w1": -26.020867014405805,
+        "w2": -26.020865901980827
+      },
+      "s2": {
+        "w1": -26.020864179372403,
+        "w2": -26.020864041116376
+      }
+    },
+    "tone_amplitudes": {
+      "s1": {
+        "w1": {
+          "if": {
+            "deck_fft_v": 0.000707085,
+            "python_dft_v": 0.0007070850371716548
+          },
+          "sum": {
+            "deck_fft_v": 0.0006966955,
+            "python_dft_v": 0.0006966954585415155
+          }
+        },
+        "w2": {
+          "if": {
+            "deck_fft_v": 0.0007070851,
+            "python_dft_v": 0.0007070851277299213
+          },
+          "sum": {
+            "deck_fft_v": 0.0006966954,
+            "python_dft_v": 0.0006966953665434408
+          }
+        }
+      },
+      "s2": {
+        "w1": {
+          "if": {
+            "deck_fft_v": 0.0007070853,
+            "python_dft_v": 0.0007070852679609132
+          },
+          "sum": {
+            "deck_fft_v": 0.0007044784,
+            "python_dft_v": 0.0007044783699993661
+          }
+        },
+        "w2": {
+          "if": {
+            "deck_fft_v": 0.0007070853,
+            "python_dft_v": 0.000707085279215811
+          },
+          "sum": {
+            "deck_fft_v": 0.0007044784,
+            "python_dft_v": 0.0007044783586211695
+          }
+        }
+      }
+    }
+  },
+  "numerical_floor_diagnostics": {
+    "amplitudes": {
+      "s1": {
+        "w1": {
+          "image": {
+            "deck_fft_v": 1.086209e-10,
+            "python_dft_v": 1.0862193976806184e-10
+          },
+          "lofeed": {
+            "deck_fft_v": 2.200446e-10,
+            "python_dft_v": 2.2004462993055686e-10
+          }
+        },
+        "w2": {
+          "image": {
+            "deck_fft_v": 1.803248e-11,
+            "python_dft_v": 1.8033679002424265e-11
+          },
+          "lofeed": {
+            "deck_fft_v": 1.554255e-10,
+            "python_dft_v": 1.5542601909344702e-10
+          }
+        }
+      },
+      "s2": {
+        "w1": {
+          "image": {
+            "deck_fft_v": 1.374005e-11,
+            "python_dft_v": 1.3742017425008945e-11
+          },
+          "lofeed": {
+            "deck_fft_v": 1.323497e-10,
+            "python_dft_v": 1.3235176172921967e-10
+          }
+        },
+        "w2": {
+          "image": {
+            "deck_fft_v": 2.475613e-12,
+            "python_dft_v": 2.477341790057853e-12
+          },
+          "lofeed": {
+            "deck_fft_v": 1.302794e-10,
+            "python_dft_v": 1.3028089541803037e-10
+          }
+        }
+      }
+    },
+    "note": "The ideal circuit has no image or LO feedthrough tone. Raw residual voltages are recorded separately from graded tone levels."
+  },
+  "pass": true,
+  "protocol": {
+    "bins": {
+      "if": 64,
+      "image": 15872,
+      "lofeed": 15936,
+      "sum": 31936
+    },
+    "legs": {
+      "s1": "12.5 ps",
+      "s2": "6.25 ps"
+    },
+    "ports": {
+      "lo_source": "ideal, sinusoidal, 0.2236 V peak (row-R3 per-side equivalent), 50 ohm convention",
+      "load": "R9: 1000 ohm || 2 pF",
+      "rf_source": "50 ohm single-ended, -40 dBm available (1e-7 W)"
+    },
+    "settle_discard_s": 3.2768e-06,
+    "sideband": "SSB (image tone absent)",
+    "step_halved_s": 6.25e-12,
+    "step_s": 1.25e-11,
+    "tones_hz": {
+      "if": 9765625.0,
+      "lo": 2431640625.0,
+      "rf": 2441406250.0,
+      "sum": 4873046875.0
+    },
+    "window": "rectangular (coherent tones); Hann cross-check is ka5's graded reading, M1 two-half agreement gated here",
+    "window_points": 524288,
+    "window_s": 6.5536e-06,
+    "windows": {
+      "w1": "analysis",
+      "w2": "following"
+    }
+  },
+  "schema": 2,
+  "tolerances_db": {
+    "b_cg": 0.05,
+    "following_window": 0.1,
+    "m1_deck_vs_python": 0.05,
+    "step_halving": 0.1
+  },
+  "toolchain": {
+    "ngspice": "** ngspice-46 : Circuit level simulation program",
+    "python": "3.12.3"
+  },
+  "wall_clock_s": {
+    "ngspice_12.5ps": 14.250078247991041,
+    "ngspice_6.25ps": 30.91629486400052,
+    "post_processing": 1.2695562160079135
+  }
+}

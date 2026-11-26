@@ -3,13 +3,21 @@ name: ci
 # T1 item 10 CI: keeps the harness and evidence formats valid. Every job is
 # headless and needs neither a PDK nor a simulator. A job with nothing to check
 # yet passes trivially but still exists, so the first bench or record is
-# checked the day it lands. Each job is a thin call to a script under scripts/
-# that package.json also runs (scripts/check-all.sh), so local and CI agree.
+# checked the day it lands. The command list lives once, in
+# scripts/check-all.sh — the same script package.json runs locally — and each
+# job passes its group name, so a job log shows one step; the script prints an
+# `== <command>` header per gate, which names the check that failed.
+# signoff-item10 is the one plain multi-step job left: it attests the
+# attestation itself (a checker testing itself) and needs the network plus the
+# pinned klt, so its steps stay in the workflow.
 
 on:
   push:
     branches: [main]
   pull_request:
+  # The merge queue's trial merge: every required context must report on the
+  # combined tree, or the queue treats the check as skipped, not passed.
+  merge_group:
 
 permissions:
   contents: read
@@ -19,22 +27,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Mechanic M3 (sim/bench/lib/psd.py, stamped per record 0002) needs
+      # numpy — the repo's only third-party Python dependency, declared in
+      # sim/bench/requirements.txt. CI installs it into a job-local venv
+      # (never a host-wide install) and shadows python3 with it for the
+      # check, so the psd unit tests run instead of skipping.
+      - name: Install bench Python deps into a venv
+        run: |
+          python3 -m venv .tools/bench-venv
+          .tools/bench-venv/bin/pip install -r sim/bench/requirements.txt
       - name: Byte-compile Python and run unit tests
-        run: scripts/check-python.sh
+        run: PATH="$PWD/.tools/bench-venv/bin:$PATH" scripts/check-all.sh python
 
   tb-json:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Validate every sim/*/testbench/tb.json
-        run: python3 -I scripts/check-tb-json.py
+        run: scripts/check-all.sh tb-json
 
   reuse-lock:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Validate reuse.lock.json
-        run: scripts/check-reuse-lock.sh
+        run: scripts/check-all.sh reuse-lock
 
   # Gate self-test: a check that cannot fail is indistinguishable from no check.
   gate-self-test:
@@ -42,19 +59,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Negative and positive controls for every gate
-        run: scripts/test-checks.sh
+        run: scripts/check-all.sh gate-self-test
 
-  # Pull requests only: a push to main has no base to diff against, and the PR
-  # that introduced a change was already checked.
+  # Pull requests and merge-queue trial merges: a push to main has no base to
+  # diff against, and the PR / queued merge that introduced a change was
+  # already checked. Merge queue: the trial-merge commit is checked against
+  # the event's merge_group.base_sha -- github.base_ref is empty there, so
+  # the base comes from the event payload, and an absent or unresolvable base
+  # FAILS (RECORDS_BASE_REQUIRED=1 disables the local developer skip), never
+  # silently skips or passes. The base sha is plumbed as an env value, not
+  # interpolated into the shell.
   records-append-only:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Committed records are never edited, deleted or renamed
-        run: scripts/check-sim-append-only --base "origin/${{ github.base_ref }}"
+        env:
+          PR_BASE: origin/${{ github.base_ref }}
+          MG_BASE: ${{ github.event.merge_group.base_sha }}
+        run: |
+          BASE="$PR_BASE"
+          if [ "$GITHUB_EVENT_NAME" = "merge_group" ]; then
+            BASE="$MG_BASE"
+          fi
+          RECORDS_BASE_REQUIRED=1 BASE="$BASE" scripts/check-all.sh records-append-only
 
   signoff-item10:
     runs-on: ubuntu-latest
@@ -66,11 +97,90 @@ jobs:
       # includes `klt signoff --attest`.
       - name: Item 10 envelope still reproduces (no drift)
         run: uvx --from "git+https://github.com/2AMLogic/klayout-tools@dce956c3c39995643ff2a5c31b53c474b3c2aada" klt signoff --attest 10 --inventory signoff/repo-hygiene/inventory.json --check signoff/repo-hygiene/envelope.json
-      - name: Item 10 manifest binding is anchored and fresh
+      - name: Item 10 manifest binding is anchored and fresh (with controls)
         run: |
-          out=$(uvx --from "git+https://github.com/2AMLogic/klayout-tools@dce956c3c39995643ff2a5c31b53c474b3c2aada" \
-            klt signoff --manifest signoff/manifest.json --repo-root . --format json) || true
-          printf '%s' "$out" | jq -e '.items[] | select(.id==10)
-            | select(.status=="met" and .citation.artifact_binding.input_verified==true)' \
-            || { printf '%s' "$out" | jq -r '.items[] | select(.id==10)
-                 | "item 10 is \(.status): \(.reason)"' >&2; exit 1; }
+          set -u
+          KLT=(uvx --from "git+https://github.com/2AMLogic/klayout-tools@dce956c3c39995643ff2a5c31b53c474b3c2aada" klt)
+          T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
+          fail=0
+          # The ONE copy of the item-10 assertion: rc 0 = item 10 anchored and
+          # fresh; on failure prints klt's own reason. Every case below,
+          # positive and negative, goes through this function, so a weakened
+          # assertion turns a control red instead of passing silently.
+          verdict() { # verdict <manifest-path>; echoes "pass" or the reason line
+            local out
+            # `|| true` is REQUIRED, not defensive: klt signoff exits 3 whenever
+            # the overall T1 signoff is unmet (the normal state, 1 of 11 met),
+            # and Actions runs this block as bash -e, so dropping it aborts the
+            # step before jq runs. klt's rc carries no signal here; the jq
+            # assertion below is the only verdict.
+            out=$("${KLT[@]}" signoff --manifest "$1" --repo-root . --format json) || true
+            # Issue #65 pin-bump tripwire. Measured 2026-11-15 against klt
+            # dce956c3: the two conjuncts asserted below are *equivalent* for
+            # item 10 under this pin — item 10 can only grade `met` from a
+            # "generic" citation, which only grades `met` once its artifact
+            # binding is verified, and an `unmet` item 10 carries no citation
+            # at all — so NO manifest state separates them and neither
+            # conjunct can be controlled on its own. The gap is unclosable
+            # under this pin, not merely unclosed. This probe asserts the
+            # equivalence itself for every manifest state exercised below:
+            # silent today, red on a pin bump that decouples the two
+            # predicates. Two shapes here are load-bearing, not style:
+            #  - the sentinel is a FILE, not `fail=1`: verdict() runs in a
+            #    subshell (expect() calls it via command substitution), so an
+            #    assignment to `fail` here is discarded, and anything echoed
+            #    here is captured into expect()'s $got instead of the log.
+            #  - `if length==1 then … else "ERR"`, never `// "ERR"`: jq's `//`
+            #    treats `false` as empty, which would report a legitimate
+            #    `false` as "ERR" and make a missing item 10 compare equal to
+            #    a real answer. ERR is a failure, not agreement.
+            _q() { printf '%s' "$out" | jq -r "[.items[]|select(.id==10)|$1]|if length==1 then (.[0]|tostring) else \"ERR\" end" 2>/dev/null || echo ERR; }
+            _met=$(_q '.status=="met"')
+            _ver=$(_q '.citation.artifact_binding.input_verified==true')
+            if [ "$_met" != "$_ver" ] || [ "$_met" = ERR ]; then
+              printf 'manifest %s: status==met:%s input_verified==true:%s\n' \
+                "$1" "$_met" "$_ver" >> "$T/conjunct-disagreement"
+            fi
+            if printf '%s' "$out" | jq -e '.items[] | select(.id==10)
+                | select(.status=="met" and .citation.artifact_binding.input_verified==true)' >/dev/null; then
+              echo pass; return 0
+            fi
+            printf '%s' "$out" | jq -re '.items[] | select(.id==10)
+                | "item 10 is \(.status): \(.reason)"' 2>/dev/null \
+              || echo "item 10: no usable klt output (klt or jq failed)"
+            return 1
+          }
+          expect() { # expect <pass|FAIL-substring> <label> <manifest-path>
+            local want="$1" label="$2" mf="$3" got rc=0
+            # `|| rc=$?` not `; rc=$?`: verdict returns non-zero by design on
+            # the negative controls, and Actions runs this block as bash -e, so
+            # a bare failing assignment would abort the step before the
+            # expectation is compared — the step would die silently after the
+            # two positive controls instead of failing the case.
+            got="$(verdict "$mf")" || rc=$?
+            if { [ "$want" = pass ] && [ "$rc" -eq 0 ]; } || \
+               { [ "$want" != pass ] && [ "$rc" -ne 0 ] \
+                 && printf '%s' "$got" | grep -qF -- "$want"; }; then
+              echo "ok   $label"
+            else
+              echo "FAIL $label: want '$want', got (rc=$rc): $got"; fail=1
+            fi
+          }
+          cp signoff/manifest.json "$T/ok.json"
+          jq 'del(.evidence."10".content_hash)' signoff/manifest.json > "$T/unanchored.json"
+          jq --arg h "sha256:$(sha256sum signoff/repo-hygiene/envelope.json | cut -d' ' -f1)" \
+             '.evidence."10".content_hash = $h' signoff/manifest.json > "$T/stale.json"
+          expect pass "committed manifest anchors item 10 (the gate itself)" signoff/manifest.json
+          expect pass "scratch copy through the harness passes" "$T/ok.json"
+          expect unanchored_evidence "deleted content_hash fails: unanchored_evidence" "$T/unanchored.json"
+          expect stale_evidence "envelope's own hash fails: stale_evidence" "$T/stale.json"
+          # Drain the tripwire's subshell sentinel into the parent shell's
+          # `fail` where `exit $fail` can see it (see the tripwire comment in
+          # verdict(); $T is the mktemp -d above, outside the checkout).
+          if [ -s "$T/conjunct-disagreement" ]; then
+            echo "FAIL item-10 conjunct equivalence broke (#65):"; cat "$T/conjunct-disagreement"; fail=1
+          fi
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "FAIL the step wrote into the checkout:"; git status --porcelain; fail=1
+          fi
+          exit $fail

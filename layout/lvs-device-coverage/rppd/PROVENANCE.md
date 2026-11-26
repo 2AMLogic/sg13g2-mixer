@@ -28,15 +28,3 @@ netlist deliberately mixes two spellings of the same device — a valued card wi
 Apache-2.0 permits redistribution of these files. The licence header inside `rppd.cdl` is
 preserved verbatim; `rppd.gds` is a binary stream with no in-file header, so this note
 carries its attribution. The repository's own `LICENSE` does not apply to these two files.
-
-## Derived artefacts in this directory
-
-Produced locally from the two files above; see `../README.md` for the exact commands and
-the environment identity.
-
-| file | produced by |
-|---|---|
-| `rppd.extract.json` | `klt extract … --deck sg13g2 --format json` |
-| `rppd.extracted.spice` | the same run's `-o` netlist output |
-| `rppd.lvs-klt-deck.error.json` | `klt lvs` with the curated `sg13g2` deck — the **error envelope**, kept as evidence; the reference cannot be read at all (`2AMLogic/klayout-tools#5665`) |
-| `rppd.lvs-pdk-runset.json` | `klt lvs`, `engine: klayout-runset` against the PDK's `sg13g2.lvs` |

@@ -1,0 +1,30 @@
+{
+  "name": "ka2-switch-mixer",
+  "kind": "known-answer",
+  "check": "spec/target-spec.md 'Known-answer validation' case 2 (hard-switched ideal mixer): IF voltage = 2/pi x RF voltage within the 0.1 dB convergence tolerance",
+  "validation_step": "V3",
+  "dut": "behavioural switch mixer B-source (v(if) = V(lo)*V(rf), square-wave LO +/-1 with 1 ps edges); no semiconductor models, no PDK",
+  "corner": "single corner, nominal (behavioural elements carry no PVT)",
+  "toolchain": {
+    "ngspice_major": 46,
+    "python_min": "3.10",
+    "numpy": false
+  },
+  "mechanics": {
+    "M1_coherent_dft": "sim/bench/lib/coherent.py",
+    "M2_coherence_preflight": "sim/bench/lib/coherence.py",
+    "M4_convergence_gate": "sim/bench/lib/convergence.py"
+  },
+  "cold_start": "NGSPICE=<ngspice-46 binary> sim/ka2-switch-mixer/run.sh",
+  "entrypoint": "sim/ka2-switch-mixer/bench.py",
+  "deck_dump": "python3 sim/ka2-switch-mixer/bench.py --dump-deck",
+  "records_dir": "sim/ka2-switch-mixer/records",
+  "protocol": {
+    "step_s": 1.25e-11,
+    "step_halved_s": 6.25e-12,
+    "window_points": 524288,
+    "settle_discard_s": 3.2768e-06,
+    "window": "rectangular, coherent tones",
+    "bins_if_sum_3lo_rf": [64, 31936, 31808]
+  }
+}
