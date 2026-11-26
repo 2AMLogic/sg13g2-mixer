@@ -19,16 +19,9 @@ on the fundamental and is what the step-halving leg bounds.
 
 No PDK needed (behavioural deck). Build the pinned ngspice 46
 (`sim/toolchain.json`) exactly as `sim/smoke-hbt/README.md` step 2 documents,
-worktree-locally:
+worktree-locally (that step runs on its own, without step 1), then:
 
 ```bash
-mkdir -p .tools/dl .tools/src
-curl -L -o .tools/dl/ngspice-46.tar.gz "$(python3 -c "import json;print(json.load(open('sim/toolchain.json'))['ngspice']['source_url'])")"
-echo "a0d1699af1940b06649276dcd6ff5a566c8c0cad01b2f7b5e99dedbb4d64c19b  .tools/dl/ngspice-46.tar.gz" | sha256sum -c
-tar -xzf .tools/dl/ngspice-46.tar.gz -C .tools/src
-(cd .tools/src/ngspice-46 && ./configure --prefix="$PWD/../../ngspice-46" --with-x=no --with-ngshared=no \
-   && make -j2 && make install)
-
 NGSPICE="$PWD/.tools/ngspice-46/bin/ngspice" sim/ka2-switch-mixer/run.sh
 ```
 
