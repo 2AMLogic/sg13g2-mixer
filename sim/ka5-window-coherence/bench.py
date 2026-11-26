@@ -33,6 +33,7 @@ ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, ROOT)
 
 from sim.bench import runner                      # noqa: E402
+from sim.bench.lib import convergence             # noqa: E402
 
 TONE_V_OC = 2.0e-3          # tone source, peak, open circuit
 BAND_HALF_HZ = 512e3        # Hann integration band half-width around f_IF
@@ -116,7 +117,8 @@ def main(argv=None):
         "measured": {"tone_amplitudes": readings},
         "deltas": deltas,
         "tolerances_db": {"reading_spread": TOL_SPREAD_DB, "m1_deck_vs_python": TOL_M1_DB,
-                          "following_window": 0.1, "step_halving": 0.1},
+                          "following_window": convergence.FOLLOWING_WINDOW_MAX_DB,
+                          "step_halving": convergence.STEP_HALVING_MAX_DB},
         "pass": not failures,
         "failures": failures,
         "wall_clock_s": runner.wall_clock(runs, post_s),

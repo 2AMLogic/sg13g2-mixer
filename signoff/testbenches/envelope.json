@@ -71,7 +71,7 @@
         "testbench": "sim/ka1-ideal-multiplier/testbench/tb.json",
         "path": "sim/ka1-ideal-multiplier/bench.py",
         "passed": true,
-        "content_hash": "sha256:2b07ce4f888499938b6d403d22a24704356dc94665765b60630902dd043d6288"
+        "content_hash": "sha256:2563d3b6beecc8b4c0b1c81d2814c34e2a1c851e6a5af9a8f4e6dd2b27c917a9"
       },
       {
         "check": "present",
@@ -127,7 +127,7 @@
         "testbench": "sim/ka2-switch-mixer/testbench/tb.json",
         "path": "sim/ka2-switch-mixer/bench.py",
         "passed": true,
-        "content_hash": "sha256:f5a93de75ddb92e86113fd9596d714f2221a8ba8246cb5db8c071194bcaf9355"
+        "content_hash": "sha256:baa0f1a270283f80ac63409a189dde8d4e930d83ea0852db9364bcec5374b4d5"
       },
       {
         "check": "present",
@@ -215,7 +215,7 @@
         "testbench": "sim/ka5-window-coherence/testbench/tb.json",
         "path": "sim/ka5-window-coherence/bench.py",
         "passed": true,
-        "content_hash": "sha256:03d45e09a70fcb3aec50220502c45699aea789dd3783e3930d354340b1edff09"
+        "content_hash": "sha256:b8b667951f134cfdf447052df66319c30af6b916705769111ec12871dfe71c0a"
       },
       {
         "check": "present",

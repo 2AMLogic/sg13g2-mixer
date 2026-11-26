@@ -32,6 +32,7 @@ ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, ROOT)
 
 from sim.bench import runner                      # noqa: E402
+from sim.bench.lib import convergence             # noqa: E402
 
 EDGE_S = 1.0e-12            # square-wave rise/fall time (stated on the figure)
 TOL_IF_DB = 0.1             # protocol convergence tolerance (spec check 2)
@@ -136,7 +137,8 @@ def main(argv=None):
         "measured": {"tone_amplitudes": readings, "power_gain_diagnostic_db": power_gain},
         "deltas": deltas,
         "tolerances_db": {"if_voltage": TOL_IF_DB, "m1_deck_vs_python": TOL_M1_DB,
-                          "following_window": 0.1, "step_halving": 0.1},
+                          "following_window": convergence.FOLLOWING_WINDOW_MAX_DB,
+                          "step_halving": convergence.STEP_HALVING_MAX_DB},
         "pass": not failures,
         "failures": failures,
         "wall_clock_s": runner.wall_clock(runs, post_s),

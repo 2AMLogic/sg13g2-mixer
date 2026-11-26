@@ -85,6 +85,12 @@ def invoke_bench(bench, *, tone_errors=None, deck_errors=None, pin=46, stub_majo
         return status, record, batch
 
 
+def m4_limits(record):
+    """The (following_window, step_halving) limits a record quotes."""
+    tolerances = record["tolerances_db"]
+    return tolerances["following_window"], tolerances["step_halving"]
+
+
 class TestBenchGates(unittest.TestCase):
     def run_bench(self, bench, tone_errors=None, deck_errors=None):
         status, record, _ = invoke_bench(
@@ -153,6 +159,26 @@ class TestBenchGates(unittest.TestCase):
         self.assertTrue(all("deck_fft_v" in msg for msg in record["failures"]))
         self.assertAlmostEqual(record["deltas"]["following_window_db"], 0.13)
         self.assertAlmostEqual(record["deltas"]["step_halving_db"], 0.13)
+
+    def test_record_m4_limits_are_read_from_the_grader(self):
+        """A record's M4 limits are the grader's constants, not its own literals
+        kept in step by hand (issue #112)."""
+        grader = runner.convergence
+        benches = [(KA1, "KA1", "sum"), (KA2, "KA2", "3lo_rf")]
+        if importlib.util.find_spec("numpy"):
+            benches.append((KA5, "KA5", "tone"))
+        for bench, name, tone in benches:
+            with self.subTest(bench=name):
+                record = self.run_bench(bench)
+                self.assertEqual(m4_limits(record), (0.1, 0.1))
+                with (mock.patch.object(grader, "FOLLOWING_WINDOW_MAX_DB", 0.02),
+                      mock.patch.object(grader, "STEP_HALVING_MAX_DB", 0.03)):
+                    record = self.run_bench(bench, tone_errors={("s2", "w2", tone): 0.05})
+                    limits = (grader.FOLLOWING_WINDOW_MAX_DB, grader.STEP_HALVING_MAX_DB)
+                self.assertEqual(m4_limits(record), limits)
+                reasons = " ".join(record["failures"])
+                for limit in limits:
+                    self.assertIn(f">= {limit} dB", reasons)
 
     def test_nonfinite_oracle_prevents_signoff(self):
         with mock.patch.object(runner.coherent, "dft_amplitude", return_value=math.nan):
