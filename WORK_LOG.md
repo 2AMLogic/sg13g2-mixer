@@ -4,6 +4,8 @@ Chronological record of merged PRs and closed issues. Maintained by the Guide tr
 
 ### 2026-11-26
 
+- **Issue #134** (closed): Use the calculated RF drive amplitude in the KA1 and KA2 sine sources
+- **PR #135**: fix(sim): drive both mixer RF sources from the calculated peak voltage
 - **Issue #120** (closed): Trim unchecked toolchain, protocol and mechanics duplicates from sim/*/testbench/tb.json
 - **PR #126**: refactor(sim): trim the V3 tb.json to identity and entry points
 - **Issue #130** (closed): CI does not assert item 9's manifest binding (signoff-item9 is drift-only)
